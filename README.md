@@ -20,13 +20,14 @@ Our project focuses on developing an intuitive SQL Query and Database Management
 2. Build and run the Docker containers
 
     ```bash
+   cd ./CSC-490
    docker-compose up -d
    ```
    
 3. Install frontend dependencies
 
     ```bash
-    cd frontend
+    cd ./frontend
     npm install
     ```
 
