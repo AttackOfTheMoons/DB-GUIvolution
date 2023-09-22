@@ -1,0 +1,26 @@
+**Create:**
+- CREATE TABLE
+- CREATE DATABASE
+- CREATE INDEX
+- CREATE VIEW
+- INSERT INTO
+
+**Read:**
+- SELECT
+- FROM
+- WHERE
+- JOIN
+- GROUP BY
+- HAVING
+- ORDER BY
+
+**Update:**
+- UPDATE
+- SET
+- WHERE
+
+**Delete:**
+- DELETE
+- FROM
+- WHERE
+- DROP TABLE
