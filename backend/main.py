@@ -3,6 +3,13 @@ from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import os
+
+# Get environment variables
+GPT_API_KEY = os.environ.get("GPT_API_KEY")
+DATABASE_URL = os.environ.get("DATABASE_URL")
+
+print("GPT_API_KEY:", GPT_API_KEY)
 
 # Create a FastAPI app
 app = FastAPI()
@@ -12,7 +19,6 @@ origins = [
 ]
 
 # Define the SQLAlchemy database engine
-DATABASE_URL = "postgresql://username:password@localhost/dbname"
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
 # Create a SQLAlchemy session

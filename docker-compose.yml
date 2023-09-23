@@ -4,10 +4,12 @@ services:
   db:
     image: postgres:latest
     container_name: postgres-db
-    environment:
-      - POSTGRES_DB=dbname
-      - POSTGRES_USER=username
-      - POSTGRES_PASSWORD=password
+    # environment:
+    #   - POSTGRES_DB=dbname
+    #   - POSTGRES_USER=username
+    #   - POSTGRES_PASSWORD=password
+    env_file:
+      - ./backend/.env  # or wherever your .env file is located
     volumes:
       - postgres-data:/var/lib/postgresql/data
     networks:
@@ -21,9 +23,11 @@ services:
       - "8000:8000"
     depends_on:
       - db
-    environment:
-      - DATABASE_URL=postgresql://username:password@db/dbname
-      - CHOKIDAR_USEPOLLING=true
+    # environment:
+    #   - DATABASE_URL=postgresql://username:password@db/dbname
+    #   - CHOKIDAR_USEPOLLING=true
+    env_file:
+      - ./backend/.env  # or wherever your .env file is located
     networks:
       - app-network
 
