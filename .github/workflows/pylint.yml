@@ -1,0 +1,30 @@
+name: Pylint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - name: Python Code Quality and Lint (Updated Fork)
+      # You may pin to the exact commit or the version.
+      # uses: 654wak654/python-lint@bc0afc0622605c47b0c23498362c7817b7264aca
+    - uses: 654wak654/python-lint@1.5.0
+      with:
+        # A list of all paths to test
+        python-root-list: "backend"
+        # Use Pylint
+        use-pylint: false
+        # Use pycodestyle
+        use-pycodestyle: false
+        # Extra options: flake8 $(extra-flake8-options) $(python-root-list)
+        extra-flake8-options: "--max-line-length 120"
+        # Extra options: black --check $(extra-black-options) $(python-root-list)
+        # extra-black-options: # optional, default is 
+        # Extra options: mypy $(extra-mypy-options) $(python-root-list)
+        # extra-mypy-options: # optional, default is 
+        # Extra options: isort -rc $(extra-isort-options) $(python-root-list) -c --diff 
+        extra-isort-options: "--check-only"
