@@ -21,7 +21,8 @@ jobs:
         run: |
           cd backend
           source "$(poetry env info --path)/bin/activate"
-          if ! ./scripts/lint.sh; then
+          cd ..
+          if ! ./backend/scripts/lint.sh; then
            echo "Linting failed."
            exit 1
           fi
