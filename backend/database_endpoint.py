@@ -1,13 +1,30 @@
+import json
+from typing import Optional
+
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy import Table, MetaData, Engine
 from sqlalchemy.dialects.postgresql.base import PGInspector
 from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
 
-from models.request_models import InsertDataRequest
 from database import get_db, get_inspector, get_engine
+from models.request_models import InsertDataRequest
 
 router = APIRouter()
+
+
+@router.get('/tables')
+def get_table(inspector: PGInspector = Depends(get_inspector)):
+    return inspector.get_table_names()
+
+
+@router.get('/tables/{table_name}/columns')
+def get_columns(table_name: str, inspector: PGInspector = Depends(get_inspector)):
+    return [
+        {'name': col['name'],
+         'type': col['type'].__visit_name__,
+         'nullable': col['nullable']
+         } for col in inspector.get_columns(table_name)]
 
 
 @router.post('/insert')

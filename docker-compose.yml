@@ -30,6 +30,8 @@ services:
       - ./backend/.env  # or wherever your .env file is located
     networks:
       - app-network
+    volumes:
+      - ./backend:/app
 
 #  frontend:
 #    build:

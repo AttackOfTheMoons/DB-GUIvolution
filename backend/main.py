@@ -1,26 +1,17 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+
+from database import env
 from database_endpoint import router as database_router
-import os
 
-# Get environment variables
-GPT_API_KEY = os.environ.get("GPT_API_KEY")
-DATABASE_URL = os.environ.get("DATABASE_URL")
+GPT_API_KEY = env.get("GPT_API_KEY")
 
-print("GPT_API_KEY:", GPT_API_KEY)
-
-# Create a FastAPI app
-app = FastAPI()
+if GPT_API_KEY is None:
+    raise EnvironmentError("Missing environment variable: GPT_API_KEY")
 
 origins = [
     "http://localhost:3000",
 ]
-
-# Define the SQLAlchemy database engine
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
 
 app = FastAPI()
 
