@@ -16,7 +16,7 @@ jobs:
           # Use pycodestyle
           use-pycodestyle: false
           # Extra options: flake8 $(extra-flake8-options) $(python-root-list)
-          extra-flake8-options: "--max-line-length 120"
+          extra-flake8-options: "--max-line-length 120 --exclude __init__.py"
           # Extra options: black --check $(extra-black-options) $(python-root-list)
           # extra-black-options: # optional, default is
           # Extra options: mypy $(extra-mypy-options) $(python-root-list)
