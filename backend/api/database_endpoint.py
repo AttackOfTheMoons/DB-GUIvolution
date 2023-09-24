@@ -1,38 +1,43 @@
-import json
-from typing import Optional
-
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import Table, MetaData, Engine
+from sqlalchemy import Engine, MetaData, Table
 from sqlalchemy.dialects.postgresql.base import PGInspector
 from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
 
-from database import get_db, get_inspector, get_engine
-from models.request_models import InsertDataRequest
+from backend.database import get_db, get_engine, get_inspector
+from backend.models import InsertDataRequest
 
 router = APIRouter()
 
 
-@router.get('/tables')
+@router.get("/tables")
 def get_table(inspector: PGInspector = Depends(get_inspector)):
     return inspector.get_table_names()
 
 
-@router.get('/tables/{table_name}/columns')
+@router.get("/tables/{table_name}/columns")
 def get_columns(table_name: str, inspector: PGInspector = Depends(get_inspector)):
     return [
-        {'name': col['name'],
-         'type': col['type'].__visit_name__,
-         'nullable': col['nullable']
-         } for col in inspector.get_columns(table_name)]
+        {
+            "name": col["name"],
+            "type": col["type"].__visit_name__,
+            "nullable": col["nullable"],
+        }
+        for col in inspector.get_columns(table_name)
+    ]
 
 
-@router.post('/insert')
-def create_table(request: InsertDataRequest, db: Session = Depends(get_db),
-                 inspector: PGInspector = Depends(get_inspector),
-                 engine: Engine = Depends(get_engine)):
+@router.post("/insert")
+def create_table(
+    request: InsertDataRequest,
+    db: Session = Depends(get_db),
+    inspector: PGInspector = Depends(get_inspector),
+    engine: Engine = Depends(get_engine),
+):
     if request.table_name not in inspector.get_table_names():
-        raise HTTPException(status_code=404, detail=f'Table {request.table_name} not found.')
+        raise HTTPException(
+            status_code=404, detail=f"Table {request.table_name} not found."
+        )
 
     metadata = MetaData()
     table = Table(request.table_name, metadata, autoload_with=engine)
@@ -43,6 +48,6 @@ def create_table(request: InsertDataRequest, db: Session = Depends(get_db),
     except CompileError as err:
         if str(err).startswith("Unconsumed column names:"):
             # This error happens if the request.values dict has column values not in the table.
-            raise HTTPException(status_code=400, detail=f'Error: {err}')
+            raise HTTPException(status_code=400, detail=f"Error: {err}")
         else:
             raise err
