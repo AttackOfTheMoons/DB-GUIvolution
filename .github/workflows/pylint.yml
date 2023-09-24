@@ -1,16 +1,14 @@
-name: Pylint
+name: Python Code Quality and Lint
 
 on: [push]
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python-version: ["3.11"]
+    python-version: "3.11"
     steps:
-      - uses: 654wak654/python-lint@1.5.0
-      - name: Python Code Quality and Lint (Updated Fork)
+      - uses: actions/checkout@v3
+      - uses: 654wak654/python-lint@v1.5.0
         with:
           # A list of all paths to test
           python-root-list: "backend"
