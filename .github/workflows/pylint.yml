@@ -7,7 +7,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: 654wak654/python-lint@v1.5.0
+      - uses: 654wak654/python-lint@1.5.0
         with:
           # A list of all paths to test
           python-root-list: "backend"
