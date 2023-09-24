@@ -6,26 +6,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: "Using Checkout V3"
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: "Install Dependencies"
         run: |
           pip install poetry
           cd backend
           poetry install
-          echo "OK"
-      - name: "Checking Code"
-        with:
-          # A list of all paths to test
-          python-root-list: "backend"
-          # Extra options: flake8 $(extra-flake8-options) $(python-root-list)
-          extra-flake8-options: "--max-line-length 120 --exclude __init__.py"
-          # Extra options: black --check $(extra-black-options) $(python-root-list)
-          # extra-black-options: # optional, default is
-          # Extra options: mypy $(extra-mypy-options) $(python-root-list)
-          # extra-mypy-options: # optional, default is
-          # Extra options: isort -rc $(extra-isort-options) $(python-root-list) -c --diff
-          extra-isort-options: "--check-only"
+      - name: "Lint Code"
         run: |
           if ! ./backend/scripts/lint.sh; then
            echo "Linting failed."
