@@ -6,8 +6,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: 654wak654/python-lint@1.5.0
+      - name: "Using Checkout V3"
+        uses: actions/checkout@v3
+      - name: "Install Dependencies"
+        run: |
+            curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+            source $HOME/.poetry/env
+            cat $HOME/.poetry/env >> ~/.bashrc
+            poetry install
+            echo "OK"
+      - name: "Using 654wak654/python-lint@1.5.0"
+        uses: 654wak654/python-lint@1.5.0
         with:
           # A list of all paths to test
           python-root-list: "backend"
