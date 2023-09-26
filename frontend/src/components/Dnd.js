@@ -1,6 +1,7 @@
 import React from "react";
 import { Fragment } from "react";
 import Shapes from "./Shapes";
+import "../App.css";
 
 const ShapeList = [
   {
