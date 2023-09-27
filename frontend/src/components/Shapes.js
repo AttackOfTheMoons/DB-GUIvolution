@@ -4,6 +4,7 @@ import { useDrag } from "react-dnd";
 function Shapes({ id, src }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "shape",
+    item: { id: id },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
