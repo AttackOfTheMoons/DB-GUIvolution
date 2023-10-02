@@ -25,8 +25,7 @@ services:
       - db
     environment:
       - PYTHONPATH=/app
-    #   - DATABASE_URL=postgresql://username:password@db/dbname
-    #   - CHOKIDAR_USEPOLLING=true
+      - CHOKIDAR_USEPOLLING=true
     env_file:
       - ./backend/.env  # or wherever your .env file is located
     networks:

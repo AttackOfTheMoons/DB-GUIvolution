@@ -1,5 +1,5 @@
 import openai
-from core import env
+from backend.core import env
 
 GPT_API_KEY = env.get("GPT_API_KEY")
 

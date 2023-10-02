@@ -4,8 +4,8 @@ from sqlalchemy.dialects.postgresql.base import PGInspector
 from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
 
-from database import get_db, get_engine, get_inspector
-from models import InsertDataRequest
+from backend.database import get_db, get_engine, get_inspector
+from backend.models import InsertDataRequest
 
 router = APIRouter()
 
