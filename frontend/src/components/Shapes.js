@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { useDrag } from "react-dnd";
 
 function Shapes({ id, src, key, onRemove, instanceId }) {
@@ -14,15 +14,35 @@ function Shapes({ id, src, key, onRemove, instanceId }) {
     onRemove(instanceId);
   };
 
+  const shapeLabels = {
+    square: "Select",
+    triangle: "From",
+    circle: "Where",
+  };
+
   return (
-    <img
-      ref={drag}
-      src={src}
-      width="150px"
-      alt=""
-      style={{ border: isDragging ? "5px solid #fab22e" : "0px" }}
-      onClick={handleClick}
-    ></img>
+    <div
+      style={{
+        display: "inline-flex",
+        flexDirection: "column",
+        alignItems: "center",
+      }}
+    >
+      {/* Display the shape image */}
+      <img
+        ref={drag}
+        src={src}
+        width="150px"
+        alt=""
+        style={{ border: isDragging ? "5px solid #fab22e" : "0px" }}
+        onClick={handleClick}
+      />
+
+      {/* Display the shape label */}
+      <div style={{ textAlign: "center", marginTop: "5px" }}>
+        {shapeLabels[id]}
+      </div>
+    </div>
   );
 }
 
