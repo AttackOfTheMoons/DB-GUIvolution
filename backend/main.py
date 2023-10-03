@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from backend.api.database_endpoint import router as database_router
+from backend.api.nlp_endpoints import router as nlp_router
 
 origins = [
     "http://localhost:3000",
@@ -20,3 +21,4 @@ app.add_middleware(
 )
 
 app.include_router(database_router, prefix="")
+app.include_router(nlp_router, prefix="/api/nlp")

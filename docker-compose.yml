@@ -17,22 +17,23 @@ services:
 
   web:
     build:
-      context: ./backend
+      # context: ./backend
+      context: .
     container_name: fastapi-app
     ports:
       - "8000:8000"
     depends_on:
       - db
     environment:
-      - PYTHONPATH=/app
+      - PYTHONPATH=/app/backend
       - CHOKIDAR_USEPOLLING=true
     env_file:
       - ./backend/.env  # or wherever your .env file is located
     networks:
       - app-network
     volumes:
-      - ./backend:/app
-
+      # - ./backend:/app
+      - .:/app
 #  frontend:
 #    build:
 #      context: ./frontend  # Replace with the path to your React app's directory
