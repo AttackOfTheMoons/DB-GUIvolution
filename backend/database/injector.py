@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, inspect
 from sqlalchemy.orm import sessionmaker
 
-from backend.core import env
+from core import env
 
 try:
     DATABASE_URL = f"postgresql://{env['POSTGRES_USER']}:{env['POSTGRES_PASSWORD']}@db/{env['POSTGRES_DB']}"

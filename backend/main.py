@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from backend.api.database_endpoint import router as database_router
-from backend.core import env
+from api.database_endpoint import router as database_router
+from core import env
 
 GPT_API_KEY = env.get("GPT_API_KEY")
 
