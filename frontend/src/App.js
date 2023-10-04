@@ -1,14 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
-import Diagram, { createSchema, useSchema } from "beautiful-react-diagrams";
-import { Button } from "beautiful-react-ui";
-import "beautiful-react-diagrams/styles.css";
+import "./App.css";
+import ReactFlow, {
+  ReactFlowProvider,
+  addEdge,
+  applyNodeChanges,
+  applyEdgeChanges,
+  Controls,
+} from "react-flow-renderer";
+
+import Sidebar from "./sidebar.js";
+let id = 0;
+const getId = () => `dndnode_${id++}`;
+
 // // Set the base URL for Axios requests
 // axios.defaults.baseURL = "http://localhost:8000"; // Update with your FastAPI server URL
 
 function App() {
   //   const [message, setMessage] = useState("");
-
   //   useEffect(() => {
   //     // Make an HTTP GET request to /hello
   //     axios
@@ -22,87 +31,76 @@ function App() {
   //       });
   //   }, []);
 
-  const initialSchema = createSchema({
-    nodes: [
-      {
-        id: "node-1",
-        content: "Start a query:",
-        coordinates: [150, 60],
-        outputs: [{ id: "port-1", alignment: "right" }],
-      },
-    ],
-  });
+  const initialNodes = [
+    { id: "1", data: { label: "Node 1" }, position: { x: 250, y: 0 } },
+    { id: "2", data: { label: "Node 2" }, position: { x: 150, y: 100 } },
+  ];
 
-  const CustomRender = ({ id, content, data, inputs, outputs }) => (
-    <div style={{ background: "purple" }}>
-      <div style={{ textAlign: "right" }}>
-        <Button icon="times" size="small" onClick={() => data.onClick(id)} />
-      </div>
-      <div role="button" style={{ padding: "15px" }}>
-        {content}
-      </div>
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          justifyContent: "space-between",
-        }}
-      >
-        {inputs.map((port) =>
-          React.cloneElement(port, {
-            style: { width: "25px", height: "25px", background: "#1B263B" },
-          })
-        )}
-        {outputs.map((port) =>
-          React.cloneElement(port, {
-            style: { width: "25px", height: "25px", background: "#1B263B" },
-          })
-        )}
-      </div>
-    </div>
+  const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
+  const [nodes, setNodes] = useState(initialNodes);
+  const [edges, setEdges] = useState(initialEdges);
+  const reactFlowWrapper = useRef(null);
+  const [reactFlowInstance, setReactFlowInstance] = useState(null);
+  //const [elements, setElements] = useState(InitialElements);
+  //const onConnect = (params) => setElements((els) => addEdge(params, els));
+  const onConnect = useCallback((connection) =>
+    setEdges((eds) => addEdge(connection, eds))
   );
-
-  const UncontrolledDiagram = () => {
-    // create diagrams schema
-    const [schema, { onChange, addNode, removeNode }] = useSchema(
-      initialSchema
-    );
-
-    const deleteNodeFromSchema = (id) => {
-      const nodeToRemove = schema.nodes.find((node) => node.id === id);
-      removeNode(nodeToRemove);
-    };
-
-    const addNewNode = () => {
-      const nextNode = {
-        id: `node-${schema.nodes.length + 1}`,
-        content: `Node ${schema.nodes.length + 1}`,
-        coordinates: [
-          schema.nodes[schema.nodes.length - 1].coordinates[0] + 100,
-          schema.nodes[schema.nodes.length - 1].coordinates[1],
-        ],
-        render: CustomRender,
-        data: { onClick: deleteNodeFromSchema },
-        inputs: [{ id: `port-${Math.random()}` }],
-        outputs: [{ id: `port-${Math.random()}` }],
-      };
-
-      addNode(nextNode);
-    };
-
-    return (
-      <div style={{ height: "22.5rem" }}>
-        <Button color="primary" icon="plus" onClick={addNewNode}>
-          Add new node
-        </Button>
-        <Diagram schema={schema} onChange={onChange} />
-      </div>
-    );
+  const onNodesChange = useCallback(
+    (changes) => setNodes((ns) => applyNodeChanges(changes, ns)),
+    []
+  );
+  const onEdgesChange = useCallback(
+    (changes) => setEdges((es) => applyEdgeChanges(changes, es)),
+    []
+  );
+  const onLoad = (_reactFlowInstance) =>
+    setReactFlowInstance(_reactFlowInstance);
+  const onDragOver = (event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
   };
-
+  const onDrop = (event) => {
+    event.preventDefault();
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    const type = event.dataTransfer.getData("application/reactflow");
+    const position = reactFlowInstance.project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+    const newNode = {
+      id: getId(),
+      type,
+      position,
+      data: { label: `${type} node` },
+    };
+    //setElements((es) => es.concat(newNode));
+    setEdges((eds) => addEdge(newNode, eds));
+  };
   return (
-    <div className="App">
-      <UncontrolledDiagram />
+    <div className="dndflow">
+      <ReactFlowProvider>
+        <div
+          className="reactflow-wrapper"
+          style={{ height: "500px", width: "500px" }}
+          ref={reactFlowWrapper}
+        >
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onConnect={onConnect}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onLoad={onLoad}
+            onDrop={onDrop}
+            onDragOver={onDragOver}
+          >
+            <Controls />
+          </ReactFlow>
+        </div>
+        <Sidebar />
+      </ReactFlowProvider>
     </div>
   );
 }

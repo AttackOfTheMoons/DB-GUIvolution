@@ -1,37 +1,55 @@
 .App {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   text-align: center;
+  width: 100%;
+  height: 100%;
 }
 
-.Shapes {
-  margin: 10px;
-  position: absolute;
-  left: 30%;
-  width: 600px;
-  height: 200px;
-  border: 3px solid #E9B824;
-  background-repeat: no-repeat;
-  background-size: cover;
-  box-shadow: 0 0 10px #EE9322;
-  overflow: auto;
-  background-image: url("https://www.google.com/url?sa=i&url=https%3A%2F%2Funsplash.com%2Fs%2Fphotos%2Fart-studio&psig=AOvVaw3MIm3_YGg8Izjqnh30nK0z&ust=1696302083644000&source=images&cd=vfe&opi=89978449&ved=0CBAQjRxqFwoTCICV8uyv1oEDFQAAAAAdAAAAABAR");
+body {
+  font-family: sans-serif;
+  color: #111;
 }
 
-img{
-  margin: 5px;
-  margin-bottom: 0%;
-  display: inline-block;
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
 }
 
-.Canvas {
-  position: absolute;
-  top: 230px;
-  width: 99.7%;
-  height: 68.7%;
-  border: 3px solid #CCC8AA; 
-  background-repeat: no-repeat;
-  overflow: auto;
-  background-size: cover;
-  background-image: url("https://media.istockphoto.com/id/1438199406/photo/natural-linen-material-textile-canvas-texture-background.webp?b=1&s=170667a&w=0&k=20&c=LFuKOC1sUKLhqcoBGbsV2TCHnocIrl2YzGxwpRNz76o=");
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  font-weight: 700;
+  align-items: center;
+}
+
+.logo {
+  text-decoration: none;
+  display: block;
+  line-height: 1;
+}
+
+header a,
+header a:focus,
+header a:active,
+header a:visited {
+  color: #111;
+}
+
+header a:hover {
+  color: #333;
+}
+
+header select {
+  margin-left: 1em;
 }
 
 .App-logo {
@@ -68,3 +86,57 @@ img{
     transform: rotate(360deg);
   }
 }
+
+.dndflow {
+  flex-direction: column;
+  display: flex;
+  height: 100%;
+}
+
+.dndflow aside {
+  border-right: 1px solid #eee;
+  padding: 15px 10px;
+  font-size: 12px;
+  background: #fcfcfc;
+}
+
+.dndflow aside .description {
+  margin-bottom: 10px;
+}
+
+.dndflow .dndnode {
+  height: 20px;
+  padding: 4px;
+  border: 1px solid #1a192b;
+  border-radius: 2px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+}
+
+.dndflow .dndnode.input {
+  border-color: #0041d0;
+}
+
+.dndflow .dndnode.output {
+  border-color: #ff0072;
+}
+
+.dndflow .reactflow-wrapper {
+  flex-grow: 1;
+  height: 100%;
+}
+
+@media screen and (min-width: 768px) {
+  .dndflow {
+    flex-direction: row;
+  }
+
+  .dndflow aside {
+    width: 20%;
+    max-width: 250px;
+  }
+}
+
