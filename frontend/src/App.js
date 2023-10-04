@@ -16,7 +16,7 @@ function App() {
 				setMessage(response.data.message);
 			})
 			.catch((error) => {
-				console.error("Error:", error);
+				setMessage(`Error: ${error}`);
 			});
 	}, []);
 

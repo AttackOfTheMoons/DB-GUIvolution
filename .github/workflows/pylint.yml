@@ -35,4 +35,3 @@ jobs:
             echo "Biome check failed for the frontend."
             exit 1
           fi
-          cd ..

@@ -2,7 +2,7 @@
 
 set -x
 
-mypy backend
+mypy --config-file .\backend\pyproject.toml .\backend
 black backend --check
 isort --check-only backend
-flake8 backend --max-line-length 120 --exclude .git,__pycache__,__init__.py,.mypy_cache,.pytest_cache
+ruff check backend --line-length 120 --no-fix

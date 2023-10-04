@@ -1,22 +1,25 @@
+from typing import List
+
+from database import get_db, get_engine, get_inspector
 from fastapi import APIRouter, Depends, HTTPException
+from models import InsertDataRequest
 from sqlalchemy import Engine, MetaData, Table
 from sqlalchemy.dialects.postgresql.base import PGInspector
 from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
 
-from database import get_db, get_engine, get_inspector
-from models import InsertDataRequest
-
 router = APIRouter()
 
 
 @router.get("/tables")
-def get_table(inspector: PGInspector = Depends(get_inspector)):
+def get_table(inspector: PGInspector = Depends(get_inspector)) -> List:
     return inspector.get_table_names()
 
 
 @router.get("/tables/{table_name}/columns")
-def get_columns(table_name: str, inspector: PGInspector = Depends(get_inspector)):
+def get_columns(
+    table_name: str, inspector: PGInspector = Depends(get_inspector)
+) -> List:
     return [
         {
             "name": col["name"],
@@ -33,7 +36,7 @@ def create_table(
     db: Session = Depends(get_db),
     inspector: PGInspector = Depends(get_inspector),
     engine: Engine = Depends(get_engine),
-):
+) -> None:
     if request.table_name not in inspector.get_table_names():
         raise HTTPException(
             status_code=404, detail=f"Table {request.table_name} not found."
