@@ -5,32 +5,50 @@ export default () => {
     event.dataTransfer.setData("application/reactflow", nodeType);
     event.dataTransfer.effectAllowed = "move";
   };
+
   return (
     <aside>
       <div className="description">
-        You can drag these nodes to the pane on the right.
+        Drag these nodes to the canvas to the left.
       </div>
-      <div
+      {/* <div
         className="dndnode input"
         onDragStart={(event) => onDragStart(event, "input")}
         draggable
       >
         Input Node
+      </div> */}
+      <div
+        className="dndnode"
+        onDragStart={(event) => onDragStart(event, "default")}
+        draggable
+      >
+        <img src="/icons/square.png" width={"20px"}></img>
+        SELECT
       </div>
       <div
         className="dndnode"
         onDragStart={(event) => onDragStart(event, "default")}
         draggable
       >
-        Default Node
+        <img src="/icons/triangle.png" width={"20px"}></img>
+        FROM
       </div>
       <div
+        className="dndnode"
+        onDragStart={(event) => onDragStart(event, "default")}
+        draggable
+      >
+        <img src="/icons/circle.png" width={"20px"}></img>
+        SELECT
+      </div>
+      {/* <div
         className="dndnode output"
         onDragStart={(event) => onDragStart(event, "output")}
         draggable
       >
         Output Node
-      </div>
+      </div> */}
     </aside>
   );
 };
