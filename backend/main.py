@@ -1,5 +1,4 @@
-from api import database_router
-from api.nlp_endpoints import nlp_router
+from api import database_router, nlp_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
