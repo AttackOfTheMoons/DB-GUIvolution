@@ -27,16 +27,16 @@ services:
       - app-network
     volumes:
       - ./backend:/app
+
+# The frontend will not hot reload, but we can use docker to deploy it anyhow.
 #  frontend:
 #    build:
-#      context: ./frontend  # Replace with the path to your React app's directory
+#      context: ./frontend
 #    container_name: react-app
 #    ports:
 #      - "3000:3000"
 #    networks:
 #      - app-network
-#    volumes:
-#      - ./frontend:/app
 
 networks:
   app-network:

@@ -17,13 +17,21 @@ jobs:
         run: |
           cd backend
           poetry install
-      - name: Run Code Quality Checks
+      - name: Run Backend Code Quality Checks
         run: |
           cd backend
           source "$(poetry env info --path)/bin/activate"
           cd ..
           if ! ./backend/scripts/lint.sh; then
-           echo "Linting failed."
+           echo "Backend linting failed."
            exit 1
           fi
           deactivate
+      - name: Run Frontend Code Quality Checks
+        run: |
+          cd frontend
+          npm install
+          if ! npx biome check ./src; then
+            echo "Biome check failed for the frontend."
+            exit 1
+          fi
