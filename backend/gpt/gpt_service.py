@@ -1,5 +1,5 @@
 import openai
-from api.database_endpoint import get_columns, get_table
+from typing import List, Dict, Any
 from core import env
 from database import get_inspector
 from fastapi import Depends
@@ -11,6 +11,20 @@ if GPT_API_KEY is None:
     raise EnvironmentError("Missing environment variable: GPT_API_KEY")
 
 openai.api_key = GPT_API_KEY
+
+
+def fetch_tables(inspector: PGInspector) -> List[str]:
+    return inspector.get_table_names()
+
+def fetch_columns(table_name: str, inspector: PGInspector) -> List[Dict[str, Any]]:
+    return [
+        {
+            "name": col["name"],
+            "type": col["type"].__visit_name__,
+            "nullable": col["nullable"],
+        }
+        for col in inspector.get_columns(table_name)
+    ]
 
 
 def generate_sql_query(user_input: str) -> str:
@@ -44,13 +58,13 @@ def generate_sql_query(user_input: str) -> str:
 
 def get_database_schema(inspector: PGInspector = Depends(get_inspector)) -> str:
     # Fetch all table names
-    tables = get_table(inspector)
+    tables = fetch_tables(inspector)
 
     schema_description = []
 
     # Fetch columns for each table
     for table in tables:
-        columns = get_columns(table, inspector)
+        columns = fetch_columns(table, inspector)
         column_names = [col["name"] for col in columns]
         schema_description.append(
             f"Table '{table}' has columns: {', '.join(column_names)}."

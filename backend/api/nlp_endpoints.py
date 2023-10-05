@@ -16,5 +16,5 @@ class QueryResponseModel(BaseModel):
 
 
 @router.post("/generate_sql", response_model=QueryResponseModel)
-def generate_sql_endpoint(request: QueryRequestModel = Body(...)):
+def generate_sql_endpoint(request: QueryRequestModel = Body(...)) -> QueryResponseModel:
     return {"sql_query": generate_sql_query(request.user_input)}

@@ -36,7 +36,7 @@ TEST_CASE = {
 }
 
 
-def test_generate_sql_query():
+def test_generate_sql_query() -> None:
     user_input = TEST_CASE["input"]
     expected_output = TEST_CASE["expected_output"]
 
@@ -46,7 +46,7 @@ def test_generate_sql_query():
     ), f"For input: {user_input}, expected: {expected_output} but got: {response}"
 
 
-def test_get_database_schema():
+def test_get_database_schema() -> None:
     inspector = get_inspector()
     schema_string = get_database_schema(inspector)
     print(f"Database Schema String: {schema_string}")
