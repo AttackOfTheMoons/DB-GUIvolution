@@ -1,7 +1,8 @@
-from sqlalchemy import create_engine, inspect
-from sqlalchemy.orm import sessionmaker
+from typing import Generator
 
-from backend.core import env
+from core import env
+from sqlalchemy import Engine, Inspector, create_engine, inspect
+from sqlalchemy.orm import Session, sessionmaker
 
 try:
     DATABASE_URL = f"postgresql://{env['POSTGRES_USER']}:{env['POSTGRES_PASSWORD']}@db/{env['POSTGRES_DB']}"
@@ -13,16 +14,16 @@ engine = create_engine(DATABASE_URL)
 SessionLocal = sessionmaker(bind=engine)
 
 
-def get_engine():
+def get_engine() -> Engine:
     return engine
 
 
-def get_inspector():
+def get_inspector() -> Inspector:
     inspector = inspect(engine)
     return inspector
 
 
-def get_db():
+def get_db() -> Generator[Session, None, None]:
     db = SessionLocal()
     try:
         yield db
