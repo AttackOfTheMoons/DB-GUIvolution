@@ -1,10 +1,9 @@
 import openai
-from backend.core import env
-from fastapi import HTTPException, Depends
-from backend.api.database_endpoint import get_table, get_columns
+from fastapi import Depends
 from sqlalchemy.dialects.postgresql.base import PGInspector
-
-from backend.database import get_db, get_engine, get_inspector
+from core import env
+from api.database_endpoint import get_table, get_columns
+from database import get_db, get_engine, get_inspector
 
 GPT_API_KEY = env.get("GPT_API_KEY")
 
@@ -17,14 +16,17 @@ openai.api_key = GPT_API_KEY
 def generate_sql_query(user_input: str) -> str:
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {"role": "user", "content": "Your job is to generate SQL queries that fit the description given by the user. Your response should only be the query string. If the user input is anything besides a query description, then return an empty string."},
+        messages = [
+            {"role": "user", "content": "Your job is to generate SQL queries based on the provided database schema and user's query description. Your response should only be the query string. If the user input is anything besides a query description, then return an empty string."},
             {"role": "assistant", "content": "Understood"},
-            {"role": "user", "content": "Show me all the products in our inventory."},
+            
+            {"role": "user", "content": "Table 'inventory' has columns: id, product_name, quantity. Show me all the products in our inventory."},
             {"role": "assistant", "content": "SELECT * FROM inventory;"},
-            {"role": "user", "content": "I want to see the names of products and their respective categories."},
+            
+            {"role": "user", "content": "Table 'products' has columns: id, product_name, category_id. Table 'categories' has columns: id, category_name. I want to see the names of products and their respective categories."},
             {"role": "assistant", "content": "SELECT product_name, category_name FROM products INNER JOIN categories ON products.category_id = categories.id;"},
-            {"role": "user", "content": user_input }
+            
+            {"role": "user", "content": user_input}
         ]
     )
 

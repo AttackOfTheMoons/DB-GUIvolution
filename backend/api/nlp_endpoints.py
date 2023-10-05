@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Body
-from backend.gpt.gpt_service import generate_sql_query
+from pydantic import BaseModel
+from gpt.gpt_service import generate_sql_query
 
 router = APIRouter()
 
