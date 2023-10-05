@@ -1,7 +1,6 @@
-import pytest
-import time
+
+from database import get_inspector
 from gpt.gpt_service import generate_sql_query, get_database_schema
-from database import get_db, get_engine, get_inspector
 
 # @pytest.mark.parametrize("user_input,expected_output", [
 #     # Basic examples with descriptions of the database structure
@@ -10,12 +9,12 @@ from database import get_db, get_engine, get_inspector
 #     ("Table 'categories' has columns: id, category_name. Display categories", "SELECT * FROM categories;"),
 #     ("Table 'orders' has columns: id, product_id, quantity. List all orders", "SELECT * FROM orders;"),
 #     ("Table 'customers' has columns: id, first_name, last_name, email. Show customer details", "SELECT * FROM customers;"),
-    
+
 #     # Edge cases with descriptions of the database structure
 #     ("Table 'products' has columns: id, name, price, category_id. Show products where price is between 100 and 200", "SELECT * FROM products WHERE price BETWEEN 100 AND 200;"),
 #     ("Table 'employees' has columns: id, first_name, last_name, join_date. List employees joining before 2020 and after 2018", "SELECT * FROM employees WHERE join_date BETWEEN '2018-01-01' AND '2019-12-31';"),
 #     ("Table 'customers' has columns: id, first_name, last_name, email. Show customers with email ending with @gmail.com", "SELECT * FROM customers WHERE email LIKE '%@gmail.com';"),
-    
+
 #     # Examples that should return an empty string (or other error response)
 #     ('What is the meaning of life?', ""),
 #     ('Tell me a joke.', "")
@@ -30,18 +29,22 @@ from database import get_db, get_engine, get_inspector
 TEST_CASE = {
     # 'input': "Table 'employees' has columns: id, first_name, last_name. Show all employees",
     # 'expected_output': "SELECT * FROM employees;"
-    'input': "Table 'products' has columns: id, name, price, category_id. Show products where price is between 100 and 200",
-    'expected_output': "SELECT * FROM products WHERE price BETWEEN 100 AND 200;"
+    "input": "Table 'products' has columns: id, name, price, category_id. Show products where price is between 100 and 200",
+    "expected_output": "SELECT * FROM products WHERE price BETWEEN 100 AND 200;"
     # 'input': "What is the meaning of life?",
     # 'expected_output': ""
 }
 
+
 def test_generate_sql_query():
-    user_input = TEST_CASE['input']
-    expected_output = TEST_CASE['expected_output']
-    
+    user_input = TEST_CASE["input"]
+    expected_output = TEST_CASE["expected_output"]
+
     response = generate_sql_query(user_input)
-    assert response == expected_output, f"For input: {user_input}, expected: {expected_output} but got: {response}"
+    assert (
+        response == expected_output
+    ), f"For input: {user_input}, expected: {expected_output} but got: {response}"
+
 
 def test_get_database_schema():
     inspector = get_inspector()

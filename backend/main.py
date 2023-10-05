@@ -1,10 +1,7 @@
-from api import router as database_router
-from core import env
+from api import database_router
+from api.nlp_endpoints import nlp_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-
-from backend.api.database_endpoint import router as database_router
-from backend.api.nlp_endpoints import router as nlp_router
 
 origins = ["http://localhost:3000"]
 
