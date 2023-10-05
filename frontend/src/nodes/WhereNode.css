@@ -1,0 +1,17 @@
+.WhereNode {
+    height: 50px;
+  border: 1px solid #eee;
+  padding: 5px;
+  border-radius: 5px;
+  background: #F875AA;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  }
+
+  .WhereNode label {
+    display: block;
+    color: black;
+    font-size: 12px;
+  }
