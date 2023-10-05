@@ -10,7 +10,12 @@ import ReactFlow, {
   Panel,
 } from "reactflow";
 import "reactflow/dist/style.css";
-
+import SelectNode from "./nodes/SelectNode";
+import WhereNode from "./nodes/WhereNode";
+import FromNode from "./nodes/FromNode";
+import "./nodes/SelectNode.css";
+import "./nodes/WhereNode.css";
+import "./nodes/FromNode.css";
 import Sidebar from "./Sidebar";
 
 import "./index.css";
@@ -19,7 +24,7 @@ const initialNodes = [
   {
     id: "1",
     type: "default",
-    data: { label: "I'm a good node." },
+    data: { label: "I'm a node. You can delete me." },
     position: { x: 250, y: 5 },
   },
 ];
@@ -64,7 +69,7 @@ const DnDFlow = () => {
         id: getId(),
         type,
         position,
-        data: { label: `${type} node` },
+        data: { label: `${type}` },
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -72,7 +77,7 @@ const DnDFlow = () => {
     [reactFlowInstance]
   );
 
-  const [variant, setVariant] = useState("dots");
+  const [variant, setVariant] = useState("lines");
 
   return (
     <div className="dndflow">
@@ -81,6 +86,7 @@ const DnDFlow = () => {
           <ReactFlow
             nodes={nodes}
             edges={edges}
+            nodeTypes={nodeTypes}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
@@ -105,5 +111,8 @@ const DnDFlow = () => {
     </div>
   );
 };
+
+/* NODE TYPES */
+const nodeTypes = { select: SelectNode, where: WhereNode, from: FromNode };
 
 export default DnDFlow;

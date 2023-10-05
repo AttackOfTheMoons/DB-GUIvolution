@@ -1,0 +1,19 @@
+.FromNode {
+height: 50px;
+  border: 1px solid #eee;
+  padding: 5px;
+  border-radius: 5px;
+  background: #1FAB89;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: grab;
+  }
+
+  .FromNode label {
+    display: block;
+    color: black;
+    font-size: 12px;
+  }
+  
+  

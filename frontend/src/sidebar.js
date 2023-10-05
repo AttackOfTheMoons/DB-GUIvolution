@@ -20,7 +20,7 @@ export default () => {
       </div> */}
       <div
         className="dndnode"
-        onDragStart={(event) => onDragStart(event, "default")}
+        onDragStart={(event) => onDragStart(event, "select")}
         draggable
       >
         <img src="/icons/square.png" width={"20px"}></img>
@@ -28,7 +28,7 @@ export default () => {
       </div>
       <div
         className="dndnode"
-        onDragStart={(event) => onDragStart(event, "default")}
+        onDragStart={(event) => onDragStart(event, "from")}
         draggable
       >
         <img src="/icons/triangle.png" width={"20px"}></img>
@@ -36,11 +36,11 @@ export default () => {
       </div>
       <div
         className="dndnode"
-        onDragStart={(event) => onDragStart(event, "default")}
+        onDragStart={(event) => onDragStart(event, "where")}
         draggable
       >
         <img src="/icons/circle.png" width={"20px"}></img>
-        SELECT
+        WHERE
       </div>
       {/* <div
         className="dndnode output"
