@@ -20,21 +20,12 @@ import Sidebar from "./sidebar";
 
 import "./index.css";
 
-const initialNodes = [
-	{
-		id: "1",
-		type: "default",
-		data: { label: "I'm a node. You can delete me." },
-		position: { x: 250, y: 5 },
-	},
-];
-
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
-const DnDFlow = () => {
+const App = () => {
 	const reactFlowWrapper = useRef(null);
-	const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+	const [nodes, setNodes, onNodesChange] = useNodesState([]);
 	const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 	const [reactFlowInstance, setReactFlowInstance] = useState(null);
 
@@ -121,4 +112,4 @@ const DnDFlow = () => {
 /* NODE TYPES */
 const nodeTypes = { select: SelectNode, where: WhereNode, from: FromNode };
 
-export default DnDFlow;
+export default App;
