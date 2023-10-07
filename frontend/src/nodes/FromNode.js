@@ -1,12 +1,22 @@
-import { useCallback } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
 
 const handleStyle = { left: 10 };
 
 function FromNode({ data, isConnectable }) {
-	const onChange = useCallback((evt) => {
-		console.log(evt.target.value);
+	const [tables, setTables] = useState([]);
+	const [selectedTable, setSelectedTable] = useState("");
+
+	useEffect(() => {
+		axios.get("/tables").then((response) => {
+			setTables(response.data);
+		});
 	}, []);
+	const handleTableChange = (event) => {
+		setSelectedTable(event.target.value);
+		console.log(event.target.value);
+	};
 
 	return (
 		<div className="FromNode">
@@ -16,8 +26,19 @@ function FromNode({ data, isConnectable }) {
 				isConnectable={isConnectable}
 			/>
 			<div>
-				<label htmlFor="text">FROM:</label>
-				<input id="text" name="text" onChange={onChange} className="nodrag" />
+				<label>FROM:</label>
+				<select
+					onChange={handleTableChange}
+					value={selectedTable}
+					className="fromInput"
+				>
+					<option value="">Select a table</option>
+					{tables.map((table) => (
+						<option key={table} value={table}>
+							{table}
+						</option>
+					))}
+				</select>
 			</div>
 			{/* <Handle
         type="source"

@@ -1,17 +1,14 @@
 .SelectNode {
-    height: 50px;
-  border: 1px solid #eee;
-  padding: 5px;
-  border-radius: 5px;
-  background: #7579E7;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: grab;
-  }
-
-  .SelectNode label {
-    display: block;
-    color: black;
-    font-size: 12px;
-  }
+ /* 3 times the original value, same color as background */
+  width: 0px;
+  height: 0px;
+  border-style: inset;
+  border-width: 0 70px 140px 70px;
+  border-color: transparent transparent #1FAB89 transparent;
+  float: left;
+  transform: rotate(360deg);
+  -ms-transform: rotate(360deg);
+  -moz-transform: rotate(360deg);
+  -webkit-transform: rotate(360deg);
+  -o-transform: rotate(360deg);
+}

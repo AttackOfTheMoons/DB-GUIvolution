@@ -23,7 +23,7 @@ export default () => {
 				onDragStart={(event) => onDragStart(event, "select")}
 				draggable
 			>
-				<img alt="" src="./icons/square.png" width={"20px"} />
+				<img alt="" src="./icons/triangle.png" width={"20px"} />
 				SELECT
 			</div>
 			<div
@@ -31,7 +31,7 @@ export default () => {
 				onDragStart={(event) => onDragStart(event, "from")}
 				draggable
 			>
-				<img alt="" src="./icons/triangle.png" width={"20px"} />
+				<img alt="" src="./icons/square.png" width={"20px"} />
 				FROM
 			</div>
 			<div
