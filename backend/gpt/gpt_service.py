@@ -2,10 +2,11 @@ from typing import Any, Dict, List
 
 import openai
 from core import env
-from .flavor_queries import (COMMON_EXAMPLES, MSSQL_EXAMPLES, MYSQL_EXAMPLES,
-                            ORACLE_EXAMPLES, POSTGRES_EXAMPLES,
-                            SQLITE_EXAMPLES)
 from sqlalchemy import Inspector
+
+from .flavor_queries import (COMMON_EXAMPLES, MSSQL_EXAMPLES, MYSQL_EXAMPLES,
+                             ORACLE_EXAMPLES, POSTGRES_EXAMPLES,
+                             SQLITE_EXAMPLES)
 
 GPT_API_KEY = env.get("GPT_API_KEY")
 
