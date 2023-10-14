@@ -1,20 +1,18 @@
-from fastapi import APIRouter, Body
+from database import get_inspector
+from fastapi import APIRouter, Body, Depends
 from gpt.gpt_service import generate_sql_query
-from pydantic import BaseModel
+from models.request_models import QueryRequestModel, QueryResponseModel
+from sqlalchemy.dialects.postgresql.base import PGInspector
 
 router = APIRouter()
 
 
-# Define the request model for the POST request
-class QueryRequestModel(BaseModel):
-    user_input: str
-
-
-# Define the response model for the POST request
-class QueryResponseModel(BaseModel):
-    sql_query: str
-
-
-@router.post("/generate_sql", response_model=QueryResponseModel)
-def generate_sql_endpoint(request: QueryRequestModel = Body(...)) -> QueryResponseModel:
-    return QueryResponseModel(sql_query=generate_sql_query(request.user_input))
+@router.post("/{flavor}/generate_sql", response_model=QueryResponseModel)
+def generate_sql_endpoint(
+    flavor: str,
+    request: QueryRequestModel = Body(...),
+    inspector: PGInspector = Depends(get_inspector),
+) -> QueryResponseModel:
+    return QueryResponseModel(
+        sql_query=generate_sql_query(request.user_input, flavor, inspector=inspector)
+    )

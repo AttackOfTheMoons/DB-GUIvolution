@@ -48,7 +48,12 @@ def test_generate_sql_query() -> None:
     user_input = TEST_CASE["input"]
     expected_output = TEST_CASE["expected_output"]
 
-    response = generate_sql_query(user_input)
+    inspector_instance = get_inspector()
+
+    response = generate_sql_query(
+        user_input, flavor="MySQL", inspector=inspector_instance
+    )
+
     assert (
         response == expected_output
     ), f"For input: {user_input}, expected: {expected_output} but got: {response}"

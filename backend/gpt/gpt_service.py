@@ -2,6 +2,9 @@ from typing import Any, Dict, List
 
 import openai
 from core import env
+from flavor_queries import (COMMON_EXAMPLES, MSSQL_EXAMPLES, MYSQL_EXAMPLES,
+                            ORACLE_EXAMPLES, POSTGRES_EXAMPLES,
+                            SQLITE_EXAMPLES)
 from sqlalchemy import Inspector
 
 GPT_API_KEY = env.get("GPT_API_KEY")
@@ -27,37 +30,33 @@ def fetch_columns(table_name: str, inspector: Inspector) -> List[Dict[str, Any]]
     ]
 
 
-def generate_sql_query(user_input: str) -> str:
+def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> str:
+    flavor_examples = {
+        "MySQL": MYSQL_EXAMPLES,
+        "PostgreSQL": POSTGRES_EXAMPLES,
+        "SQLite": SQLITE_EXAMPLES,
+        "MSSQL": MSSQL_EXAMPLES,
+        "Oracle": ORACLE_EXAMPLES,
+    }
+
+    if flavor not in flavor_examples:
+        raise ValueError(f"Unsupported SQL flavor: {flavor}")
+
+    # Fetch the database schema
+    schema_description = get_database_schema(inspector)
+
+    # Construct the api_input
+    api_input = f"[{flavor}] {schema_description} {user_input}"
+
+    messages = (
+        COMMON_EXAMPLES
+        + flavor_examples[flavor]
+        + [{"role": "user", "content": api_input}]
+    )
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {
-                "role": "user",
-                "content": "Your job is to generate SQL queries based on the provided database "
-                "schema and user's query description. "
-                "Your response should only be the query string. If the user input is anything "
-                "besides a query description, then return an empty string.",
-            },
-            {"role": "assistant", "content": "Understood"},
-            {
-                "role": "user",
-                "content": "Table 'inventory' has columns: id, product_name, quantity. "
-                "Show me all the products in our inventory.",
-            },
-            {"role": "assistant", "content": "SELECT * FROM inventory;"},
-            {
-                "role": "user",
-                "content": "Table 'products' has columns: id, product_name, category_id. "
-                "Table 'categories' has columns: id, category_name. I want to see the names of"
-                " products and their respective categories.",
-            },
-            {
-                "role": "assistant",
-                "content": "SELECT product_name, category_name FROM products "
-                "INNER JOIN categories ON products.category_id = categories.id;",
-            },
-            {"role": "user", "content": user_input},
-        ],
+        messages=messages,
     )
 
     return response.choices[0].message["content"]
