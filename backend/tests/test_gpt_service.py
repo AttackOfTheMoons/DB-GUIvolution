@@ -58,6 +58,8 @@ def test_generate_sql_query() -> None:
         response == expected_output
     ), f"For input: {user_input}, expected: {expected_output} but got: {response}"
 
+    print(f"output: {response}")
+
 
 def test_get_database_schema() -> None:
     inspector = get_inspector()
