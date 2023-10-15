@@ -34,11 +34,13 @@ from gpt import generate_sql_query, get_database_schema
 
 # Define a single test case
 TEST_CASE = {
-    # 'input': "Table 'employees' has columns: id, first_name, last_name. Show all employees",
+    # 'input': "Show all employees",
     # 'expected_output': "SELECT * FROM employees;"
-    "input": "Table 'products' has columns: id, name, price, category_id."
-    "Show products where price is between 100 and 200",
-    "expected_output": "SELECT * FROM products WHERE price BETWEEN 100 AND 200;"
+    "input": "Show employees and their department names where department location is 'San Francisco'",
+    "expected_output": "SELECT employees.first_name, employees.last_name, departments.name AS department_name "
+                        "FROM employees "
+                        "JOIN departments ON employees.department_id = departments.id "
+                        "WHERE departments.location = 'San Francisco';"
     # 'input': "What is the meaning of life?",
     # 'expected_output': ""
 }
