@@ -1,8 +1,9 @@
 from typing import Generator
 
-from core import env
 from sqlalchemy import Engine, Inspector, create_engine, inspect
 from sqlalchemy.orm import Session, sessionmaker
+
+from core import env
 
 try:
     DATABASE_URL = f"postgresql://{env['POSTGRES_USER']}:{env['POSTGRES_PASSWORD']}@db/{env['POSTGRES_DB']}"

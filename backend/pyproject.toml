@@ -39,3 +39,6 @@ line-length = 120
 
 [tool.ruff.flake8-quotes]
 inline-quotes = 'single'
+
+[tool.isort]
+profile = "black"

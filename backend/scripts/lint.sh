@@ -1,8 +1,21 @@
 #!/usr/bin/env bash
 
-set -x
+set -e
 
 mypy --config-file ./backend/pyproject.toml ./backend
+mypy_exit_code=$?
+
 black backend --check
+black_exit_code=$?
+
 isort --check-only backend
+isort_exit_code=$?
+
 ruff check backend --config ./backend/pyproject.toml
+ruff_exit_code=$?
+
+if [ $mypy_exit_code -ne 0 ] || [ $black_exit_code -ne 0 ] || [ $isort_exit_code -ne 0 ] || [ $ruff_exit_code -ne 0 ]; then
+  exit 1
+fi
+
+exit 0

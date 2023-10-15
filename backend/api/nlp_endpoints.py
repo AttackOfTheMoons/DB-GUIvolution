@@ -1,8 +1,9 @@
-from database import get_inspector
 from fastapi import APIRouter, Body, Depends
+from sqlalchemy.dialects.postgresql.base import PGInspector
+
+from database import get_inspector
 from gpt.gpt_service import generate_sql_query
 from models.request_models import QueryRequestModel, QueryResponseModel
-from sqlalchemy.dialects.postgresql.base import PGInspector
 
 router = APIRouter()
 

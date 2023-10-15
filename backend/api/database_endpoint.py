@@ -1,12 +1,13 @@
 from typing import List
 
-from database import get_db, get_engine, get_inspector
 from fastapi import APIRouter, Depends, HTTPException
-from models import InsertDataRequest
 from sqlalchemy import Engine, MetaData, Table
 from sqlalchemy.dialects.postgresql.base import PGInspector
 from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
+
+from database import get_db, get_engine, get_inspector
+from models import InsertDataRequest
 
 router = APIRouter()
 
