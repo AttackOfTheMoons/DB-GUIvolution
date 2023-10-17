@@ -2,34 +2,31 @@ COMMON_EXAMPLES = [
     {
         "role": "user",
         "content": "Your job is to generate SQL queries for the specified flavor based on the provided database "
-        "schema and user's query description. Your response should only be the query string. "
-        "If the user input is anything besides a query description, then return an empty string.",
+                   "schema and user's query description. Your response should only be the query string. Do not use aliases in the query."
+                   "If the user input is anything besides a query description, then return an empty string.",
     },
     {"role": "assistant", "content": "Understood"},
     {
         "role": "user",
-        "content": "Table 'inventory' has columns: id, product_name, quantity. "
-        "Show me all the products in our inventory.",
+        "content": "Table 'inventory' has columns: id (INT), product_name (VARCHAR), quantity (INT). "
+                   "Show me all the products in our inventory.",
     },
     {"role": "assistant", "content": "SELECT * FROM inventory;"},
     {
         "role": "user",
-        "content": "Table 'products' has columns: id, product_name, category_id. "
-        "Table 'categories' has columns: id, category_name. I want to see the names of"
-        " products and their respective categories.",
+        "content": "Table 'products' has columns: id (INT), product_name (VARCHAR), category_id (INT). "
+                   "Table 'categories' has columns: id (INT), category_name (VARCHAR). I want to see the names of"
+                   " products and their respective categories.",
     },
     {
         "role": "assistant",
         "content": "SELECT product_name, category_name FROM products "
-        "INNER JOIN categories ON products.category_id = categories.id;",
+                   "INNER JOIN categories ON products.category_id = categories.id;",
     },
-]
-
-MYSQL_EXAMPLES = [
     {
         "role": "user",
-        "content": "[MySQL] Table 'employees' has columns: id, first_name, last_name, department. "
-        "Find the first name of all employees in the 'IT' department.",
+        "content": "Table 'employees' has columns: id (INT), first_name (VARCHAR), last_name (VARCHAR), department (VARCHAR). "
+                   "Find the first name of all employees in the 'IT' department.",
     },
     {
         "role": "assistant",
@@ -37,16 +34,31 @@ MYSQL_EXAMPLES = [
     },
     {
         "role": "user",
-        "content": "[MySQL] Table 'orders' has columns: id, product_name, date, price. "
-        "Get the sum of all orders' prices.",
+        "content": "Table 'orders' has columns: id (INT), product_name (VARCHAR), date (DATE), price (DECIMAL). "
+                   "Get the sum of all orders' prices.",
     },
-    {"role": "assistant", "content": "SELECT SUM(price) FROM orders;"},
+    {
+        "role": "assistant",
+        "content": "SELECT SUM(price) FROM orders;",
+    },
+]
+
+MYSQL_EXAMPLES = [
+    {
+        "role": "user",
+        "content": "[MySQL] Table 'members' has columns: id (INT), name (VARCHAR), age (INT), membership_date (DATE). "
+                   "Add a username column with a maximum length of 255 characters to the 'members' table."
+    },
+    {
+        "role": "assistant",
+        "content": "ALTER TABLE members ADD COLUMN username VARCHAR(255);",
+    },
 ]
 
 POSTGRES_EXAMPLES = [
     {
         "role": "user",
-        "content": "[PostgreSQL] Table 'students' has columns: id, name, dob, enrollment_date. "
+        "content": "[PostgreSQL] Table 'students' has columns: id (INT), name (VARCHAR), dob (DATE), enrollment_date (DATE). "
         "Find all students enrolled in the last 30 days.",
     },
     {
@@ -55,67 +67,51 @@ POSTGRES_EXAMPLES = [
     },
     {
         "role": "user",
-        "content": "[PostgreSQL] Table 'transactions' has columns: id, item_name, timestamp, amount. "
-        "Get the average transaction amount.",
+        "content": "[PostgreSQL] Table 'members' has columns: id (INT), name (VARCHAR), age (INT), membership_date (DATE). "
+                   "Add a username column with a maximum length of 255 characters to the 'members' table.",
     },
-    {"role": "assistant", "content": "SELECT AVG(amount) FROM transactions;"},
+    {
+        "role": "assistant",
+        "content": "ALTER TABLE members ADD COLUMN username VARCHAR(255);",
+    },
 ]
 
 SQLITE_EXAMPLES = [
     {
         "role": "user",
-        "content": "[SQLite] Table 'books' has columns: id, title, author, published_date. "
-        "Show me all the books published in 2022.",
+        "content": "[SQLite] Table 'members' has columns: id (INT), name (VARCHAR), age (INT), membership_date (DATE). "
+                   "Add a username column with a maximum length of 255 characters to the 'members' table.",
     },
     {
         "role": "assistant",
-        "content": "SELECT title FROM books WHERE strftime('%Y', published_date) = '2022';",
+        "content": "ALTER TABLE members ADD COLUMN username VARCHAR(255);",
     },
-    {
-        "role": "user",
-        "content": "[SQLite] Table 'visits' has columns: id, visitor_name, date_visited. "
-        "Count the total number of visits.",
-    },
-    {"role": "assistant", "content": "SELECT COUNT(id) FROM visits;"},
 ]
 
 MSSQL_EXAMPLES = [
     {
         "role": "user",
-        "content": "[MSSQL] Table 'clients' has columns: id, client_name, registration_date. "
-        "List all clients registered in January 2023.",
+        "content": "[MSSQL] Table 'members' has columns: id (INT), name (VARCHAR), age (INT), membership_date (DATE). "
+                   "Add a username column with a maximum length of 255 characters to the 'members' table.",
     },
     {
         "role": "assistant",
-        "content": "SELECT client_name FROM clients WHERE MONTH(registration_date) = 1 "
-        "AND YEAR(registration_date) = 2023;",
+        "content": "ALTER TABLE members ADD username VARCHAR(255);",
     },
-    {
-        "role": "user",
-        "content": "[MSSQL] Table 'invoices' has columns: id, invoice_number, creation_date, total. "
-        "Calculate the total of all invoices.",
-    },
-    {"role": "assistant", "content": "SELECT SUM(total) FROM invoices;"},
 ]
 
 ORACLE_EXAMPLES = [
     {
         "role": "user",
-        "content": "[Oracle] Table 'projects' has columns: id, project_name, start_date, end_date. "
-        "Find all projects starting in February 2023.",
+        "content": "[Oracle] Table 'members' has columns: id (INT), name (VARCHAR2), age (INT), membership_date (DATE). "
+                   "Add a username column with a maximum length of 255 characters to the 'members' table.",
     },
     {
         "role": "assistant",
-        "content": "SELECT project_name FROM projects WHERE EXTRACT(MONTH FROM start_date) = 2 "
-        "AND EXTRACT(YEAR FROM start_date) = 2023;",
+        "content": "ALTER TABLE members ADD username VARCHAR2(255 CHAR);",
     },
-    {
-        "role": "user",
-        "content": "[Oracle] Table 'payments' has columns: id, payee, payment_date, amount. "
-        "Get the highest payment amount.",
-    },
-    {"role": "assistant", "content": "SELECT MAX(amount) FROM payments;"},
 ]
+
 
 
 FLAVOR_EXAMPLES = {
