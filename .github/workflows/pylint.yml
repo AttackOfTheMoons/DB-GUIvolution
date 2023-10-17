@@ -12,7 +12,7 @@ jobs:
         with:
           python-version: 3.11
       - name: Install dependencies
-        run: pip install mypy black isort ruff
+        run: pip install mypy pydantic black isort ruff
       - name: Run MyPy
         run: mypy --config-file ./backend/pyproject.toml ./backend
       - name: Run Black Check
