@@ -23,8 +23,8 @@ def fetch_tables(inspector: Inspector) -> List[str]:
 def fetch_primary_keys(table_name: str, inspector: Inspector) -> List[str]:
     indexes = inspector.get_indexes(table_name)
     for index in indexes:
-        if index.get('primary_key'):
-            return index['column_names']
+        if index.get("primary_key"):
+            return [col for col in index["column_names"] if col is not None]
     return []
 
 
@@ -41,7 +41,9 @@ def fetch_columns(table_name: str, inspector: Inspector) -> List[Dict[str, Any]]
             "nullable": col["nullable"],
             "primary_key": col["name"] in primary_keys,
             "default": col.get("default"),
-            "foreign_key": next((fk for fk in fks if fk["constrained_columns"][0] == col["name"]), None)
+            "foreign_key": next(
+                (fk for fk in fks if fk["constrained_columns"][0] == col["name"]), None
+            ),
         }
         columns.append(column_description)
 
@@ -63,8 +65,15 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
     # Fetch the database schema
     schema_description = get_database_schema(inspector)
 
+    # extra prompt engineering
+    extra = (
+        "Do NOT use aliases in the query. Be explicit in the SQL syntax. "
+        "When adding VARCHAR columns, always specify the length, like VARCHAR(255) "
+        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR)."
+    )
+
     # Construct the api_input
-    api_input = f"[{flavor}] {schema_description} Do NOT use aliases in the query. Be explicit in the SQL syntax. When adding VARCHAR columns, always specify the length, like VARCHAR(255) But if the flavor is oracle, then it should be VARCHAR2(255 CHAR).{user_input}"
+    api_input = f"[{flavor}] {schema_description} {extra} {user_input}"
 
     messages = (
         COMMON_EXAMPLES
@@ -99,8 +108,11 @@ def get_database_schema(inspector: Inspector) -> str:
             if col["primary_key"]:
                 col_desc += " PRIMARY KEY"
             if col["foreign_key"]:
-                fk = col["foreign_key"]
-                col_desc += f" FOREIGN KEY REFERENCES {col['foreign_key']['referred_table']}({col['foreign_key']['referred_columns'][0]})"
+                col["foreign_key"]
+                col_desc += (
+                    f" FOREIGN KEY REFERENCES {col['foreign_key']['referred_table']}"
+                    f"({col['foreign_key']['referred_columns'][0]})"
+                )
             descriptions.append(col_desc)
 
         schema_description.append(
