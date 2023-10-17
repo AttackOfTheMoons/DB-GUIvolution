@@ -9,7 +9,11 @@ function SelectNode({ data, isConnectable }) {
 		console.log(evt.target.value);
 	}, []);
 	const [names, setNames] = useState([]);
-	const options = [];
+	const options = [
+		{ name: "John", value: "John" },
+		{ name: "Mary", value: "Mary" },
+		{ name: "Robert", value: "Robert" },
+	];
 	const onSelectNames = (name) => {
 		const propertyValues = Object.entries(name);
 		setNames(propertyValues);

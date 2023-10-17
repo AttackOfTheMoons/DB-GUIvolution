@@ -10,6 +10,8 @@ import ReactFlow, {
 	useNodesState,
 } from "reactflow";
 import "reactflow/dist/style.css";
+import styled from "styled-components";
+import DynamicChatbot from "./chatbot";
 import FromNode from "./nodes/FromNode";
 import "./nodes/FromNode.css";
 import SelectNode from "./nodes/SelectNode";
@@ -72,6 +74,7 @@ const App = () => {
 
 	return (
 		<div className="dndflow">
+			<DynamicChatbot />
 			<ReactFlowProvider>
 				<div className="reactflow-wrapper" ref={reactFlowWrapper}>
 					<ReactFlow
@@ -92,13 +95,13 @@ const App = () => {
 						<Panel>
 							<div>Background:</div>
 							<button type="button" onClick={() => setVariant("dots")}>
-								dots
+								DOT
 							</button>
 							<button type="button" onClick={() => setVariant("lines")}>
-								lines
+								LINE
 							</button>
 							<button type="button" onClick={() => setVariant("cross")}>
-								cross
+								CROSS
 							</button>
 						</Panel>
 					</ReactFlow>

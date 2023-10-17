@@ -1,5 +1,4 @@
-.SelectNode {
- /* 3 times the original value, same color as background */
+/* .SelectNode {
   width: 0px;
   height: 0px;
   border-style: inset;
@@ -11,4 +10,22 @@
   -moz-transform: rotate(360deg);
   -webkit-transform: rotate(360deg);
   -o-transform: rotate(360deg);
+} */
+
+.SelectNode {
+  height: 50px;
+border: 1px solid #eee;
+padding: 5px;
+border-radius: 5px;
+background: #86ed76;
+display: flex;
+justify-content: center;
+align-items: center;
+cursor: grab;
+}
+
+.SelectNode label {
+  display: block;
+  color: black;
+  font-size: 12px;
 }
