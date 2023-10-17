@@ -1,4 +1,4 @@
-name: Python Code Quality and Lint
+name: Code Quality and Lint
 
 on: [ push ]
 
@@ -11,22 +11,16 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: 3.11
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install project dependencies
-        run: |
-          cd backend
-          poetry install
-      - name: Run Backend Code Quality Checks
-        run: |
-          cd backend
-          source "$(poetry env info --path)/bin/activate"
-          cd ..
-          if ! ./backend/scripts/lint.sh; then
-           echo "Backend linting failed."
-           exit 1
-          fi
-          deactivate
+      - name: Install dependencies
+        run: pip install mypy black isort ruff
+      - name: Run MyPy
+        run: mypy --config-file ./backend/pyproject.toml ./backend
+      - name: Run Black Check
+        run: black backend --check --config=./backend/pyproject.toml
+      - name: Run Isort Check
+        run: isort --check-only backend --settings-path ./backend/pyproject.toml
+      - name: Run Ruff Check
+        run: ruff check backend --config ./backend/pyproject.toml
       - name: Run Frontend Code Quality Checks
         run: |
           cd frontend

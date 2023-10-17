@@ -1,10 +1,10 @@
 from typing import Any, Dict, List
 
-from database import get_inspector
-from database.injector import get_engine
-from gpt import generate_sql_query, get_database_schema
 from sqlalchemy import text
 from sqlalchemy.exc import OperationalError
+
+from database import get_engine, get_inspector
+from gpt import generate_sql_query, get_database_schema
 
 engine = get_engine()
 
