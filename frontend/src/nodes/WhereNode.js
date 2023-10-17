@@ -8,6 +8,16 @@ function WhereNode({ data, isConnectable }) {
 		console.log(evt.target.value);
 	}, []);
 
+	const imgStyle = {
+		position: "absolute",
+		left: "-8px",
+		top: "-100px",
+		width: "250px",
+		objectFit: "cover", // Maintain aspect ratio and cover the container
+		zIndex: -1, // Set a negative z-index to send the image to the back
+		opacity: 1,
+	};
+
 	return (
 		<div className="WhereNode">
 			<Handle
@@ -15,6 +25,7 @@ function WhereNode({ data, isConnectable }) {
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
+			<img alt="" src="../icons/circle.png" style={imgStyle} />
 			<div>
 				<label htmlFor="text">WHERE:</label>
 				<input id="text" name="text" onChange={onChange} className="nodrag" />

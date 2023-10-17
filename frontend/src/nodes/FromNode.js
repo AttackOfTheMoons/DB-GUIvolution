@@ -18,14 +18,25 @@ function FromNode({ data, isConnectable }) {
 		console.log(event.target.value);
 	};
 
+	const imgStyle = {
+		position: "absolute",
+		left: "-55px",
+		top: "-150px",
+		width: "250px",
+		objectFit: "cover", // Maintain aspect ratio and cover the container
+		zIndex: -1, // Set a negative z-index to send the image to the back
+		opacity: 1,
+	};
+
 	return (
-		<div className="FromNode">
+		<div className="FromNode" style={{ position: "relative" }}>
 			<Handle
 				type="target"
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<div>
+			<img alt="" src="../icons/square.png" style={imgStyle} />
+			<div style={{ position: "relative" }}>
 				<label>FROM:</label>
 				<select
 					onChange={handleTableChange}
