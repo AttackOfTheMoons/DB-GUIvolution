@@ -18,14 +18,25 @@ function SelectNode({ data, isConnectable }) {
 		handleNodeValueChange(selectedNamesList);
 	};
 
+	const imgStyle = {
+		position: "absolute",
+		left: "-30px",
+		top: "-220px",
+		width: "300px",
+		objectFit: "cover", // Maintain aspect ratio and cover the container
+		zIndex: -1, // Set a negative z-index to send the image to the back
+		opacity: 1,
+	};
+
 	return (
-		<div className="SelectNode">
+		<div className="SelectNode" style={{ position: "relative" }}>
 			<Handle
 				type="target"
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<div>
+			<img alt="" src="../icons/triangle.png" style={imgStyle} />
+			<div style={{ position: "relative" }}>
 				<label>SELECT:</label>
 				<Multiselect
 					placeholder="Select Any"

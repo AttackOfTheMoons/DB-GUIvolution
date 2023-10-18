@@ -9,6 +9,7 @@ import {
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.css";
 import axios from "axios"; // Import the Axios library
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import "./index.css";
 
 function DynamicChatbot() {
@@ -76,12 +77,12 @@ function DynamicChatbot() {
 							scrollBehavior="smooth"
 							typingIndicator={
 								isTyping ? (
-									<TypingIndicator content="ChatGPT is typing" />
+									<TypingIndicator content="AI assistant is typing" />
 								) : null
 							}
 						>
-							{messages.map((message, i) => {
-								return <Message model={message} />;
+							{messages.map((message) => {
+								return <Message key={uuidv4()} model={message} />;
 							})}
 						</MessageList>
 						<MessageInput
