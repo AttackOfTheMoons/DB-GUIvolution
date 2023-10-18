@@ -11,12 +11,13 @@ class InsertDataRequest(BaseModel):
 
 
 class NodeType(str, Enum):
-    FROM = "From"
-    SELECT = "Select"
-    WHERE = "Where"
+    FROM = "from"
+    SELECT = "select"
+    WHERE = "where"
 
 
 class Node(BaseModel):
+    id: str
     type: NodeType
     value: Union[List[str], str]
 
