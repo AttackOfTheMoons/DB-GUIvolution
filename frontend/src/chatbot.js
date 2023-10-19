@@ -47,7 +47,7 @@ function DynamicChatbot() {
 
 		try {
 			// Make an API request to the backend
-			const response = await axios.post("/api/nlp/generate_sql", {
+			const response = await axios.post("/api/nlp/PostgreSQL/generate_sql", {
 				user_input: userMessage,
 			});
 

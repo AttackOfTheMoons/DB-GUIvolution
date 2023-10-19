@@ -5,7 +5,7 @@
   top: 0;
   right: 0;
   transition: transform 0.3s ease;
-  transform: translateX(260px);
+  transform: translateX(265px);
 }
 
 .sidebar.open {
@@ -17,7 +17,7 @@
   cursor: pointer;
   position: fixed;
   bottom: 15px; /* Adjust the top and right values as needed */
-  right: 10px; /* Adjust the top and right values as needed */
+  right: 42%; /* Adjust the top and right values as needed */
   z-index: 2; /* Ensure the button is above the sidebar content */
   background-color: #0da010; /* Set a background color for the button */
   color: #fff; /* Set a text color for the button */

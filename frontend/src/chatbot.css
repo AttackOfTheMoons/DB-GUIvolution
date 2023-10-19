@@ -17,7 +17,7 @@
     cursor: pointer;
     position: fixed;
     bottom: 15px; 
-    right: 150px; 
+    right: 51.5%; 
     z-index: 2; /* Ensure the button is above the sidebar content */
     background-color: #29a5ec; /* Set a background color for the button */
     color: #fff; /* Set a text color for the button */

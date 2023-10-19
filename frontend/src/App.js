@@ -198,6 +198,7 @@ const App = () => {
 					>
 						<Controls />
 						<Background color="#1e1ec9" variant={variant} gap={20} />
+						<MiniMap />
 						<Panel>
 							<button type="button" onClick={() => setVariant("dots")}>
 								DOT

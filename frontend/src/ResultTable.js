@@ -1,6 +1,19 @@
 import React from "react";
+import "./ResultTable.css";
+
+const outputTextStyle = {
+	color: "white",
+	fontFamily: "Helvetica Neue, sans-serif",
+	fontWeight: "bold",
+	letterSpacing: "-1px",
+	lineHeight: "1",
+	textAlign: "center",
+	fontSize: "40px", // Corrected to camelCase
+};
+
 const ResultTable = ({ keys, data }) => (
-	<aside>
+	<aside id="outputWindow">
+		<div style={outputTextStyle}>↓OUTPUT↓</div>
 		<table>
 			<thead>
 				<tr>
