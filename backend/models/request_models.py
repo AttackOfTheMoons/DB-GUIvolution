@@ -13,8 +13,10 @@ class InsertDataRequest(BaseModel):
 class QueryRequestModel(BaseModel):
     user_input: str
 
+
 class QueryResponseModel(BaseModel):
     sql_query: str
+
 
 class NodeType(str, Enum):
     FROM = "from"

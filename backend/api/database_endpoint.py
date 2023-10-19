@@ -2,14 +2,13 @@ from http import HTTPStatus
 from typing import List, Optional
 
 from fastapi import APIRouter, Depends, HTTPException
-from models import InsertDataRequest, NodeType, SQLQueryAST, SQLQueryResult
 from sqlalchemy import Engine, Inspector, MetaData, Table, text
 from sqlalchemy.exc import CompileError, ProgrammingError
 from sqlalchemy.orm import Session
 from sqlglot import select
 
 from database import get_db, get_engine, get_inspector
-from models import InsertDataRequest
+from models import InsertDataRequest, NodeType, SQLQueryAST, SQLQueryResult
 
 router = APIRouter()
 
