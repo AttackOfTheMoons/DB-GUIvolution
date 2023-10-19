@@ -1,6 +1,7 @@
-from api import database_router, nlp_router
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+from api import database_router, nlp_router
 
 origins = ["http://localhost:3000"]
 
