@@ -9,7 +9,8 @@
   border-right: 1px solid #eee;
   padding: 15px 10px;
   font-size: 12px;
-  background: #fcfcfc;
+  background: linear-gradient(#80FFDB, #64DFDF, #48BFE3, #5390D9, #5E60CE);
+
 }
 
 .dndflow aside .description {
