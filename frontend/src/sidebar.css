@@ -1,0 +1,25 @@
+.sidebar {
+  width: 250px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  right: 0;
+  transition: transform 0.3s ease;
+  transform: translateX(260px);
+}
+
+.sidebar.open {
+  transform: translateX(0);
+}
+
+.toggle-button {
+  background: none;
+  cursor: pointer;
+  position: fixed;
+  bottom: 15px; /* Adjust the top and right values as needed */
+  right: 10px; /* Adjust the top and right values as needed */
+  z-index: 2; /* Ensure the button is above the sidebar content */
+  background-color: #0da010; /* Set a background color for the button */
+  color: #fff; /* Set a text color for the button */
+  padding: 5px 12px; /* Add some padding to the button for better visibility */
+}

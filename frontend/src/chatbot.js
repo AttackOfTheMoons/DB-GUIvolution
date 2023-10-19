@@ -10,6 +10,7 @@ import "@chatscope/chat-ui-kit-styles/dist/default/styles.css";
 import axios from "axios"; // Import the Axios library
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
+import "./chatbot.css";
 import "./index.css";
 
 function DynamicChatbot() {
@@ -22,6 +23,12 @@ function DynamicChatbot() {
 	]);
 
 	const [isTyping, setIsTyping] = useState(false);
+
+	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+	const toggleSidebar = () => {
+		setIsSidebarOpen(!isSidebarOpen);
+	};
 
 	const handleSend = async (userMessage) => {
 		// Create a new message from the user
@@ -69,30 +76,35 @@ function DynamicChatbot() {
 	};
 
 	return (
-		<div className="App">
-			<div style={{ position: "relative", height: "100%", width: "415px" }}>
-				<MainContainer>
-					<ChatContainer>
-						<MessageList
-							scrollBehavior="smooth"
-							typingIndicator={
-								isTyping ? (
-									<TypingIndicator content="AI assistant is typing" />
-								) : null
-							}
-						>
-							{messages.map((message) => {
-								return <Message key={uuidv4()} model={message} />;
-							})}
-						</MessageList>
-						<MessageInput
-							placeholder="Type message here"
-							onSend={(message) => handleSend(message)}
-						/>
-					</ChatContainer>
-				</MainContainer>
+		<>
+			<button type="button" className="ai-button" onClick={toggleSidebar}>
+				{isSidebarOpen ? "Close AI" : "Open AI"}
+			</button>
+			<div className={`App ${isSidebarOpen ? "open" : ""}`}>
+				<div style={{ position: "relative", height: "100%", width: "415px" }}>
+					<MainContainer>
+						<ChatContainer>
+							<MessageList
+								scrollBehavior="smooth"
+								typingIndicator={
+									isTyping ? (
+										<TypingIndicator content="AI assistant is typing" />
+									) : null
+								}
+							>
+								{messages.map((message) => {
+									return <Message key={uuidv4()} model={message} />;
+								})}
+							</MessageList>
+							<MessageInput
+								placeholder="Type message here"
+								onSend={(message) => handleSend(message)}
+							/>
+						</ChatContainer>
+					</MainContainer>
+				</div>
 			</div>
-		</div>
+		</>
 	);
 }
 

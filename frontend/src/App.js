@@ -197,10 +197,8 @@ const App = () => {
 						fitView
 					>
 						<Controls />
-						<MiniMap />
-						<Background color="#62D2A2" variant={variant} gap={16} />
+						<Background color="#1e1ec9" variant={variant} gap={20} />
 						<Panel>
-							<div>Background:</div>
 							<button type="button" onClick={() => setVariant("dots")}>
 								DOT
 							</button>
