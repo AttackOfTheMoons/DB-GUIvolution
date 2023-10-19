@@ -1,8 +1,18 @@
 from typing import Any, Dict, List
 
 import openai
-from core import env
 from sqlalchemy import Inspector
+
+from core import env
+
+from .flavor_queries import (
+    COMMON_EXAMPLES,
+    MSSQL_EXAMPLES,
+    MYSQL_EXAMPLES,
+    ORACLE_EXAMPLES,
+    POSTGRES_EXAMPLES,
+    SQLITE_EXAMPLES,
+)
 
 GPT_API_KEY = env.get("GPT_API_KEY")
 
@@ -16,48 +26,70 @@ def fetch_tables(inspector: Inspector) -> List[str]:
     return inspector.get_table_names()
 
 
+def fetch_primary_keys(table_name: str, inspector: Inspector) -> List[str]:
+    indexes = inspector.get_indexes(table_name)
+    for index in indexes:
+        if index.get("primary_key"):
+            return [col for col in index["column_names"] if col is not None]
+    return []
+
+
 def fetch_columns(table_name: str, inspector: Inspector) -> List[Dict[str, Any]]:
-    return [
-        {
+    columns_data = inspector.get_columns(table_name)
+    primary_keys = fetch_primary_keys(table_name, inspector)
+    fks = inspector.get_foreign_keys(table_name)
+
+    columns = []
+    for col in columns_data:
+        column_description = {
             "name": col["name"],
             "type": col["type"].__visit_name__,
             "nullable": col["nullable"],
+            "primary_key": col["name"] in primary_keys,
+            "default": col.get("default"),
+            "foreign_key": next(
+                (fk for fk in fks if fk["constrained_columns"][0] == col["name"]), None
+            ),
         }
-        for col in inspector.get_columns(table_name)
-    ]
+        columns.append(column_description)
+
+    return columns
 
 
-def generate_sql_query(user_input: str) -> str:
+def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> str:
+    flavor_examples = {
+        "MySQL": MYSQL_EXAMPLES,
+        "PostgreSQL": POSTGRES_EXAMPLES,
+        "SQLite": SQLITE_EXAMPLES,
+        "MSSQL": MSSQL_EXAMPLES,
+        "Oracle": ORACLE_EXAMPLES,
+    }
+
+    if flavor not in flavor_examples:
+        raise ValueError(f"Unsupported SQL flavor: {flavor}")
+
+    # Fetch the database schema
+    schema_description = get_database_schema(inspector)
+
+    # extra prompt engineering
+    extra = (
+        "Do NOT use aliases in the query. Be explicit in the SQL syntax. "
+        "When adding VARCHAR columns, always specify the length, like VARCHAR(255) "
+        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR)."
+    )
+
+    # Construct the api_input
+    api_input = f"[{flavor}] {schema_description} {extra} {user_input}"
+
+    messages = (
+        COMMON_EXAMPLES
+        + flavor_examples[flavor]
+        + [{"role": "user", "content": api_input}]
+    )
+
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
-        messages=[
-            {
-                "role": "user",
-                "content": "Your job is to generate SQL queries based on the provided database "
-                "schema and user's query description. "
-                "Your response should only be the query string. If the user input is anything "
-                "besides a query description, then return an empty string.",
-            },
-            {"role": "assistant", "content": "Understood"},
-            {
-                "role": "user",
-                "content": "Table 'inventory' has columns: id, product_name, quantity. "
-                "Show me all the products in our inventory.",
-            },
-            {"role": "assistant", "content": "SELECT * FROM inventory;"},
-            {
-                "role": "user",
-                "content": "Table 'products' has columns: id, product_name, category_id. "
-                "Table 'categories' has columns: id, category_name. I want to see the names of"
-                " products and their respective categories.",
-            },
-            {
-                "role": "assistant",
-                "content": "SELECT product_name, category_name FROM products "
-                "INNER JOIN categories ON products.category_id = categories.id;",
-            },
-            {"role": "user", "content": user_input},
-        ],
+        messages=messages,
     )
 
     return response.choices[0].message["content"]
@@ -72,9 +104,25 @@ def get_database_schema(inspector: Inspector) -> str:
     # Fetch columns for each table
     for table in tables:
         columns = fetch_columns(table, inspector)
-        column_names = [col["name"] for col in columns]
+        descriptions = []
+        for col in columns:
+            col_desc = f"{col['name']} ({col['type']})"
+            if not col["nullable"]:
+                col_desc += " NOT NULL"
+            if col["default"]:
+                col_desc += f" DEFAULT {col['default']}"
+            if col["primary_key"]:
+                col_desc += " PRIMARY KEY"
+            if col["foreign_key"]:
+                col["foreign_key"]
+                col_desc += (
+                    f" FOREIGN KEY REFERENCES {col['foreign_key']['referred_table']}"
+                    f"({col['foreign_key']['referred_columns'][0]})"
+                )
+            descriptions.append(col_desc)
+
         schema_description.append(
-            f"Table '{table}' has columns: {', '.join(column_names)}."
+            f"Table '{table}' has columns: {', '.join(descriptions)}."
         )
 
     return " ".join(schema_description)

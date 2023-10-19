@@ -10,6 +10,14 @@ class InsertDataRequest(BaseModel):
     values: Dict[str, Any]
 
 
+class QueryRequestModel(BaseModel):
+    user_input: str
+
+
+class QueryResponseModel(BaseModel):
+    sql_query: str
+
+
 class NodeType(str, Enum):
     FROM = "from"
     SELECT = "select"
