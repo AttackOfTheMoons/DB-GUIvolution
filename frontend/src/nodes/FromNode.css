@@ -1,9 +1,10 @@
 .FromNode {
+
 height: 50px;
   border: 1px solid #eee;
   padding: 5px;
   border-radius: 5px;
-  background: #1FAB89;
+  background: #3b82f6;
   display: flex;
   justify-content: center;
   align-items: center;

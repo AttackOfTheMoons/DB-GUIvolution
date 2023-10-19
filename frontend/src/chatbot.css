@@ -1,0 +1,25 @@
+.App {
+    height: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: transform 0.3s ease;
+    transform: translateX(-430px);
+    z-index: 1
+  }
+  
+  .App.open {
+    transform: translateX(0);
+  }
+  
+  .ai-button {
+    background: none;
+    cursor: pointer;
+    position: fixed;
+    bottom: 15px; 
+    right: 150px; 
+    z-index: 2; /* Ensure the button is above the sidebar content */
+    background-color: #29a5ec; /* Set a background color for the button */
+    color: #fff; /* Set a text color for the button */
+    padding: 5px 10px; /* Add some padding to the button for better visibility */
+  }
