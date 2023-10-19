@@ -1,22 +1,19 @@
 import axios from "axios";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
 
 const handleStyle = { left: 10 };
 
 function FromNode({ data, isConnectable }) {
 	const [tables, setTables] = useState([]);
-	const [selectedTable, setSelectedTable] = useState("");
+
+	const { nodeValue, handleNodeValueChange } = data;
 
 	useEffect(() => {
 		axios.get("/tables").then((response) => {
 			setTables(response.data);
 		});
 	}, []);
-	const handleTableChange = (event) => {
-		setSelectedTable(event.target.value);
-		console.log(event.target.value);
-	};
 
 	const imgStyle = {
 		position: "absolute",
@@ -39,8 +36,10 @@ function FromNode({ data, isConnectable }) {
 			<div style={{ position: "relative" }}>
 				<label>FROM:</label>
 				<select
-					onChange={handleTableChange}
-					value={selectedTable}
+					onChange={(event) => {
+						handleNodeValueChange(event.target.value);
+					}}
+					value={nodeValue}
 					className="fromInput"
 				>
 					<option value="">Select a table</option>

@@ -23,7 +23,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "biome format --write ./src && biome lint --apply ./src"
+    "lint": "biome format --write ./src && biome lint --apply ./src",
+    "lint-unsafe": "biome check --apply-unsafe ./src"
   },
   "eslintConfig": {
     "extends": [

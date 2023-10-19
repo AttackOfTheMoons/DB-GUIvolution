@@ -1,12 +1,9 @@
-import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
 
 const handleStyle = { left: 10 };
 
 function WhereNode({ data, isConnectable }) {
-	const onChange = useCallback((evt) => {
-		console.log(evt.target.value);
-	}, []);
+	const { nodeValue, handleNodeValueChange } = data;
 
 	const imgStyle = {
 		position: "absolute",
@@ -28,7 +25,13 @@ function WhereNode({ data, isConnectable }) {
 			<img alt="" src="../icons/circle.png" style={imgStyle} />
 			<div>
 				<label htmlFor="text">WHERE:</label>
-				<input id="text" name="text" onChange={onChange} className="nodrag" />
+				<input
+					id="text"
+					name="text"
+					onChange={(event) => handleNodeValueChange(event.target.value)}
+					className="nodrag"
+					value={nodeValue}
+				/>
 			</div>
 			{/* <Handle
         type="source"

@@ -5,23 +5,17 @@ import { Handle, Position } from "reactflow";
 const handleStyle = { left: 10 };
 
 function SelectNode({ data, isConnectable }) {
-	const onChange = useCallback((evt) => {
-		console.log(evt.target.value);
-	}, []);
-	const [names, setNames] = useState([]);
-	const options = [
-		{ name: "John", value: "John" },
-		{ name: "Mary", value: "Mary" },
-		{ name: "Robert", value: "Robert" },
-	];
-	const onSelectNames = (name) => {
-		const propertyValues = Object.entries(name);
-		setNames(propertyValues);
+	const { nodeValue, handleNodeValueChange } = data;
+
+	const options = [{ name: "John" }, { name: "Mary" }, { name: "Robert" }];
+	const onSelectNames = (selectedList) => {
+		const selectedNamesList = selectedList.map((item) => item.name);
+		handleNodeValueChange(selectedNamesList);
 	};
 
-	const onRemoveNames = (name) => {
-		const propertyValues = Object.entries(name);
-		setNames(propertyValues);
+	const onRemoveNames = (selectedList) => {
+		const selectedNamesList = selectedList.map((item) => item.name);
+		handleNodeValueChange(selectedNamesList);
 	};
 
 	const imgStyle = {
