@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 from sqlglot import select
 
 from database import get_db, get_engine, get_inspector
-from models import InsertDataRequest, NodeType, SQLQueryAST, SQLQueryResult
+from models import InsertDataRequest, NodeType, SQLQuery, SQLQueryAST, SQLQueryResult
 
 router = APIRouter()
 
@@ -32,15 +32,16 @@ def get_columns(table_name: str, inspector: Inspector = Depends(get_inspector)) 
 
 # TODO: WHERE query
 # TODO: SUB-QUERIES?
+# TODO: Refactor this into another file, routes should be clean.
 @router.post("/queries/")
 async def execute_sql_query(
     sql_query: SQLQueryAST, db: Session = Depends(get_db)
 ) -> SQLQueryResult:
-    selects = []
+    selects: List[str] = []
     from_table: Optional[str] = None
     for node in sql_query.nodes:
         if node.type == NodeType.SELECT:
-            selects.append(", ".join(node.value))
+            selects.extend(node.value)
         elif node.type == NodeType.FROM:
             if from_table is None:
                 from_table = str(node.value)
@@ -54,8 +55,8 @@ async def execute_sql_query(
             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail="No FROM node found in the SQL query.",
         )
-    select_stmt = ", ".join(selects) if selects else "*"
-    compiled_sql = select(select_stmt).from_(from_table).sql("postgres")
+    select_stmt = selects if selects else ("*",)
+    compiled_sql = select(*select_stmt).from_(from_table).sql("postgres")
 
     try:
         result = db.execute(text(compiled_sql))
@@ -70,7 +71,9 @@ async def execute_sql_query(
             raise err
 
     return SQLQueryResult(
-        keys=result.keys(), data=[tuple(row) for row in result.fetchall()]
+        keys=result.keys(),
+        data=[tuple(row) for row in result.fetchall()],
+        sql=SQLQuery(sql_query=compiled_sql, flavor="postgres"),
     )
 
 

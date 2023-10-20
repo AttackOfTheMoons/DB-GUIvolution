@@ -4,18 +4,19 @@ from typing import Any, Dict, List, Union
 from pydantic import BaseModel, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
-
-class InsertDataRequest(BaseModel):
-    table_name: str
-    values: Dict[str, Any]
+# NLP Models
 
 
 class QueryRequestModel(BaseModel):
     user_input: str
 
 
-class QueryResponseModel(BaseModel):
-    sql_query: str
+# Node-based Models
+
+
+class InsertDataRequest(BaseModel):
+    table_name: str
+    values: Dict[str, Any]
 
 
 class NodeType(str, Enum):

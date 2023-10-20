@@ -5,10 +5,10 @@ set -e
 mypy --config-file ./backend/pyproject.toml ./backend
 mypy_exit_code=$?
 
-black backend --check --config ./backend/pyproject.toml
+black backend --config ./backend/pyproject.toml --check
 black_exit_code=$?
 
-isort --check-only backend --settings-path ./backend/pyproject.toml
+isort backend --settings-path ./backend/pyproject.toml --check-only
 isort_exit_code=$?
 
 ruff check backend --config ./backend/pyproject.toml
