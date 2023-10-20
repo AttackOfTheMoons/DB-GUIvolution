@@ -16,6 +16,7 @@ import FromNode from "./nodes/FromNode";
 import "./nodes/FromNode.css";
 import SelectNode from "./nodes/SelectNode";
 import "./nodes/SelectNode.css";
+import { TableSelectionProvider } from "./nodes/TableSelectionContext";
 import WhereNode from "./nodes/WhereNode";
 import "./nodes/WhereNode.css";
 import Sidebar from "./sidebar";
@@ -184,42 +185,44 @@ const App = () => {
 	const [variant, setVariant] = useState("lines");
 
 	return (
-		<div className="dndflow">
-			<DynamicChatbot />
-			<ReactFlowProvider>
-				<div className="reactflow-wrapper" ref={reactFlowWrapper}>
-					<ReactFlow
-						nodes={nodes}
-						edges={edges}
-						nodeTypes={nodeTypes}
-						onNodesChange={onNodesChange}
-						onEdgesChange={onEdgesChange}
-						onConnect={onConnect}
-						onInit={setReactFlowInstance}
-						onDrop={onDrop}
-						onDragOver={onDragOver}
-						fitView
-						style={reactFlowStyle}
-					>
-						<Controls />
-						<Background color="#48BFE3" variant={variant} gap={20} />
-						<Panel>
-							<button type="button" onClick={() => setVariant("dots")}>
-								DOT
-							</button>
-							<button type="button" onClick={() => setVariant("lines")}>
-								LINE
-							</button>
-							<button type="button" onClick={() => setVariant("cross")}>
-								CROSS
-							</button>
-						</Panel>
-					</ReactFlow>
-				</div>
-				<ResultTable keys={resultKeys} data={resultData} />
-				<Sidebar />
-			</ReactFlowProvider>
-		</div>
+		<TableSelectionProvider>
+			<div className="dndflow">
+				<DynamicChatbot />
+				<ReactFlowProvider>
+					<div className="reactflow-wrapper" ref={reactFlowWrapper}>
+						<ReactFlow
+							nodes={nodes}
+							edges={edges}
+							nodeTypes={nodeTypes}
+							onNodesChange={onNodesChange}
+							onEdgesChange={onEdgesChange}
+							onConnect={onConnect}
+							onInit={setReactFlowInstance}
+							onDrop={onDrop}
+							onDragOver={onDragOver}
+							fitView
+							style={reactFlowStyle}
+						>
+							<Controls />
+							<Background color="#48BFE3" variant={variant} gap={20} />
+							<Panel>
+								<button type="button" onClick={() => setVariant("dots")}>
+									DOT
+								</button>
+								<button type="button" onClick={() => setVariant("lines")}>
+									LINE
+								</button>
+								<button type="button" onClick={() => setVariant("cross")}>
+									CROSS
+								</button>
+							</Panel>
+						</ReactFlow>
+					</div>
+					<ResultTable keys={resultKeys} data={resultData} />
+					<Sidebar />
+				</ReactFlowProvider>
+			</div>
+		</TableSelectionProvider>
 	);
 };
 

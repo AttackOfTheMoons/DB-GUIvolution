@@ -2,7 +2,7 @@ import React from "react";
 import "./ResultTable.css";
 
 const outputTextStyle = {
-	color: "white",
+	color: "#5D12D2",
 	fontFamily: "Helvetica Neue, sans-serif",
 	fontWeight: "bold",
 	letterSpacing: "-1px",

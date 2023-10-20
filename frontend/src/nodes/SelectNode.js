@@ -1,13 +1,31 @@
+import axios from "axios";
 import { Multiselect } from "multiselect-react-dropdown";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
+import { useTableSelection } from "./TableSelectionContext";
 
 const handleStyle = { left: 10 };
 
 function SelectNode({ data, isConnectable }) {
 	const { nodeValue, handleNodeValueChange } = data;
+	const [options, setOptions] = useState([]);
+	const { selectedTable } = useTableSelection();
 
-	const options = [{ name: "John" }, { name: "Mary" }, { name: "Robert" }];
+	useEffect(() => {
+		if (selectedTable) {
+			axios
+				.get(`/tables/${selectedTable}/columns`)
+				.then((response) => {
+					const columnNames = response.data;
+					setOptions(columnNames);
+				})
+				.catch((error) => {
+					console.error("Error fetching column names:", error);
+				});
+		}
+	}, [selectedTable]);
+
+	// const options = [{ name: "John" }, { name: "Mary" }, { name: "Robert" }];
 	const onSelectNames = (selectedList) => {
 		const selectedNamesList = selectedList.map((item) => item.name);
 		handleNodeValueChange(selectedNamesList);
