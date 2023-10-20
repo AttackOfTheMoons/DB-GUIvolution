@@ -21,16 +21,13 @@ import WhereNode from "./nodes/WhereNode";
 import "./nodes/WhereNode.css";
 import Sidebar from "./sidebar";
 
-import axios, { post } from "axios";
+import axios from "axios";
 import ResultTable from "./ResultTable";
 import "./index.css";
 
 const reactFlowStyle = {
 	background: "#192655",
 };
-
-let id = 0;
-const getId = () => `dndnode_${id++}`;
 
 const ignoreChangeTypes = ["dimensions", "position", "select"];
 
@@ -43,6 +40,15 @@ const App = () => {
 	const [reactFlowInstance, setReactFlowInstance] = useState(null);
 	const [resultKeys, setResultKeys] = useState([]);
 	const [resultData, setResultData] = useState([]);
+
+	const idRef = useRef(0);
+
+	const getId = () => {
+		const newId = `dndnode_${idRef.current}`;
+		idRef.current++;
+
+		return newId;
+	};
 
 	const onNodesChange = useCallback(
 		(changes) => {

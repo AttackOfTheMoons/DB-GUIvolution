@@ -17,8 +17,8 @@ const ResultTable = ({ keys, data }) => (
 		<table>
 			<thead>
 				<tr>
-					{keys.map((key) => (
-						<th key={key.toString()}>{key}</th>
+					{keys.map((key, index) => (
+						<th key={index.toString()}>{key}</th>
 					))}
 				</tr>
 			</thead>
