@@ -24,6 +24,10 @@ import axios, { post } from "axios";
 import ResultTable from "./ResultTable";
 import "./index.css";
 
+const reactFlowStyle = {
+	background: "#192655",
+};
+
 let id = 0;
 const getId = () => `dndnode_${id++}`;
 
@@ -195,10 +199,10 @@ const App = () => {
 						onDrop={onDrop}
 						onDragOver={onDragOver}
 						fitView
+						style={reactFlowStyle}
 					>
 						<Controls />
-						<Background color="#1e1ec9" variant={variant} gap={20} />
-						<MiniMap />
+						<Background color="#48BFE3" variant={variant} gap={20} />
 						<Panel>
 							<button type="button" onClick={() => setVariant("dots")}>
 								DOT

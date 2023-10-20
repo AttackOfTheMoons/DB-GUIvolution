@@ -11,6 +11,10 @@
   .App.open {
     transform: translateX(0);
   }
+
+  .cs-message-list{
+    background: linear-gradient(#80FFDB, #64DFDF, #48BFE3, #48BFE3, #48BFE3);
+  }
   
   .ai-button {
     background: none;
