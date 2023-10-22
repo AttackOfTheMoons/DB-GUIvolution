@@ -34,7 +34,7 @@ const ignoreChangeTypes = ["dimensions", "position", "select"];
 const App = () => {
 	const reactFlowWrapper = useRef(null);
 	const [nodes, setNodes] = useState([]);
-	// This will be where we store the value that gets sent to the server.
+	// This will be where we store the compared_value that gets sent to the server.
 	const [nodeData, setNodeData] = useState([]);
 	const [edges, setEdges] = useState([]);
 	const [reactFlowInstance, setReactFlowInstance] = useState(null);
