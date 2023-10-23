@@ -1,14 +1,13 @@
 from http import HTTPStatus
-from typing import List, Optional
+from typing import List
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy import Engine, Inspector, MetaData, Table, text
-from sqlalchemy.exc import CompileError, ProgrammingError
+from sqlalchemy import Engine, Inspector, MetaData, Table
+from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
-from sqlglot import select
 
-from database import get_db, get_engine, get_inspector
-from models import InsertDataRequest, NodeType, SQLQuery, SQLQueryAST, SQLQueryResult
+from database import get_db, get_engine, get_inspector, process_query
+from models import InsertDataRequest, SQLQueryAST, SQLQueryResult
 
 router = APIRouter()
 
@@ -32,49 +31,11 @@ def get_columns(table_name: str, inspector: Inspector = Depends(get_inspector)) 
 
 # TODO: WHERE query
 # TODO: SUB-QUERIES?
-# TODO: Refactor this into another file, routes should be clean.
 @router.post("/queries/")
 async def execute_sql_query(
     sql_query: SQLQueryAST, db: Session = Depends(get_db)
 ) -> SQLQueryResult:
-    selects: List[str] = []
-    from_table: Optional[str] = None
-    for node in sql_query.nodes:
-        if node.type == NodeType.SELECT:
-            selects.extend(node.value)
-        elif node.type == NodeType.FROM:
-            if from_table is None:
-                from_table = str(node.value)
-            else:
-                raise HTTPException(
-                    status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-                    detail="Multiple FROM nodes are not allowed.",
-                )
-    if from_table is None:
-        raise HTTPException(
-            status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
-            detail="No FROM node found in the SQL query.",
-        )
-    select_stmt = selects if selects else ("*",)
-    compiled_sql = select(*select_stmt).from_(from_table).sql("postgres")
-
-    try:
-        result = db.execute(text(compiled_sql))
-    except ProgrammingError as err:
-        error_message = str(err)
-        if "relation" in error_message and "does not exist" in error_message:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND,
-                detail=f"Table: {from_table} not found",
-            )
-        else:
-            raise err
-
-    return SQLQueryResult(
-        keys=result.keys(),
-        data=[tuple(row) for row in result.fetchall()],
-        sql=SQLQuery(sql_query=compiled_sql, flavor="postgres"),
-    )
+    return process_query(db, sql_query.nodes, sql_query.flavor)
 
 
 @router.post("/insert")

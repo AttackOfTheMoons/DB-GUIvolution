@@ -1,8 +1,10 @@
 from enum import Enum
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel, field_validator
 from pydantic_core.core_schema import ValidationInfo
+
+from .where_node_model import WhereStmt
 
 # NLP Models
 
@@ -28,12 +30,14 @@ class NodeType(str, Enum):
 class Node(BaseModel):
     id: str
     type: NodeType
-    value: Union[List[str], str]
+    value: Union[List[str], str, List[WhereStmt]]
 
     @field_validator("value")
     def validate_value_based_on_type(
-        cls, value: Union[List[str], str], info: ValidationInfo
-    ) -> Union[List[str], str]:
+        cls,
+        value: Union[List[str], str, List[WhereStmt]],
+        info: ValidationInfo,
+    ) -> Union[List[str], str, List[WhereStmt]]:
         node_type = info.data["type"]
         if node_type == NodeType.SELECT:
             if not isinstance(value, list):
@@ -50,14 +54,19 @@ class Node(BaseModel):
             ):  # Check if the string is empty or contains only whitespace
                 raise ValueError("FROM cannot be an empty string")
         elif node_type == NodeType.WHERE:
-            if not isinstance(value, str):
-                raise ValueError("WHERE should be a string (condition)")
-            elif (
-                not value.strip()
-            ):  # Check if the string is empty or contains only whitespace
-                raise ValueError("WHERE cannot be an empty string")
+            if not isinstance(value, list):
+                raise ValueError(
+                    "WHERE should be in the format: [{column, comparator, compared_value}, ]"
+                )
+            elif not value:
+                raise ValueError("WHERE list cannot be empty")
+            elif any(not isinstance(item, WhereStmt) for item in value):
+                raise ValueError(
+                    "All items in WHERE list should be {column, comparator, compared_value}"
+                )
         return value
 
 
 class SQLQueryAST(BaseModel):
     nodes: List[Node]
+    flavor: Optional[str]
