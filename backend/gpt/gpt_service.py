@@ -75,7 +75,8 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
     extra = (
         "Do NOT use aliases in the query. Be explicit in the SQL syntax. "
         "When adding VARCHAR columns, always specify the length, like VARCHAR(255) "
-        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR)."
+        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR). "
+        "Remember to return an empty string if the request is unrelated to query making."
     )
 
     # Construct the api_input
@@ -92,7 +93,10 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
         messages=messages,
     )
 
-    return response.choices[0].message["content"]
+    if response.choices[0].message["content"] != "":
+        return response.choices[0].message["content"]
+    else:
+        return "I can only help with making queries."
 
 
 def get_database_schema(inspector: Inspector) -> str:
