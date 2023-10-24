@@ -7,8 +7,8 @@ import {
 	TypingIndicator,
 } from "@chatscope/chat-ui-kit-react";
 import "@chatscope/chat-ui-kit-styles/dist/default/styles.css";
-import axios from "axios"; // Import the Axios library
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import "./chatbot.css";
 import "./index.css";
@@ -18,7 +18,14 @@ function DynamicChatbot() {
 		{
 			message: "Hello, I'm your SQL query assistant!",
 			sentTime: "just now",
-			sender: "ChatGPT",
+			sender: "assistant",
+		},
+	]);
+
+	const [engineeredHistory, setEngineeredHistory] = useState([
+		{
+			role: "assistant",
+			content: "Hello, I'm your SQL query assistant!",
 		},
 	]);
 
@@ -31,46 +38,54 @@ function DynamicChatbot() {
 	};
 
 	const handleSend = async (userMessage) => {
-		// Create a new message from the user
 		const newUserMessage = {
 			message: userMessage,
+			sentTime: "just now",
 			direction: "outgoing",
 			sender: "user",
 		};
 
-		// Add the user's message to the message list
 		const newMessages = [...messages, newUserMessage];
 		setMessages(newMessages);
-
-		// Show typing indicator while waiting for a response
 		setIsTyping(true);
 
 		try {
-			// Make an API request to the backend
+			// console.log('User Message:', userMessage);
+			// console.log('Engineered History:', engineeredHistory);
+
 			const response = await axios.post("/api/nlp/PostgreSQL/generate_sql", {
 				user_input: userMessage,
+				conversation_history: engineeredHistory,
 			});
 
-			// Get the chatbot's response
 			const chatbotResponse = response.data.sql_query;
+			const engineeredInput = response.data.engineered_input;
 
-			// Create a new message for the chatbot's response
+			const updatedEngineeredHistory = [
+				...engineeredHistory,
+				{
+					role: "user",
+					content: engineeredInput,
+				},
+				{
+					role: "assistant",
+					content: chatbotResponse,
+				},
+			];
+			setEngineeredHistory(updatedEngineeredHistory);
+
 			const newChatbotMessage = {
 				message: chatbotResponse,
+				sentTime: "just now",
 				direction: "incoming",
-				sender: "ChatGPT",
+				sender: "assistant",
 			};
 
-			// Add the chatbot's response to the message list
 			const updatedMessages = [...newMessages, newChatbotMessage];
 			setMessages(updatedMessages);
-
-			// Hide typing indicator
 			setIsTyping(false);
 		} catch (error) {
 			console.error("Error sending user message:", error);
-
-			// Handle errors, show an error message, etc.
 			setIsTyping(false);
 		}
 	};

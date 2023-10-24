@@ -77,7 +77,7 @@ TEST_CASES: List[Dict[str, Any]] = [
         "expected_output": {
             "MySQL": "SELECT first_name, last_name FROM employees INNER JOIN departments ON "
             "employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
-            "PostgreSQL": "SELECT first_name, last_name FROM employees INNER JOIN departments"
+            "PostgreSQL": "SELECT first_name, last_name FROM employees INNER JOIN departments "
             "ON employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
             "SQLite": "SELECT first_name, last_name FROM employees INNER JOIN departments ON"
             "employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
@@ -137,20 +137,26 @@ def test_generate_sql_query() -> None:
     inspector_instance = get_inspector()
     case_select = 0  # choose which test case you want to run
     flavors = ["MySQL", "PostgreSQL", "SQLite", "MSSQL", "Oracle"]
-    flavor_select = flavors[0]
+    flavor_select = flavors[1]
     user_input = TEST_CASES[case_select]["input"]
     expected_output = TEST_CASES[case_select]["expected_output"][flavor_select]
 
-    response = generate_sql_query(
-        user_input, flavor=flavor_select, inspector=inspector_instance
+    history = [
+        {"role": "assistant", "content": "Hello, I'm your SQL query assistant!"},
+        {"role": "user", "content": "hello"},
+    ]
+
+    engineered_input, generated_sql = generate_sql_query(
+        user_input,
+        flavor=flavor_select,
+        inspector=inspector_instance,
+        conversation_history=history,
     )
-    print(f"Generated SQL: {response}")
 
-    if response == "":
-        print("User input was not related to query construction.")
-        return
+    print(f"Engineered Input: {engineered_input}")
+    print(f"Generated SQL: {generated_sql}")
 
-    is_valid = execute_and_compare(response, expected_output)
+    is_valid = execute_and_compare(generated_sql, expected_output)
 
     assert (
         is_valid

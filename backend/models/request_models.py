@@ -12,10 +12,7 @@ class InsertDataRequest(BaseModel):
 
 class QueryRequestModel(BaseModel):
     user_input: str
-
-
-class QueryResponseModel(BaseModel):
-    sql_query: str
+    conversation_history: List[Dict[str, str]]
 
 
 class NodeType(str, Enum):
