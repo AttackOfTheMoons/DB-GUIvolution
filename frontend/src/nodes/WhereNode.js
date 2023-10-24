@@ -7,12 +7,9 @@ const handleStyle = { left: 10 };
 
 function WhereNode({ data, isConnectable }) {
 	const { nodeValue, handleNodeValueChange } = data;
-	const [columnName, setColumnName] = useState("VARCHAR");
 	const [operators, setOperators] = useState([]);
-	const [value, setValue] = useState("");
 	const { selectedTable } = useTableSelection(); // TODO: this is only a compromise to have communication bwn the nodes, need change
 	const [columnData, setColumnData] = useState([]);
-	const [columnType, setColumnType] = useState([]);
 
 	// Fetch column names when selected table changes
 	// TODO: show error to user
@@ -30,11 +27,6 @@ function WhereNode({ data, isConnectable }) {
 		}
 	}, [selectedTable]);
 
-	// Update operators when columnType changes
-	//   useEffect(() => {
-	//     setOperators(getOperatorsForColumnType(columnType));
-	//   }, [columnType]);
-
 	const imgStyle = {
 		position: "absolute",
 		left: "-8px",
@@ -46,22 +38,25 @@ function WhereNode({ data, isConnectable }) {
 	};
 
 	const handleColumnNameChange = (event) => {
-		const selectedColumnName = event.target.value;
-		setColumnName(selectedColumnName);
-		handleNodeValueChange("");
 		const thisColumnData = columnData.find(
 			(column) => column.name === event.target.value,
 		);
-		setOperators(getOperatorsForColumnType(thisColumnData.type));
+		const validOperators = getOperatorsForColumnType(thisColumnData.type);
+		setOperators(validOperators);
+		handleNodeValueChange({
+			...nodeValue,
+			column: event.target.value,
+			column_type: thisColumnData.type,
+			comparator: validOperators[0].toUpperCase(),
+		});
 	};
 
 	const handleOperatorChange = (event) => {
-		handleNodeValueChange(`${event.target.value} ${value}`);
+		handleNodeValueChange({ ...nodeValue, comparator: event.target.value });
 	};
 
 	const handleValueChange = (event) => {
-		setValue(event.target.value);
-		handleNodeValueChange(`${operators[0]} ${event.target.value}`);
+		handleNodeValueChange({ ...nodeValue, compared_value: event.target.value });
 	};
 
 	const getOperatorsForColumnType = (type) => {
@@ -72,7 +67,7 @@ function WhereNode({ data, isConnectable }) {
 			case "DATE":
 				return ["before", "after"];
 			case "VARCHAR":
-				return ["prefix", "suffix", "regex", "equals"];
+				return ["=", "prefix", "suffix", "regex"];
 			case "BOOL":
 				return ["="];
 			default:
@@ -92,7 +87,7 @@ function WhereNode({ data, isConnectable }) {
 				<label>WHERE:</label>
 				<select
 					onChange={handleColumnNameChange}
-					value={columnName}
+					value={nodeValue.column}
 					className="nodrag"
 				>
 					<option value="">Select a column</option>
@@ -107,11 +102,11 @@ function WhereNode({ data, isConnectable }) {
 				<label>Operator:</label>
 				<select
 					onChange={handleOperatorChange}
-					value={operators[0]}
+					value={nodeValue.comparator}
 					className="nodrag"
 				>
 					{operators.map((operator) => (
-						<option key={operator} value={operator}>
+						<option key={operator} value={operator.toUpperCase()}>
 							{operator}
 						</option>
 					))}
@@ -123,7 +118,7 @@ function WhereNode({ data, isConnectable }) {
 					name="value"
 					onChange={handleValueChange}
 					className="nodrag"
-					value={value}
+					value={nodeValue.compared_value}
 				/>
 			</div>
 			<Handle

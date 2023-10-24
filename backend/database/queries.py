@@ -11,9 +11,7 @@ from models import Node, NodeType, SQLQuery, SQLQueryResult, WhereStmt
 
 
 # TODO: AND conditions is the whole where support right now.
-def process_query(
-    db: Session, nodes: List[Node], flavor: Optional[str] = "postgres"
-) -> SQLQueryResult:
+def process_query(db: Session, nodes: List[Node], flavor: str) -> SQLQueryResult:
     selects: List[str] = []
     from_table: Optional[str] = None
     where = None
@@ -30,18 +28,18 @@ def process_query(
                     detail="Multiple FROM nodes are not allowed.",
                 )
         elif node.type == NodeType.WHERE:
-            for where_stmt in node.value:
-                assert isinstance(where_stmt, WhereStmt)
-                value = (
-                    f"'{where_stmt.compared_value}'"
-                    if isinstance(where_stmt.compared_value, str)
-                    else where_stmt.compared_value
-                )
-                where_str = f"{where_stmt.column} {where_stmt.comparator} {value}"
-                if where is None:
-                    where = condition(where_str)
-                else:
-                    where = where.and_(where_str)
+            where_stmt = node.value
+            assert isinstance(where_stmt, WhereStmt)
+            value = (
+                f"'{where_stmt.compared_value}'"
+                if isinstance(where_stmt.compared_value, str)
+                else where_stmt.compared_value
+            )
+            where_str = f"{where_stmt.column} {where_stmt.comparator} {value}"
+            if where is None:
+                where = condition(where_str)
+            else:
+                where = where.and_(where_str)
 
     if from_table is None:
         raise HTTPException(
@@ -68,7 +66,7 @@ def process_query(
             raise err
 
     return SQLQueryResult(
-        keys=result.keys(),
+        keys=[str(key) for key in result.keys()],
         data=[tuple(row) for row in result.fetchall()],
         sql=SQLQuery(sql_query=uncompleted_sql.sql(flavor, pretty=True), flavor=flavor),
     )

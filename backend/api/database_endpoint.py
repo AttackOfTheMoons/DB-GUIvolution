@@ -35,7 +35,7 @@ def get_columns(table_name: str, inspector: Inspector = Depends(get_inspector)) 
 async def execute_sql_query(
     sql_query: SQLQueryAST, db: Session = Depends(get_db)
 ) -> SQLQueryResult:
-    return process_query(db, sql_query.nodes, sql_query.flavor)
+    return process_query(db, sql_query.nodes, sql_query.flavor or "postgres")
 
 
 @router.post("/insert")

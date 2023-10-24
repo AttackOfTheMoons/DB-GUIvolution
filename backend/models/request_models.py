@@ -30,14 +30,14 @@ class NodeType(str, Enum):
 class Node(BaseModel):
     id: str
     type: NodeType
-    value: Union[List[str], str, List[WhereStmt]]
+    value: Union[List[str], str, WhereStmt]
 
     @field_validator("value")
     def validate_value_based_on_type(
         cls,
-        value: Union[List[str], str, List[WhereStmt]],
+        value: Union[List[str], str, WhereStmt],
         info: ValidationInfo,
-    ) -> Union[List[str], str, List[WhereStmt]]:
+    ) -> Union[List[str], str, WhereStmt]:
         node_type = info.data["type"]
         if node_type == NodeType.SELECT:
             if not isinstance(value, list):
@@ -54,15 +54,9 @@ class Node(BaseModel):
             ):  # Check if the string is empty or contains only whitespace
                 raise ValueError("FROM cannot be an empty string")
         elif node_type == NodeType.WHERE:
-            if not isinstance(value, list):
+            if not isinstance(value, WhereStmt):
                 raise ValueError(
-                    "WHERE should be in the format: [{column, comparator, compared_value}, ]"
-                )
-            elif not value:
-                raise ValueError("WHERE list cannot be empty")
-            elif any(not isinstance(item, WhereStmt) for item in value):
-                raise ValueError(
-                    "All items in WHERE list should be {column, comparator, compared_value}"
+                    "WHERE should be in the format: {column, comparator, compared_value}"
                 )
         return value
 

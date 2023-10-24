@@ -150,8 +150,15 @@ const App = () => {
 
 			switch (type) {
 				case "from":
-				case "where":
 					initialValue = "";
+					break;
+				case "where":
+					initialValue = {
+						column: "",
+						column_type: "",
+						compared_value: "",
+						comparator: "",
+					};
 					break;
 				case "select":
 					initialValue = [];
