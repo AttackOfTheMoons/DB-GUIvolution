@@ -68,7 +68,7 @@ const App = () => {
 	useEffect(() => {
 		// TODO: All nodes are treated as connected, this should be fixed.
 		axios
-			.post("/queries/", { nodes: nodeData })
+			.post("/queries/", { nodes: nodeData, flavor: "postgres" })
 			.then((response) => {
 				const data = response.data;
 				if (!data) {
