@@ -38,15 +38,16 @@ function WhereNode({ data, isConnectable }) {
 	};
 
 	const handleColumnNameChange = (event) => {
-		const thisColumnData = columnData.find(
-			(column) => column.name === event.target.value,
-		);
-		const validOperators = getOperatorsForColumnType(thisColumnData.type);
+		const selectedColumnType =
+			event.target.options[event.target.selectedIndex].getAttribute(
+				"data-columntype",
+			);
+		const validOperators = getOperatorsForColumnType(selectedColumnType);
 		setOperators(validOperators);
 		handleNodeValueChange({
 			...nodeValue,
 			column: event.target.value,
-			column_type: thisColumnData.type,
+			column_type: selectedColumnType,
 			comparator: validOperators[0].toUpperCase(),
 		});
 	};
@@ -63,7 +64,7 @@ function WhereNode({ data, isConnectable }) {
 		switch (type) {
 			case "INTEGER":
 			case "FLOAT":
-				return ["<", ">", "<=", ">=", "=", "!="];
+				return ["=", "<", ">", "<=", ">=", "!="];
 			case "DATE":
 				return ["before", "after"];
 			case "VARCHAR":
@@ -92,7 +93,11 @@ function WhereNode({ data, isConnectable }) {
 				>
 					<option value="">Select a column</option>
 					{columnData.map((column) => (
-						<option key={column.name} value={column.name}>
+						<option
+							key={column.name}
+							value={column.name}
+							data-columntype={column.type}
+						>
 							{column.name}
 						</option>
 					))}
