@@ -85,6 +85,7 @@ def generate_sql_query(
         "Specify INNER JOIN when applicable. "
         "Remember to return an empty string if the user input is ANYTHING else besides instructions to make a query. "
         "This means you either output a query or an empty string with no exceptions at all. "
+        "Don't include quotations when you return an empty string. "
         "This is the user input: "
     )
 
