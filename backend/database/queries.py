@@ -17,7 +17,7 @@ def process_query(db: Session, nodes: List[Node], flavor: str) -> SQLQueryResult
     where = None
     for node in nodes:
         if node.type == NodeType.SELECT:
-            assert isinstance(node.value, str)
+            assert isinstance(node.value, list)
             selects.extend(node.value)
         elif node.type == NodeType.FROM:
             if from_table is None:
