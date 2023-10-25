@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy.dialects.postgresql.base import PGInspector
 
 from database import get_inspector

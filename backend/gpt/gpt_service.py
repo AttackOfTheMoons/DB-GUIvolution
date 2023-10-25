@@ -1,10 +1,10 @@
-from typing import Any, Dict, List, Tuple
-from models import QueryResponseModel
+from typing import Any, Dict, List
 
 import openai
 from sqlalchemy import Inspector
 
 from core import env
+from models import QueryResponseModel
 
 from .flavor_queries import (
     COMMON_EXAMPLES,
@@ -103,9 +103,10 @@ def generate_sql_query(
         messages=messages,
     )
 
-    content = response.choices[0].message["content"] or "I can only help with making queries."
+    content = (
+        response.choices[0].message["content"] or "I can only help with making queries."
+    )
     return QueryResponseModel(engineered_input=api_input, sql_query=content)
-
 
 
 def get_database_schema(inspector: Inspector) -> str:
