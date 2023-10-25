@@ -79,7 +79,7 @@ TEST_CASES: List[Dict[str, Any]] = [
             "employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
             "PostgreSQL": "SELECT first_name, last_name FROM employees INNER JOIN departments "
             "ON employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
-            "SQLite": "SELECT first_name, last_name FROM employees INNER JOIN departments ON"
+            "SQLite": "SELECT first_name, last_name FROM employees INNER JOIN departments ON "
             "employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
             "MSSQL": "SELECT first_name, last_name FROM employees INNER JOIN departments ON "
             "employees.department_id = departments.department_id WHERE departments.name = 'Engineering';",
@@ -146,12 +146,15 @@ def test_generate_sql_query() -> None:
         {"role": "user", "content": "hello"},
     ]
 
-    engineered_input, generated_sql = generate_sql_query(
+    response = generate_sql_query(
         user_input,
         flavor=flavor_select,
         inspector=inspector_instance,
         conversation_history=history,
     )
+
+    engineered_input = response.engineered_input
+    generated_sql = response.sql_query
 
     print(f"Engineered Input: {engineered_input}")
     print(f"Generated SQL: {generated_sql}")

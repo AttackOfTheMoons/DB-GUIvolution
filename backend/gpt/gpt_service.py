@@ -1,4 +1,5 @@
 from typing import Any, Dict, List, Tuple
+from models import QueryResponseModel
 
 import openai
 from sqlalchemy import Inspector
@@ -61,7 +62,7 @@ def generate_sql_query(
     flavor: str,
     inspector: Inspector,
     conversation_history: List[Dict[str, str]],
-) -> Tuple[str, str]:
+) -> QueryResponseModel:
     flavor_examples = {
         "MySQL": MYSQL_EXAMPLES,
         "PostgreSQL": POSTGRES_EXAMPLES,
@@ -81,8 +82,9 @@ def generate_sql_query(
         "Do NOT use aliases in the query. Be explicit in the SQL syntax. "
         "When adding VARCHAR columns, always specify the length, like VARCHAR(255) "
         "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR). "
-        "Remember to return an empty string if the user input is ANYTHING else besides instructions to make a query. "
         "Specify INNER JOIN when applicable. "
+        "Remember to return an empty string if the user input is ANYTHING else besides instructions to make a query. "
+        "This means you either output a query or an empty string with no exceptions at all. "
         "This is the user input: "
     )
 
@@ -101,10 +103,9 @@ def generate_sql_query(
         messages=messages,
     )
 
-    if response.choices[0].message["content"] != "":
-        return api_input, response.choices[0].message["content"]
-    else:
-        return api_input, "I can only help with making queries."
+    content = response.choices[0].message["content"] or "I can only help with making queries."
+    return QueryResponseModel(engineered_input=api_input, sql_query=content)
+
 
 
 def get_database_schema(inspector: Inspector) -> str:

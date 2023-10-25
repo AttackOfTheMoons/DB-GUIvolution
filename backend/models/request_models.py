@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Union, Optional
 
 from pydantic import BaseModel, field_validator
 from pydantic_core.core_schema import ValidationInfo
@@ -12,7 +12,7 @@ class InsertDataRequest(BaseModel):
 
 class QueryRequestModel(BaseModel):
     user_input: str
-    conversation_history: List[Dict[str, str]]
+    conversation_history: Optional[List[Dict[str, str]]] = []
 
 
 class NodeType(str, Enum):

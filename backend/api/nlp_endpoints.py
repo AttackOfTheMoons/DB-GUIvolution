@@ -11,13 +11,12 @@ router = APIRouter()
 @router.post("/{flavor}/generate_sql", response_model=QueryResponseModel)
 def generate_sql_endpoint(
     flavor: str,
-    request: QueryRequestModel = Body(...),
+    request: QueryRequestModel,
     inspector: PGInspector = Depends(get_inspector),
 ) -> QueryResponseModel:
-    engineered_input, sql_query = generate_sql_query(
+    return generate_sql_query(
         request.user_input,
         flavor,
         inspector=inspector,
-        conversation_history=request.conversation_history,
+        conversation_history=request.conversation_history or [],
     )
-    return QueryResponseModel(engineered_input=engineered_input, sql_query=sql_query)
