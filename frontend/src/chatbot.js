@@ -16,7 +16,7 @@ import "./index.css";
 function DynamicChatbot() {
 	const [messages, setMessages] = useState([
 		{
-			message: "Hello, I'm your SQL query assistant!",
+			message: "🤖: " + "Hello, I'm your SQL query assistant!",
 			sentTime: "just now",
 			sender: "ChatGPT",
 		},
@@ -33,7 +33,7 @@ function DynamicChatbot() {
 	const handleSend = async (userMessage) => {
 		// Create a new message from the user
 		const newUserMessage = {
-			message: userMessage,
+			message: `🤓: ${userMessage}`,
 			direction: "outgoing",
 			sender: "user",
 		};
@@ -56,7 +56,7 @@ function DynamicChatbot() {
 
 			// Create a new message for the chatbot's response
 			const newChatbotMessage = {
-				message: chatbotResponse,
+				message: `🤖: ${chatbotResponse}`,
 				direction: "incoming",
 				sender: "ChatGPT",
 			};
@@ -78,7 +78,7 @@ function DynamicChatbot() {
 	return (
 		<>
 			<button type="button" className="ai-button" onClick={toggleSidebar}>
-				{isSidebarOpen ? "Close AI" : "Open AI"}
+				{isSidebarOpen ? "🤖: ✅ " : "🤖: ❌"}
 			</button>
 			<div className={`App ${isSidebarOpen ? "open" : ""}`}>
 				<div style={{ position: "relative", height: "100%", width: "415px" }}>

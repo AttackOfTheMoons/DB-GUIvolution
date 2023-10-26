@@ -41,7 +41,7 @@ function FromNode({ data, isConnectable }) {
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<img alt="" src="../icons/square.png" style={imgStyle} />
+			{/* <img alt="" src="../icons/square.png" style={imgStyle} /> */}
 			<div style={{ position: "relative" }}>
 				<label>FROM:</label>
 				<select

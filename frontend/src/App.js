@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import ReactFlow, {
 	Background,
 	Controls,
-	MiniMap,
 	Panel,
 	ReactFlowProvider,
 	addEdge,
@@ -216,17 +215,29 @@ const App = () => {
 							fitView
 							style={reactFlowStyle}
 						>
-							<Controls />
+							<Controls position="bottom-right" />
 							<Background color="#48BFE3" variant={variant} gap={20} />
 							<Panel>
-								<button type="button" onClick={() => setVariant("dots")}>
-									DOT
+								<button
+									className="panel-button"
+									type="button"
+									onClick={() => setVariant("dots")}
+								>
+									·
 								</button>
-								<button type="button" onClick={() => setVariant("lines")}>
-									LINE
+								<button
+									className="panel-button"
+									type="button"
+									onClick={() => setVariant("lines")}
+								>
+									—
 								</button>
-								<button type="button" onClick={() => setVariant("cross")}>
-									CROSS
+								<button
+									className="panel-button"
+									type="button"
+									onClick={() => setVariant("cross")}
+								>
+									+
 								</button>
 							</Panel>
 						</ReactFlow>

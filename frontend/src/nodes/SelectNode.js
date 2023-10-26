@@ -53,11 +53,11 @@ function SelectNode({ data, isConnectable }) {
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<img alt="" src="../icons/triangle.png" style={imgStyle} />
+			{/* <img alt="" src="../icons/triangle.png" style={imgStyle} /> */}
 			<div style={{ position: "relative" }}>
 				<label>SELECT:</label>
 				<Multiselect
-					placeholder="Select Any"
+					placeholder="Select Column Name"
 					options={options}
 					onSelect={onSelectNames} // Function will trigger on select event
 					onRemove={onRemoveNames} // Function will trigger on remove event
@@ -65,13 +65,6 @@ function SelectNode({ data, isConnectable }) {
 					displayValue="name" // Property name to display in the dropdown options
 				/>
 			</div>
-			{/* <Handle
-        type="source"
-        position={Position.Bottom}
-        id="a"
-        style={handleStyle}
-        isConnectable={isConnectable}
-      /> */}
 			<Handle
 				type="source"
 				position={Position.Bottom}

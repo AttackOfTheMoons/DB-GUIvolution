@@ -1,29 +1,96 @@
+/* Styles for the App container */
 .App {
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    transition: transform 0.3s ease;
-    transform: translateX(-430px);
-    z-index: 1
-  }
-  
-  .App.open {
-    transform: translateX(0);
-  }
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  transition: transform 0.3s ease;
+  transform: translateX(-410px);
+  z-index: 1;
+}
 
-  .cs-message-list{
-    background: linear-gradient(#80FFDB, #64DFDF, #48BFE3, #48BFE3, #48BFE3);
-  }
-  
-  .ai-button {
-    background: none;
-    cursor: pointer;
-    position: fixed;
-    bottom: 15px; 
-    right: 51.5%; 
-    z-index: 2; /* Ensure the button is above the sidebar content */
-    background-color: #29a5ec; /* Set a background color for the button */
-    color: #fff; /* Set a text color for the button */
-    padding: 5px 10px; /* Add some padding to the button for better visibility */
-  }
+.App.open {
+  transform: translateX(0);
+}
+
+/* Styles for the cs-message-list */
+.cs-message-list {
+  background: #f5f5f5; /* Set a light background color */
+  min-height: 80vh; /* Ensure the background covers the entire viewport height */
+  padding: 20px; /* Add some padding for spacing */
+}
+
+.cs-message__content{
+  background-color: #E5B8F4;
+  color: #810CA8;
+}
+
+.cs-message--incoming .cs-message__content{
+  background-color: #E5B8F4;
+  color: #810CA8;
+}
+
+.cs-message--outgoing .cs-message__content{
+  background-color: #c6e3fa;
+  color: #112D4E;
+}
+
+.cs-main-container {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  overflow: hidden; /* Change 'auto' to 'hidden' to hide scrollbars */
+  border: 4px solid #9254de; /* Use a lighter border color */
+  border-radius: 40px; /* Add rounded corners for a modern touch */
+  box-sizing: border-box;
+  color: #333; /* Dark text color for better readability */
+  background-color: #f5f5f5; /* Light gray background */
+  font-size: 16px; /* Smaller font size for a cleaner look */
+  font-family: Arial, sans-serif; /* Use a common sans-serif font */
+  justify-content: center; /* Center the content horizontally */
+  align-items: center; /* Center the content vertically */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+}
+
+.cs-main-container:hover {
+  border: 6px solid #9254de; /* Use a lighter border color */
+  transition: border 0.1s;
+}
+
+.cs-chat-container {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-width: 180px;
+  color: #333; /* Dark text color for better readability */
+  background-color: #f5f5f5; /* Light gray background */
+  font-size: 20px; /* Use a standard font size */
+  font-family: Arial, sans-serif; /* Common sans-serif font */
+  border: 1px solid #e4e4e4; /* Use a light border */
+  border-radius: 8px; /* Add rounded corners for a modern touch */
+  padding: 5px; /* Add padding for spacing inside the container */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
+}
+
+/* Styles for the ai-button */
+.ai-button {
+  background: #C147E9;
+  cursor: pointer;
+  position: fixed;
+  top: 7px;
+  right: 390px; /* Center the button horizontally */
+  transform: translateX(50%); /* Center the button horizontally */
+  z-index: 2;
+  color: #EEF1FF;
+  padding: 10px 20px; /* Increased padding for better visibility and touch-friendly */
+  border-radius: 50px; /* Round the button shape */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.ai-button:hover {
+  background: #810CA8; /* Darker background on hover */
+  transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+}

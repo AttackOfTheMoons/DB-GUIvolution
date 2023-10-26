@@ -1,8 +1,21 @@
 #outputWindow {
-    width: 250px;
-    height: 100%;
-    background: rgb(238,174,202);
-background: radial-gradient(circle, rgba(238,174,202,1) 0%, rgba(148,187,233,1) 100%);
-font-family: "Times New Roman", Times, serif;
-color: #B931FC;
-  }
+  max-width: 280px;
+  max-height: 100%;
+  width: 100%;
+  background: linear-gradient(135deg, #4AC4D9, #1263C1);
+  font-family: "Courier, monospace";
+  color: #FFFFFF;
+  font-size: 20px;
+  display: block;
+  border: 2px dashed #fff; /* Unique dashed border with a distinctive color */
+  border-radius: 5px; /* Add rounded corners */
+  text-align: center;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: auto;
+  transition: border 0.1s;
+}
+
+#outputWindow:hover{
+  border: 5px dashed #ffaa00; /* Unique dashed border with a distinctive color */
+}

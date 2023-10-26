@@ -3,13 +3,13 @@ import React, { useState } from "react";
 import "./sidebar.css";
 
 const description = {
-	color: "#5D12D2",
-	fontFamily: "Helvetica Neue, sans-serif",
+	color: "#fff", // Modern color
+	fontFamily: "Arial, Helvetica, sans-serif", // Updated font stack
 	fontWeight: "bold",
-	letterSpacing: "-1px",
-	lineHeight: "1",
+	letterSpacing: "0.5px", // Subtle letter spacing
+	lineHeight: "1.2", // Increased line height for readability
 	textAlign: "center",
-	fontSize: "22px", // Corrected to camelCase
+	fontSize: "20px", // Slightly reduced font size for a modern, clean look
 };
 
 const Sidebar = () => {
@@ -27,11 +27,11 @@ const Sidebar = () => {
 	return (
 		<>
 			<button type="button" className="toggle-button" onClick={toggleSidebar}>
-				{isSidebarOpen ? "Close Sidebar" : "Open Sidebar"}
+				{isSidebarOpen ? "🧰: ✅" : "🧰: ❌"}
 			</button>
 			<aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
 				<div className="description" style={description}>
-					Drag these nodes to the canvas to the left.
+					🖐 nodes to the canvas.
 				</div>
 				{/* <div
       className="dndnode input"

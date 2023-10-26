@@ -1,20 +1,57 @@
 .FromNode {
-
-height: 50px;
-  border: 1px solid #eee;
-  padding: 5px;
-  border-radius: 5px;
-  background: #3b82f6;
+  height: 50px;
+  padding: 10px;
+  border: 2px solid #3b82f6;
+  border-radius: 10px;
+  background: #f0f4f8;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
-  }
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, border-color 0.3s;
+}
 
-  .FromNode label {
-    display: block;
-    color: black;
-    font-size: 12px;
-  }
-  
-  
+.fromInput {
+  border: 2px solid #3498db; /* Add a border with a modern color */
+  border-radius: 5px; /* Add rounded corners */
+  padding: 10px; /* Add padding for spacing inside the input */
+  font-size: 16px; /* Set the font size */
+  color: #333; /* Set text color */
+  background-color: #f5f5f5; /* Set a background color */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow for depth */
+  transition: border-color 0.3s, box-shadow 0.3s; /* Add smooth transitions for hover/focus effects */
+}
+
+.fromInput:focus {
+  border-color: #ff6b6b; /* Change the border color on focus */
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4); /* Add a stronger box shadow on focus */
+  outline: none; /* Remove the default outline (often a blue highlight) */
+}
+
+.fromInput:hover {
+  border-color: #ffaa00; /* Change the border color on hover */
+}
+
+
+.FromNode:hover {
+  background: #3b82f6;
+  border-color: #3b82f6;
+  color: #fff;
+}
+
+.option{
+  color: black;
+}
+
+.FromNode:hover label{
+  color: #fff;
+}
+
+.FromNode label {
+  display: block;
+  color: #3b82f6;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}

@@ -83,8 +83,8 @@ function WhereNode({ data, isConnectable }) {
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<img alt="" src="../icons/circle.png" style={imgStyle} />
-			<div>
+			{/* <img alt="" src="../icons/circle.png" style={imgStyle} /> */}
+			<div className="inside-div">
 				<label>WHERE:</label>
 				<select
 					onChange={handleColumnNameChange}
@@ -103,7 +103,7 @@ function WhereNode({ data, isConnectable }) {
 					))}
 				</select>
 			</div>
-			<div>
+			<div className="inside-div">
 				<label>Operator:</label>
 				<select
 					onChange={handleOperatorChange}
@@ -117,7 +117,7 @@ function WhereNode({ data, isConnectable }) {
 					))}
 				</select>
 			</div>
-			<div>
+			<div className="inside-div">
 				<label>Value:</label>
 				<input
 					name="value"
