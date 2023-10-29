@@ -31,21 +31,14 @@ const Sidebar = () => {
 			</button>
 			<aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
 				<div className="description" style={description}>
-					🖐 nodes to the canvas.
+					<span className="hand">🖐</span> nodes to the canvas.
 				</div>
-				{/* <div
-      className="dndnode input"
-      onDragStart={(event) => onDragStart(event, "input")}
-      draggable
-    >
-      Input Node
-    </div> */}
 				<div
 					className="dndnode"
 					onDragStart={(event) => onDragStart(event, "select")}
 					draggable
 				>
-					<img alt="" src="./icons/triangle.png" width={"20px"} />
+					<img alt="" src="./icons/parallelogram.png" width={"20px"} />
 					SELECT
 				</div>
 				<div

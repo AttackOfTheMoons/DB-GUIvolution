@@ -74,13 +74,21 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle box shadow */
 }
 
+@keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
 /* Styles for the ai-button */
 .ai-button {
   background: #C147E9;
   cursor: pointer;
   position: fixed;
   top: 7px;
-  right: 390px; /* Center the button horizontally */
+  right: 340px; /* Center the button horizontally */
   transform: translateX(50%); /* Center the button horizontally */
   z-index: 2;
   color: #EEF1FF;
@@ -88,6 +96,7 @@
   border-radius: 50px; /* Round the button shape */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
   transition: background-color 0.3s, transform 0.3s;
+  animation: tilt-shaking 0.5s infinite;
 }
 
 .ai-button:hover {

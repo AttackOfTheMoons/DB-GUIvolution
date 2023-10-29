@@ -97,3 +97,22 @@
   color: #fff;
 }
 
+.info-button {
+  background: #C147E9;
+  cursor: pointer;
+  position: fixed;
+  top: 120px;
+  right: 390px; /* Center the button horizontally */
+  transform: translateX(50%); /* Center the button horizontally */
+  z-index: 2;
+  color: #EEF1FF;
+  padding: 10px 20px; /* Increased padding for better visibility and touch-friendly */
+  border-radius: 50px; /* Round the button shape */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.info-button:hover {
+  background: #810CA8; /* Darker background on hover */
+  transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+}

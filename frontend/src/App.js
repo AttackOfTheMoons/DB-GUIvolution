@@ -1,4 +1,7 @@
+import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ReactFlow, {
 	Background,
 	Controls,
@@ -10,7 +13,9 @@ import ReactFlow, {
 } from "reactflow";
 import "reactflow/dist/style.css";
 import styled from "styled-components";
+import ResultTable from "./ResultTable";
 import DynamicChatbot from "./chatbot";
+import "./index.css";
 import FromNode from "./nodes/FromNode";
 import "./nodes/FromNode.css";
 import SelectNode from "./nodes/SelectNode";
@@ -19,10 +24,6 @@ import { TableSelectionProvider } from "./nodes/TableSelectionContext";
 import WhereNode from "./nodes/WhereNode";
 import "./nodes/WhereNode.css";
 import Sidebar from "./sidebar";
-
-import axios from "axios";
-import ResultTable from "./ResultTable";
-import "./index.css";
 
 const reactFlowStyle = {
 	background: "#192655",
@@ -85,9 +86,68 @@ const App = () => {
 				}
 				// TODO: These errors we should display to the user.
 				if (Array.isArray(errorData.detail)) {
-					errorData.detail.forEach((err) => console.log(err.msg));
+					errorData.detail.forEach((err) => {
+						if (err.msg.includes("FROM cannot be an empty string")) {
+							toast.info("Please select a table in 🟦FROM.", {
+								position: "bottom-center",
+								autoClose: 3000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "light",
+							});
+						}
+						if (err.msg.includes("SELECT list cannot be empty")) {
+							toast.info("Please select a column in SELECT.", {
+								position: "bottom-center",
+								autoClose: 3000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "light",
+							});
+						} else {
+							toast.info(err.msg, {
+								position: "bottom-center",
+								autoClose: 3000,
+								hideProgressBar: false,
+								closeOnClick: true,
+								pauseOnHover: true,
+								draggable: true,
+								progress: undefined,
+								theme: "colored",
+							});
+						}
+					});
 				} else {
 					console.log(errorData.detail);
+					if (errorData.detail.includes("No FROM node found")) {
+						toast.info("Use 🟦FROM to select a table.", {
+							position: "bottom-center",
+							autoClose: 3000,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "colored",
+						});
+					} else {
+						toast.info(errorData.detail, {
+							position: "bottom-center",
+							autoClose: 3000,
+							hideProgressBar: false,
+							closeOnClick: true,
+							pauseOnHover: true,
+							draggable: true,
+							progress: undefined,
+							theme: "light",
+						});
+					}
 				}
 			});
 	}, [nodeData]);
@@ -195,10 +255,10 @@ const App = () => {
 	);
 
 	const [variant, setVariant] = useState("lines");
-
 	return (
 		<TableSelectionProvider>
 			<div className="dndflow">
+				<ToastContainer limit={1} />
 				<DynamicChatbot />
 				<ReactFlowProvider>
 					<div className="reactflow-wrapper" ref={reactFlowWrapper}>

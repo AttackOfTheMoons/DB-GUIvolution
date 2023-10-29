@@ -12,6 +12,26 @@
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Add a shadow on the left side */
 }
 
+@keyframes horizontal-shaking {
+  0% { transform: translateX(0) }
+  25% { transform: translateX(3px) }
+  50% { transform: translateX(-15px) }
+  75% { transform: translateX(3px) }
+  100% { transform: translateX(0) }
+ }
+
+ @keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(1deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-1deg); }
+  100% { transform: rotate(0deg); }
+}
+
+span.hand{ 
+  display: inline-block;
+  animation: horizontal-shaking 1.5s infinite;}
+
 .sidebar.open {
   transform: translateX(0);
 }
@@ -22,7 +42,7 @@
   cursor: pointer;
   position: fixed;
   top: 60px;
-  right: 390px; /* Center the button horizontally */
+  right: 340px; /* Center the button horizontally */
   transform: translateX(50%); /* Center the button horizontally */
   z-index: 2; /* Ensure the button is above the sidebar content */
   color: #F3FDE8;
@@ -30,6 +50,7 @@
   border-radius: 50px; /* Round the button shape */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
   transition: background-color 0.3s, transform 0.3s;
+  animation: tilt-shaking 0.5s infinite;
 }
 
 .toggle-button:hover {
