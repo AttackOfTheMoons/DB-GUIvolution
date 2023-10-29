@@ -9,7 +9,7 @@ const description = {
 	letterSpacing: "0.5px", // Subtle letter spacing
 	lineHeight: "1.2", // Increased line height for readability
 	textAlign: "center",
-	fontSize: "20px", // Slightly reduced font size for a modern, clean look
+	fontSize: "18px", // Slightly reduced font size for a modern, clean look
 };
 
 const Sidebar = () => {
@@ -26,15 +26,19 @@ const Sidebar = () => {
 
 	return (
 		<>
-			<button type="button" className="toggle-button" onClick={toggleSidebar}>
+			<button
+				type="button"
+				className="toggle-button toolbox-button"
+				onClick={toggleSidebar}
+			>
 				{isSidebarOpen ? "🧰: ✅" : "🧰: ❌"}
 			</button>
 			<aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
 				<div className="description" style={description}>
-					<span className="hand">🖐</span> nodes to the canvas.
+					<span className="toolbox-icon">🧰</span> SQL Query Toolbox
 				</div>
 				<div
-					className="dndnode"
+					className="dndnode sidebar-select"
 					onDragStart={(event) => onDragStart(event, "select")}
 					draggable
 				>
@@ -42,7 +46,7 @@ const Sidebar = () => {
 					SELECT
 				</div>
 				<div
-					className="dndnode"
+					className="dndnode sidebar-from"
 					onDragStart={(event) => onDragStart(event, "from")}
 					draggable
 				>
@@ -50,7 +54,7 @@ const Sidebar = () => {
 					FROM
 				</div>
 				<div
-					className="dndnode"
+					className="dndnode sidebar-where"
 					onDragStart={(event) => onDragStart(event, "where")}
 					draggable
 				>

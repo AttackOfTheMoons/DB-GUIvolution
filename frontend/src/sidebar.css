@@ -22,15 +22,16 @@
 
  @keyframes tilt-shaking {
   0% { transform: rotate(0deg); }
-  25% { transform: rotate(1deg); }
+  25% { transform: rotate(5deg); }
   50% { transform: rotate(0eg); }
-  75% { transform: rotate(-1deg); }
+  75% { transform: rotate(-5deg); }
   100% { transform: rotate(0deg); }
 }
 
-span.hand{ 
+span.toolbox-icon{ 
   display: inline-block;
-  animation: horizontal-shaking 1.5s infinite;}
+  font-size: 30px;
+  animation: tilt-shaking 0.8s infinite;}
 
 .sidebar.open {
   transform: translateX(0);
@@ -42,7 +43,7 @@ span.hand{
   cursor: pointer;
   position: fixed;
   top: 60px;
-  right: 340px; /* Center the button horizontally */
+  right: 390px; /* Center the button horizontally */
   transform: translateX(50%); /* Center the button horizontally */
   z-index: 2; /* Ensure the button is above the sidebar content */
   color: #F3FDE8;
@@ -50,10 +51,11 @@ span.hand{
   border-radius: 50px; /* Round the button shape */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
   transition: background-color 0.3s, transform 0.3s;
-  animation: tilt-shaking 0.5s infinite;
 }
 
 .toggle-button:hover {
   background: #0a800d; /* Darker background on hover */
   transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+  animation: tilt-shaking 0.5s infinite;
+  right: 340px;
 }
