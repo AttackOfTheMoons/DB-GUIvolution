@@ -54,7 +54,7 @@ function SelectNode({ data, isConnectable }) {
 				isConnectable={isConnectable}
 			/>
 			{/* <img alt="" src="../icons/triangle.png" style={imgStyle} /> */}
-			<div style={{ position: "relative" }}>
+			<div className="select-box" style={{ position: "relative" }}>
 				<label>SELECT:</label>
 				<Multiselect
 					placeholder="Select Column Name"

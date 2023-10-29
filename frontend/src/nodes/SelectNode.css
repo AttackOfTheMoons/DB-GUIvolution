@@ -1,35 +1,51 @@
-/* .SelectNode {
-  width: 0px;
-  height: 0px;
-  border-style: inset;
-  border-width: 0 70px 140px 70px;
-  border-color: transparent transparent #1FAB89 transparent;
-  float: left;
-  transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
-  -moz-transform: rotate(360deg);
-  -webkit-transform: rotate(360deg);
-  -o-transform: rotate(360deg);
-} */
-
 .SelectNode {
-  height: 60px;
+  /* height: 230px;
+  width: 230px; */
   padding: 10px;
-  border: 2px solid #5eac24;
+  /* border: 2px solid #5eac24; */
   border-radius: 10px;
-  background: #f0f8f1;
+  /* background: #D7FBE8; */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   transition: background-color 0.3s, border-color 0.3s;
+  width: 0px;
+  height: 0px;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 230px solid #D7FBE8;
 }
 
 .SelectNode:hover {
-  background: #5eac24;
-  border-color: #5eac24;
+  /* background: #5eac24; */
+  /* border-color: #5eac24; */
   color: #fff;
+  width: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 230px solid #5eac24;
+}
+
+.SelectNode .react-flow__handle-top {
+  left: 50%;
+  top: 10px;
+  transform: translate(-50%, 0);
+  border-radius: 0;
+  background: #5eac24;
+}
+
+.SelectNode .react-flow__handle-bottom {
+  left: 50%;
+  bottom: -225px;
+  transform: translate(-50%, 0);
+  border-radius: 0;
+}
+
+.select-box{
+  top:190px;
 }
 
 .SelectNode:hover label{
@@ -41,7 +57,6 @@
 }
 
 .SelectNode label {
-  display: block;
   color: #5eac24;
   font-size: 14px;
   font-weight: bold;

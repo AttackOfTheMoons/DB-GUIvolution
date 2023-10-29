@@ -94,3 +94,13 @@
   background: #810CA8; /* Darker background on hover */
   transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
 }
+
+.cs-button--attachment{
+  display: none;
+}
+
+.cs-message-input__content-editor-wrapper{
+  max-width: 100%;
+  border-bottom-left-radius: 25px;
+  margin-left: 5px;
+}
