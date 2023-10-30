@@ -3,6 +3,12 @@ from typing import List
 from pydantic import BaseModel
 
 
+class SQLColumn(BaseModel):
+    name: str
+    type: str
+    nullable: bool
+
+
 class SQLQuery(BaseModel):
     sql_query: str
     flavor: str

@@ -30,6 +30,10 @@
   border-bottom: 230px solid #5eac24; */
 }
 
+.notFound {
+  color: #000;
+}
+
 /* .SelectNode .react-flow__handle-top {
   left: 50%;
   top: 10px;

@@ -179,9 +179,12 @@ class WhereStmt(BaseModel):
     def validate_comparison_type(
         cls, comparison_type: str, info: ValidationInfo
     ) -> str:
-        column_type = info.data["column_type"]
+        column_type = info.data.get("column_type")
 
-        if comparison_type not in ALLOWED_COMPARISONS[column_type.upper()]:
+        if (
+            column_type is None
+            or comparison_type not in ALLOWED_COMPARISONS[column_type.upper()]
+        ):
             raise ValueError(
                 f"Invalid comparison for column type {column_type}: {comparison_type}"
             )
