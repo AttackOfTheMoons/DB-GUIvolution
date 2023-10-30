@@ -7,7 +7,7 @@ from sqlalchemy.exc import CompileError
 from sqlalchemy.orm import Session
 
 from database import get_db, get_engine, get_inspector, process_query
-from models import InsertDataRequest, SQLQueryAST, SQLQueryResult
+from models import InsertDataRequest, SQLColumn, SQLQueryAST, SQLQueryResult
 
 router = APIRouter()
 
@@ -18,18 +18,17 @@ def get_table(inspector: Inspector = Depends(get_inspector)) -> List:
 
 
 @router.get("/tables/{table_name}/columns")
-def get_columns(table_name: str, inspector: Inspector = Depends(get_inspector)) -> List:
+def get_columns(
+    table_name: str, inspector: Inspector = Depends(get_inspector)
+) -> List[SQLColumn]:
     return [
-        {
-            "name": col["name"],
-            "type": col["type"].__visit_name__,
-            "nullable": col["nullable"],
-        }
+        SQLColumn(
+            name=col["name"], type=col["type"].__visit_name__, nullable=col["nullable"]
+        )
         for col in inspector.get_columns(table_name)
     ]
 
 
-# TODO: WHERE query
 # TODO: SUB-QUERIES?
 @router.post("/queries/")
 async def execute_sql_query(

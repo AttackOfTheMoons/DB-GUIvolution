@@ -7,12 +7,12 @@ from sqlalchemy.exc import ProgrammingError
 from sqlalchemy.orm import Session
 from sqlglot import condition, select
 
-from models import Node, NodeType, SQLQuery, SQLQueryResult, WhereStmt
+from models import Node, NodeType, SQLColumn, SQLQuery, SQLQueryResult, WhereStmt
 
 
 # TODO: AND conditions is the whole where support right now.
 def process_query(db: Session, nodes: List[Node], flavor: str) -> SQLQueryResult:
-    selects: List[str] = []
+    selects: List[SQLColumn] = []
     from_table: Optional[str] = None
     where = None
     for node in nodes:
@@ -46,7 +46,7 @@ def process_query(db: Session, nodes: List[Node], flavor: str) -> SQLQueryResult
             status_code=HTTPStatus.UNPROCESSABLE_ENTITY,
             detail="No FROM node found in the SQL query.",
         )
-    select_stmt = selects if selects else ("*",)
+    select_stmt = [col.name for col in selects] if selects else ("*",)
     uncompleted_sql = select(*select_stmt).from_(from_table)
     if where:
         uncompleted_sql = uncompleted_sql.where(where)

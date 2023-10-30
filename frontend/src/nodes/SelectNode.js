@@ -2,38 +2,37 @@ import axios from "axios";
 import { Multiselect } from "multiselect-react-dropdown";
 import { useCallback, useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-import { useTableSelection } from "./TableSelectionContext";
 
 const handleStyle = { left: 10 };
 
 function SelectNode({ data, isConnectable }) {
-	const { nodeValue, handleNodeValueChange } = data;
+	const { nodeValue, handleNodeValueChange, selectedTable } = data;
 	const [options, setOptions] = useState([]);
-	const { selectedTable } = useTableSelection();
 
 	useEffect(() => {
 		if (selectedTable) {
 			axios
 				.get(`/tables/${selectedTable}/columns`)
 				.then((response) => {
-					const columnNames = response.data;
+					const columnNames = response.data; // .map((column) => column.name);
 					setOptions(columnNames);
 				})
 				.catch((error) => {
 					console.error("Error fetching column names:", error);
 				});
+		} else {
+			handleNodeValueChange([]);
+			setOptions([]);
 		}
 	}, [selectedTable]);
 
 	// const options = [{ name: "John" }, { name: "Mary" }, { name: "Robert" }];
 	const onSelectNames = (selectedList) => {
-		const selectedNamesList = selectedList.map((item) => item.name);
-		handleNodeValueChange(selectedNamesList);
+		handleNodeValueChange(selectedList);
 	};
 
 	const onRemoveNames = (selectedList) => {
-		const selectedNamesList = selectedList.map((item) => item.name);
-		handleNodeValueChange(selectedNamesList);
+		handleNodeValueChange(selectedList);
 	};
 
 	const imgStyle = {
@@ -59,6 +58,7 @@ function SelectNode({ data, isConnectable }) {
 				<Multiselect
 					placeholder="Select Column Name"
 					options={options}
+					selectedValues={nodeValue}
 					onSelect={onSelectNames} // Function will trigger on select event
 					onRemove={onRemoveNames} // Function will trigger on remove event
 					showCheckbox={true}

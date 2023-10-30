@@ -1,13 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-import { useTableSelection } from "./TableSelectionContext";
 
 const handleStyle = { left: 10 };
 
 function FromNode({ data, isConnectable }) {
 	const [tables, setTables] = useState([]);
-	const { setSelectedTable } = useTableSelection();
 	const { nodeValue, handleNodeValueChange } = data;
 
 	useEffect(() => {
@@ -26,14 +24,6 @@ function FromNode({ data, isConnectable }) {
 		opacity: 1,
 	};
 
-	const handleTableSelectChange = (event) => {
-		const selectedTable = event.target.value;
-		handleNodeValueChange(selectedTable); // Update the nodeValue
-
-		// Call setSelectedTable to update the selected table
-		setSelectedTable(selectedTable);
-	};
-
 	return (
 		<div className="FromNode" style={{ position: "relative" }}>
 			<Handle
@@ -45,7 +35,7 @@ function FromNode({ data, isConnectable }) {
 			<div style={{ position: "relative" }}>
 				<label>FROM:</label>
 				<select
-					onChange={handleTableSelectChange}
+					onChange={(event) => handleNodeValueChange(event.target.value)}
 					value={nodeValue}
 					className="fromInput"
 				>

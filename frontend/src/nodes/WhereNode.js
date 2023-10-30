@@ -1,14 +1,12 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-import { useTableSelection } from "./TableSelectionContext";
 
 const handleStyle = { left: 10 };
 
 function WhereNode({ data, isConnectable }) {
-	const { nodeValue, handleNodeValueChange } = data;
+	const { nodeValue, handleNodeValueChange, selectedTable } = data;
 	const [operators, setOperators] = useState([]);
-	const { selectedTable } = useTableSelection(); // TODO: this is only a compromise to have communication bwn the nodes, need change
 	const [columnData, setColumnData] = useState([]);
 
 	// Fetch column names when selected table changes

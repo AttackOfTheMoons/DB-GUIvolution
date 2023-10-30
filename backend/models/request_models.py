@@ -4,6 +4,7 @@ from typing import Any, Dict, List, Optional, Union
 from pydantic import BaseModel, field_validator
 from pydantic_core.core_schema import ValidationInfo
 
+from .response_models import SQLColumn
 from .where_node_model import WhereStmt
 
 # NLP Models
@@ -30,7 +31,7 @@ class NodeType(str, Enum):
 class Node(BaseModel):
     id: str
     type: NodeType
-    value: Union[List[str], str, WhereStmt]
+    value: Union[List[SQLColumn], str, WhereStmt]
 
     @field_validator("value")
     def validate_value_based_on_type(
@@ -41,11 +42,11 @@ class Node(BaseModel):
         node_type = info.data["type"]
         if node_type == NodeType.SELECT:
             if not isinstance(value, list):
-                raise ValueError("SELECT should be a list of column names")
+                raise ValueError("SELECT should be a list of columns")
             elif not value:
                 raise ValueError("SELECT list cannot be empty")
-            elif any(not isinstance(item, str) or not item.strip() for item in value):
-                raise ValueError("All items in SELECT list should be non-empty strings")
+            elif any(not isinstance(item, SQLColumn) for item in value):
+                raise ValueError("SELECT should be a list of columns")
         elif node_type == NodeType.FROM:
             if not isinstance(value, str):
                 raise ValueError("FROM should be a string (table name)")
