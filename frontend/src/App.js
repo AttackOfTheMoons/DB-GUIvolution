@@ -4,13 +4,13 @@ import Joyride from "react-joyride";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactFlow, {
-  Background,
-  Controls,
-  Panel,
-  ReactFlowProvider,
-  addEdge,
-  applyEdgeChanges,
-  applyNodeChanges,
+	Background,
+	Controls,
+	Panel,
+	ReactFlowProvider,
+	addEdge,
+	applyEdgeChanges,
+	applyNodeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
 import styled from "styled-components";
@@ -27,209 +27,211 @@ import Sidebar from "./sidebar";
 
 import NodePanel from "./NodePanel";
 import {
-  checkAllNodesConnected,
-  createAdjacencyList,
-  createNewDataNode,
-  createNewNode,
-  findFroms,
-  getIntialNodeValueByType,
-  sendQueryToServer,
+	checkAllNodesConnected,
+	createAdjacencyList,
+	createNewDataNode,
+	createNewNode,
+	findFroms,
+	getIntialNodeValueByType,
+	sendQueryToServer,
 } from "./appHelperFunctions";
 import tourSteps from "./tourSteps";
 
 const reactFlowStyle = {
-  background: "#192655",
+	background: "#192655",
 };
 
 const ignoreChangeTypes = ["dimensions", "position", "select"];
 
 // TODO: This file is getting very bloated, we should refactor to make it more simple.
 const App = () => {
-  const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes] = useState([]);
-  const [nodeValues, setNodeValues] = useState([]);
-  const [edges, setEdges] = useState([]);
-  const [reactFlowInstance, setReactFlowInstance] = useState(null);
-  const [resultKeys, setResultKeys] = useState([]);
-  const [resultData, setResultData] = useState([]);
+	const reactFlowWrapper = useRef(null);
+	const [nodes, setNodes] = useState([]);
+	const [nodeValues, setNodeValues] = useState([]);
+	const [edges, setEdges] = useState([]);
+	const [reactFlowInstance, setReactFlowInstance] = useState(null);
+	const [resultKeys, setResultKeys] = useState([]);
+	const [resultData, setResultData] = useState([]);
 
-  const idRef = useRef(0);
+	const idRef = useRef(0);
 
-  const onNodesChange = useCallback(
-    (changes) => {
-      const updatedNodes = applyNodeChanges(changes, nodes);
-      for (const { type, id } of changes) {
-        if (type === "remove") {
-          setNodeValues((prevNodes) =>
-            prevNodes.filter((node) => node.id !== id)
-          );
-          setEdges((prevEdges) =>
-            prevEdges.filter((edge) => edge.source !== id && edge.target !== id)
-          );
-        }
-      }
-      setNodes(updatedNodes);
-    },
-    [nodes]
-  );
+	const onNodesChange = useCallback(
+		(changes) => {
+			const updatedNodes = applyNodeChanges(changes, nodes);
+			for (const { type, id } of changes) {
+				if (type === "remove") {
+					setNodeValues((prevNodes) =>
+						prevNodes.filter((node) => node.id !== id),
+					);
+					setEdges((prevEdges) =>
+						prevEdges.filter(
+							(edge) => edge.source !== id && edge.target !== id,
+						),
+					);
+				}
+			}
+			setNodes(updatedNodes);
+		},
+		[nodes],
+	);
 
-  useEffect(() => {
-    // TODO: All nodes are treated as connected, this should be fixed.
-    if (nodeValues.length === 0) {
-      return;
-    }
+	useEffect(() => {
+		// TODO: All nodes are treated as connected, this should be fixed.
+		if (nodeValues.length === 0) {
+			return;
+		}
 
-    // Create the adjacency list
-    const adjacencyList = createAdjacencyList(edges);
+		// Create the adjacency list
+		const adjacencyList = createAdjacencyList(edges);
 
-    // Check if the nodes are connected using dfs
-    const allNodesConnected = checkAllNodesConnected(adjacencyList, nodeValues);
+		// Check if the nodes are connected using dfs
+		const allNodesConnected = checkAllNodesConnected(adjacencyList, nodeValues);
 
-    if (!allNodesConnected) {
-      // TODO: Display an error or take appropriate action.
-      console.log("All nodes are not connected.");
-      return;
-    }
+		if (!allNodesConnected) {
+			// TODO: Display an error or take appropriate action.
+			console.log("All nodes are not connected.");
+			return;
+		}
 
-    // Iterate over the "Select" and "Where" nodes and find the closest "From" node for each
-    const selectWhereNodes = nodeValues.filter(
-      (node) => node.type === "select" || node.type === "where"
-    );
+		// Iterate over the "Select" and "Where" nodes and find the closest "From" node for each
+		const selectWhereNodes = nodeValues.filter(
+			(node) => node.type === "select" || node.type === "where",
+		);
 
-    if (findFroms(selectWhereNodes, nodeValues, adjacencyList, setNodes)) {
-      // Error
-      return;
-    }
+		if (findFroms(selectWhereNodes, nodeValues, adjacencyList, setNodes)) {
+			// Error
+			return;
+		}
 
-    sendQueryToServer(nodeValues, setResultKeys, setResultData);
-  }, [nodeValues, edges, setNodes]);
+		sendQueryToServer(nodeValues, setResultKeys, setResultData);
+	}, [nodeValues, edges, setNodes]);
 
-  const onEdgesChange = useCallback(
-    (changes) => {
-      const updatedEdges = applyEdgeChanges(changes, edges);
-      setEdges(updatedEdges);
-    },
-    [edges]
-  );
+	const onEdgesChange = useCallback(
+		(changes) => {
+			const updatedEdges = applyEdgeChanges(changes, edges);
+			setEdges(updatedEdges);
+		},
+		[edges],
+	);
 
-  const onConnect = useCallback(
-    (params) =>
-      setEdges((prevEdges) =>
-        addEdge({ ...params, type: "smoothstep" }, prevEdges)
-      ),
-    []
-  );
+	const onConnect = useCallback(
+		(params) =>
+			setEdges((prevEdges) =>
+				addEdge({ ...params, type: "smoothstep" }, prevEdges),
+			),
+		[],
+	);
 
-  const onDragOver = useCallback((event) => {
-    event.preventDefault();
-    event.dataTransfer.dropEffect = "move";
-  }, []);
+	const onDragOver = useCallback((event) => {
+		event.preventDefault();
+		event.dataTransfer.dropEffect = "move";
+	}, []);
 
-  const handleSubNodeValueChange = useCallback(
-    (nodeId, newValue) => {
-      setNodes((prevNodes) =>
-        prevNodes.map((node) =>
-          node.id === nodeId
-            ? { ...node, data: { ...node.data, nodeValue: newValue } }
-            : node
-        )
-      );
-      setNodeValues((prevDataNodes) =>
-        prevDataNodes.map((node) =>
-          node.id === nodeId ? { ...node, value: newValue } : node
-        )
-      );
-    },
-    [setNodes, setNodeValues]
-  );
+	const handleSubNodeValueChange = useCallback(
+		(nodeId, newValue) => {
+			setNodes((prevNodes) =>
+				prevNodes.map((node) =>
+					node.id === nodeId
+						? { ...node, data: { ...node.data, nodeValue: newValue } }
+						: node,
+				),
+			);
+			setNodeValues((prevDataNodes) =>
+				prevDataNodes.map((node) =>
+					node.id === nodeId ? { ...node, value: newValue } : node,
+				),
+			);
+		},
+		[setNodes, setNodeValues],
+	);
 
-  const onDrop = useCallback(
-    (event) => {
-      event.preventDefault();
+	const onDrop = useCallback(
+		(event) => {
+			event.preventDefault();
 
-      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
-      const type = event.dataTransfer.getData("application/reactflow");
+			const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+			const type = event.dataTransfer.getData("application/reactflow");
 
-      // check if the dropped element is valid
-      if (typeof type === "undefined" || !type) {
-        return;
-      }
+			// check if the dropped element is valid
+			if (typeof type === "undefined" || !type) {
+				return;
+			}
 
-      const position = reactFlowInstance.project({
-        x: event.clientX - reactFlowBounds.left,
-        y: event.clientY - reactFlowBounds.top,
-      });
+			const position = reactFlowInstance.project({
+				x: event.clientX - reactFlowBounds.left,
+				y: event.clientY - reactFlowBounds.top,
+			});
 
-      const initialValue = getIntialNodeValueByType(type);
-      const nodeId = `dndnode_${idRef.current++}`;
+			const initialValue = getIntialNodeValueByType(type);
+			const nodeId = `dndnode_${idRef.current++}`;
 
-      const nodeChange = (newValue) => {
-        handleSubNodeValueChange(nodeId, newValue);
-      };
+			const nodeChange = (newValue) => {
+				handleSubNodeValueChange(nodeId, newValue);
+			};
 
-      const newNode = createNewNode(
-        nodeId,
-        type,
-        position,
-        initialValue,
-        nodeChange
-      );
+			const newNode = createNewNode(
+				nodeId,
+				type,
+				position,
+				initialValue,
+				nodeChange,
+			);
 
-      const newDataNode = createNewDataNode(nodeId, type, initialValue);
+			const newDataNode = createNewDataNode(nodeId, type, initialValue);
 
-      setNodes((prevNodes) => [...prevNodes, newNode]);
-      setNodeValues((prevNodeData) => [...prevNodeData, newDataNode]);
-    },
-    [reactFlowInstance]
-  );
+			setNodes((prevNodes) => [...prevNodes, newNode]);
+			setNodeValues((prevNodeData) => [...prevNodeData, newDataNode]);
+		},
+		[reactFlowInstance],
+	);
 
-  const [variant, setVariant] = useState("lines");
+	const [variant, setVariant] = useState("lines");
 
-  const [{ run, steps }, setSteps] = useState({
-    run: true,
-    steps: tourSteps,
-  });
+	const [{ run, steps }, setSteps] = useState({
+		run: true,
+		steps: tourSteps,
+	});
 
-  return (
-    <div className="dndflow">
-      <Joyride
-        continuous
-        callback={() => {}}
-        run={run}
-        steps={steps}
-        hideCloseButton
-        scrollToFirstStep
-        showSkipButton
-        showProgress
-      />
-      <ToastContainer limit={1} />
-      <DynamicChatbot />
-      <ReactFlowProvider>
-        <div className="reactflow-wrapper" ref={reactFlowWrapper}>
-          <ReactFlow
-            nodes={nodes}
-            edges={edges}
-            nodeTypes={nodeTypes}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            connectionLineType="smoothstep"
-            onInit={setReactFlowInstance}
-            onDrop={onDrop}
-            onDragOver={onDragOver}
-            fitView
-            style={reactFlowStyle}
-          >
-            <Controls position="bottom-right" />
-            <Background color="#48BFE3" variant={variant} gap={20} />
-            <NodePanel setVariant={setVariant} />
-          </ReactFlow>
-        </div>
-        <ResultTable keys={resultKeys} data={resultData} />
-        <Sidebar />
-      </ReactFlowProvider>
-    </div>
-  );
+	return (
+		<div className="dndflow">
+			<Joyride
+				continuous
+				callback={() => {}}
+				run={run}
+				steps={steps}
+				hideCloseButton
+				scrollToFirstStep
+				showSkipButton
+				showProgress
+			/>
+			<ToastContainer limit={1} />
+			<DynamicChatbot />
+			<ReactFlowProvider>
+				<div className="reactflow-wrapper" ref={reactFlowWrapper}>
+					<ReactFlow
+						nodes={nodes}
+						edges={edges}
+						nodeTypes={nodeTypes}
+						onNodesChange={onNodesChange}
+						onEdgesChange={onEdgesChange}
+						onConnect={onConnect}
+						connectionLineType="smoothstep"
+						onInit={setReactFlowInstance}
+						onDrop={onDrop}
+						onDragOver={onDragOver}
+						fitView
+						style={reactFlowStyle}
+					>
+						<Controls position="bottom-right" />
+						<Background color="#48BFE3" variant={variant} gap={20} />
+						<NodePanel setVariant={setVariant} />
+					</ReactFlow>
+				</div>
+				<ResultTable keys={resultKeys} data={resultData} />
+				<Sidebar />
+			</ReactFlowProvider>
+		</div>
+	);
 };
 
 /* NODE TYPES */
