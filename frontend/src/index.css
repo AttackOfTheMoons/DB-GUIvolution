@@ -116,3 +116,14 @@
   background: #810CA8; /* Darker background on hover */
   transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
 }
+
+.react-flow__handle {
+  background: #FF2E63;
+  width: 10px;
+  height: 10px;
+  border-radius: 15px;
+}
+
+path.react-flow__edge-path{
+  stroke-width: 5;
+}

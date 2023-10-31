@@ -25,6 +25,14 @@
   color: #810CA8;
 }
 
+.cs-message{
+  animation: tilt-n-move-shaking 1.5s infinite;
+}
+
+.cs-message:hover{
+  animation-play-state: paused;
+}
+
 .cs-message--incoming .cs-message__content{
   background-color: #E5B8F4;
   color: #810CA8;
@@ -82,6 +90,14 @@
   100% { transform: rotate(0deg); }
 }
 
+@keyframes tilt-n-move-shaking {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(0.5px, 0.5px) rotate(0.5deg); }
+  50% { transform: translate(0, 0) rotate(0eg); }
+  75% { transform: translate(-0.5px, 0.5px) rotate(-0.5deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
 /* Styles for the ai-button */
 .ai-button {
   background: #C147E9;
@@ -96,7 +112,6 @@
   border-radius: 50px; /* Round the button shape */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
   transition: background-color 0.3s, transform 0.3s;
-
 }
 
 .ai-button:hover {
