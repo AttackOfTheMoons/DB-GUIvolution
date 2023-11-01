@@ -1,9 +1,7 @@
 import axios from "axios";
 import { Multiselect } from "multiselect-react-dropdown";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
-
-const handleStyle = { left: 10 };
 
 function SelectNode({ data, isConnectable }) {
 	const { nodeValue, handleNodeValueChange, selectedTable } = data;
@@ -24,7 +22,7 @@ function SelectNode({ data, isConnectable }) {
 			handleNodeValueChange([]);
 			setOptions([]);
 		}
-	}, [selectedTable]);
+	}, [selectedTable, handleNodeValueChange]);
 
 	// const options = [{ name: "John" }, { name: "Mary" }, { name: "Robert" }];
 	const onSelectNames = (selectedList) => {
@@ -33,16 +31,6 @@ function SelectNode({ data, isConnectable }) {
 
 	const onRemoveNames = (selectedList) => {
 		handleNodeValueChange(selectedList);
-	};
-
-	const imgStyle = {
-		position: "absolute",
-		left: "-30px",
-		top: "-220px",
-		width: "300px",
-		objectFit: "cover", // Maintain aspect ratio and cover the container
-		zIndex: -1, // Set a negative z-index to send the image to the back
-		opacity: 1,
 	};
 
 	return (

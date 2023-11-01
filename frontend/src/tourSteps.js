@@ -1,6 +1,6 @@
 import React from "react";
 
-export default [
+const tourSteps = [
 	{
 		content: <h2>Would you like to learn how to use the APP?</h2>,
 		locale: { skip: <strong>SKIP</strong> },
@@ -72,3 +72,5 @@ export default [
 		title: "Congrats!",
 	},
 ];
+
+export default tourSteps;

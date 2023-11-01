@@ -2,8 +2,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
 
-const handleStyle = { left: 10 };
-
 function WhereNode({ data, isConnectable }) {
 	const { nodeValue, handleNodeValueChange, selectedTable } = data;
 	const [operators, setOperators] = useState([]);
@@ -24,16 +22,6 @@ function WhereNode({ data, isConnectable }) {
 				});
 		}
 	}, [selectedTable]);
-
-	const imgStyle = {
-		position: "absolute",
-		left: "-8px",
-		top: "-100px",
-		width: "250px",
-		objectFit: "cover",
-		zIndex: -1,
-		opacity: 1,
-	};
 
 	const handleColumnNameChange = (event) => {
 		const selectedColumnType =

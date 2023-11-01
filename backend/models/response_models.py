@@ -21,4 +21,5 @@ class SQLQueryResult(BaseModel):
 
 
 class QueryResponseModel(BaseModel):
+    engineered_input: str
     sql_query: str

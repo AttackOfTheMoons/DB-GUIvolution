@@ -12,6 +12,7 @@ from .where_node_model import WhereStmt
 
 class QueryRequestModel(BaseModel):
     user_input: str
+    conversation_history: Optional[List[Dict[str, str]]] = []
 
 
 # Node-based Models
@@ -20,6 +21,8 @@ class QueryRequestModel(BaseModel):
 class InsertDataRequest(BaseModel):
     table_name: str
     values: Dict[str, Any]
+
+
 
 
 class NodeType(str, Enum):

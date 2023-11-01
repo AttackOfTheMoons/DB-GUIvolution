@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Body, Depends
+from fastapi import APIRouter, Depends
 from sqlalchemy import Inspector
 
 from database import get_inspector
@@ -11,9 +11,12 @@ router = APIRouter()
 @router.post("/{flavor}/generate_sql", response_model=QueryResponseModel)
 def generate_sql_endpoint(
     flavor: str,
-    request: QueryRequestModel = Body(...),
+    request: QueryRequestModel,
     inspector: Inspector = Depends(get_inspector),
 ) -> QueryResponseModel:
-    return QueryResponseModel(
-        sql_query=generate_sql_query(request.user_input, flavor, inspector=inspector)
+    return generate_sql_query(
+        request.user_input,
+        flavor,
+        inspector=inspector,
+        conversation_history=request.conversation_history or [],
     )

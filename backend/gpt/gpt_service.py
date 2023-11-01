@@ -4,6 +4,7 @@ import openai
 from sqlalchemy import Inspector
 
 from core import env
+from models import QueryResponseModel
 
 from .flavor_queries import (
     COMMON_EXAMPLES,
@@ -56,7 +57,12 @@ def fetch_columns(table_name: str, inspector: Inspector) -> List[Dict[str, Any]]
     return columns
 
 
-def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> str:
+def generate_sql_query(
+    user_input: str,
+    flavor: str,
+    inspector: Inspector,
+    conversation_history: List[Dict[str, str]],
+) -> QueryResponseModel:
     flavor_examples = {
         "MySQL": MYSQL_EXAMPLES,
         "PostgreSQL": POSTGRES_EXAMPLES,
@@ -75,7 +81,12 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
     extra = (
         "Do NOT use aliases in the query. Be explicit in the SQL syntax. "
         "When adding VARCHAR columns, always specify the length, like VARCHAR(255) "
-        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR)."
+        "But if the flavor is oracle, then it should be VARCHAR2(255 CHAR). "
+        "Specify INNER JOIN when applicable. "
+        "Remember to return an empty string if the user input is ANYTHING else besides instructions to make a query. "
+        "This means you either output a query or an empty string with no exceptions at all. "
+        "Don't include quotations when you return an empty string. "
+        "This is the user input: "
     )
 
     # Construct the api_input
@@ -84,6 +95,7 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
     messages = (
         COMMON_EXAMPLES
         + flavor_examples[flavor]
+        + conversation_history
         + [{"role": "user", "content": api_input}]
     )
 
@@ -92,7 +104,10 @@ def generate_sql_query(user_input: str, flavor: str, inspector: Inspector) -> st
         messages=messages,
     )
 
-    return response.choices[0].message["content"]
+    content = (
+        response.choices[0].message["content"] or "I can only help with making queries."
+    )
+    return QueryResponseModel(engineered_input=api_input, sql_query=content)
 
 
 def get_database_schema(inspector: Inspector) -> str:

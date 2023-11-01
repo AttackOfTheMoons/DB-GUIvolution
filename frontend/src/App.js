@@ -1,19 +1,16 @@
-import axios from "axios";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Joyride from "react-joyride";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ReactFlow, {
 	Background,
 	Controls,
-	Panel,
 	ReactFlowProvider,
 	addEdge,
 	applyEdgeChanges,
 	applyNodeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import styled from "styled-components";
 import ResultTable from "./ResultTable";
 import DynamicChatbot from "./chatbot";
 import "./index.css";
@@ -41,9 +38,8 @@ const reactFlowStyle = {
 	background: "#192655",
 };
 
-const ignoreChangeTypes = ["dimensions", "position", "select"];
+// const ignoreChangeTypes = ["dimensions", "position", "select"];
 
-// TODO: This file is getting very bloated, we should refactor to make it more simple.
 const App = () => {
 	const reactFlowWrapper = useRef(null);
 	const [nodes, setNodes] = useState([]);
@@ -183,23 +179,18 @@ const App = () => {
 			setNodes((prevNodes) => [...prevNodes, newNode]);
 			setNodeValues((prevNodeData) => [...prevNodeData, newDataNode]);
 		},
-		[reactFlowInstance],
+		[reactFlowInstance, handleSubNodeValueChange],
 	);
 
 	const [variant, setVariant] = useState("lines");
-
-	const [{ run, steps }, setSteps] = useState({
-		run: true,
-		steps: tourSteps,
-	});
 
 	return (
 		<div className="dndflow">
 			<Joyride
 				continuous
 				callback={() => {}}
-				run={run}
-				steps={steps}
+				run={true}
+				steps={tourSteps}
 				hideCloseButton
 				scrollToFirstStep
 				showSkipButton

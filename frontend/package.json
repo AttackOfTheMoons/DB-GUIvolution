@@ -26,7 +26,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "biome format --write ./src && biome lint --apply ./src",
-    "lint-unsafe": "biome check --apply-unsafe ./src"
+    "lint-unsafe": "biome check --apply-unsafe ./src",
+    "lint-check": "biome check ./src"
   },
   "eslintConfig": {
     "extends": [
@@ -47,6 +48,7 @@
     ]
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@biomejs/biome": "1.2.2"
   },
   "proxy": "http://localhost:8000"
