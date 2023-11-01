@@ -26,14 +26,22 @@ const Sidebar = () => {
 
 	return (
 		<>
-			<button
-				type="button"
-				className="toggle-button toolbox-button"
+			{/* <button
+        type="button"
+        className="toggle-button toolbox-button"
+        onClick={toggleSidebar}
+      >
+        {isSidebarOpen ? "🧰: ✅" : "🧰: ❌"}
+      </button> */}
+			<aside
+				className={`sidebar ${isSidebarOpen ? "open" : ""}`}
 				onClick={toggleSidebar}
+				onKeyDown={(event) => {
+					if (event.key === "Enter") {
+						toggleSidebar();
+					}
+				}}
 			>
-				{isSidebarOpen ? "🧰: ✅" : "🧰: ❌"}
-			</button>
-			<aside className={`sidebar ${isSidebarOpen ? "open" : ""}`}>
 				<div className="description" style={description}>
 					<span className="toolbox-icon">🧰</span> SQL Query Toolbox
 				</div>
@@ -61,13 +69,6 @@ const Sidebar = () => {
 					<img alt="" src="./icons/circle.png" width={"20px"} />
 					WHERE
 				</div>
-				{/* <div
-      className="dndnode output"
-      onDragStart={(event) => onDragStart(event, "output")}
-      draggable
-    >
-      Output Node
-    </div> */}
 			</aside>
 		</>
 	);

@@ -1,15 +1,21 @@
 /* Styles for the sidebar */
 .sidebar {
-  width: 250px;
-  height: 100%;
+  width: 300px;
+  height: 280px;
   position: fixed;
   top: 0;
   right: 0;
   transition: transform 0.3s ease;
-  transform: translateX(290px);
+  transform: translateY(-280px);
   background: #252525; /* Set a background color for the sidebar */
   color: #fff; /* Set text color for the sidebar */
   box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Add a shadow on the left side */
+  border-radius: 15px;
+  cursor: pointer;
+}
+
+.sidebar:hover {
+  transform: translateY(-240px);
 }
 
 @keyframes horizontal-shaking {
@@ -34,28 +40,29 @@ span.toolbox-icon{
   animation: tilt-shaking 0.8s infinite;}
 
 .sidebar.open {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
 /* Styles for the toggle-button */
-.toggle-button {
-  background: #0da010; /* Set a background color for the button */
+/* .toggle-button {
+  background: #0da010; 
   cursor: pointer;
   position: fixed;
-  top: 60px;
-  right: 390px; /* Center the button horizontally */
-  transform: translateX(50%); /* Center the button horizontally */
-  z-index: 2; /* Ensure the button is above the sidebar content */
+  bottom: 12px;
+  right: 100px; 
+  transform: translateX(50%); 
+  z-index: 2; 
   color: #F3FDE8;
-  padding: 10px 20px; /* Increased padding for better visibility and touch-friendliness */
-  border-radius: 50px; /* Round the button shape */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  padding: 10px 20px; 
+  border-radius: 50px; 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); 
   transition: background-color 0.3s, transform 0.3s;
+  display: none;
 }
 
 .toggle-button:hover {
-  background: #0a800d; /* Darker background on hover */
-  transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+  background: #0a800d; 
+  transform: translateX(50%) scale(1.05); 
   animation: tilt-shaking 0.5s infinite;
-  right: 340px;
-}
+  right: 50px; 
+} */

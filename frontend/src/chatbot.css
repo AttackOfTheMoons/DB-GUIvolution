@@ -5,13 +5,14 @@
   top: 0;
   left: 0;
   transition: transform 0.3s ease;
-  transform: translateX(-410px);
+  transform: translateX(-330px);
   z-index: 1;
 }
 
 .App.open {
   transform: translateX(0);
 }
+
 
 /* Styles for the cs-message-list */
 .cs-message-list {
@@ -49,7 +50,7 @@
   flex-direction: row;
   height: 100%;
   overflow: hidden; /* Change 'auto' to 'hidden' to hide scrollbars */
-  border: 4px solid #9254de; /* Use a lighter border color */
+  border: 5px solid #9254de; /* Use a lighter border color */
   border-radius: 40px; /* Add rounded corners for a modern touch */
   box-sizing: border-box;
   color: #333; /* Dark text color for better readability */
@@ -59,10 +60,11 @@
   justify-content: center; /* Center the content horizontally */
   align-items: center; /* Center the content vertically */
   box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  cursor: pointer;
 }
 
 .cs-main-container:hover {
-  border: 6px solid #9254de; /* Use a lighter border color */
+  border: 10px solid #9254de; /* Use a lighter border color */
   transition: border 0.1s;
 }
 
@@ -98,27 +100,27 @@
   100% { transform: translate(0, 0) rotate(0deg); }
 }
 
-/* Styles for the ai-button */
+
 .ai-button {
-  background: #C147E9;
+  background: #fff;
   cursor: pointer;
   position: fixed;
-  top: 7px;
-  right: 390px; /* Center the button horizontally */
-  transform: translateX(50%); /* Center the button horizontally */
+  top: 12px;
+  left: 300px; 
+  transform: translateX(50%); 
   z-index: 2;
-  color: #EEF1FF;
-  padding: 10px 20px; /* Increased padding for better visibility and touch-friendly */
-  border-radius: 50px; /* Round the button shape */
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  color: #9254de;
+  padding: 10px 20px; 
+  border-radius: 50px; 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); 
   transition: background-color 0.3s, transform 0.3s;
 }
 
 .ai-button:hover {
-  background: #810CA8; /* Darker background on hover */
-  transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+  background: #9254de; 
+  transform: translateX(50%) scale(1.05); 
   animation: tilt-shaking 0.5s infinite;
-  right: 340px;
+  left: 333px;
 }
 
 .cs-button--attachment{

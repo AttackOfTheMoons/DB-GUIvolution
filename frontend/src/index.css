@@ -31,11 +31,12 @@
   cursor: grab;
   background: #fff; /* White background for nodes */
   color: #3498db; /* Text color for nodes */
-  transition: border 0.1s;
+  transition: border 0.1s, padding 0.1s;
 }
 
 .dndflow .dndnode:hover {
   border: 5px dashed #ffaa00; /* Thicker border */
+  padding: 7px;
 }
 
 .dndflow .dndnode.input {
@@ -61,10 +62,10 @@
     flex-direction: row;
   }
 
-  .dndflow aside {
+  /* .dndflow aside {
     width: 20%;
     max-width: 250px;
-  }
+  } */
 }
 
 /* Apply styles to the panel container */
@@ -78,7 +79,6 @@
 /* Apply common styles to the buttons */
 .panel-button {
   color: #3498db; /* Change to your desired text color */
-  border: none;
   background: #f0f8f1;
   border: 2px solid #3498db;
   border-radius: 50%; /* Makes the buttons round */
@@ -88,13 +88,33 @@
   font-weight: 1000;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s;
+  transition: color 0.5s, border-color 0.5s, background 0.5s;
 }
 
 .panel-button:hover {
   background: #3498db;
   border-color: #3498db;
   color: #fff;
+}
+
+.react-flow__controls{
+  display: flex;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls-button{
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
 }
 
 .info-button {

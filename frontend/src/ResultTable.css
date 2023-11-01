@@ -1,21 +1,110 @@
 #outputWindow {
-  max-width: 280px;
-  max-height: 100%;
-  width: 100%;
+  justify-content: center; /* Center the content horizontally */
+  width: 300px;
+  height: 10%;
   background: linear-gradient(135deg, #4AC4D9, #1263C1);
   font-family: "Courier, monospace";
-  color: #FFFFFF;
+  color: #1263C1;
   font-size: 20px;
-  display: block;
-  border: 2px dashed #fff; /* Unique dashed border with a distinctive color */
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  border: 2px solid #1263C1; /* Unique dashed border with a distinctive color */
   border-radius: 5px; /* Add rounded corners */
   text-align: center;
   padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  transition: border 0.1s ease, height 0.5s ease, width 0.5s ease;
+  cursor: pointer;
+  z-index: 1;
+}
+
+#outputWindow.open {
+  width: 60%;
+  height: 85%;
   overflow: auto;
-  transition: border 0.1s;
+}
+
+.sql-output {
+  width: 95%;
+  max-height: 100%;
+  display: block;
+  background-color: #000; /* Dark background color */
+  color: #00FF00; /* Green font color */
+  font-family: "Courier, monospace"; /* Monospace font for the command prompt style */
+  font-size: 20px; /* Adjust the font size as needed */
+  padding: 10px; /* Add padding for spacing */
+  border: 2px solid #00FF00; /* Green border */
+  border-radius: 5px; /* Add rounded corners */
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.5); /* Green box shadow */
+  margin: 10px 0; /* Add margin for spacing */
+  overflow: hidden;
+}
+
+table{
+  display:none;
+}
+
+table.open{
+  display: inline;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  margin-top: 20px;
+}
+
+table, th, td {
+  border: 1px solid #ddd;
+}
+
+th, td {
+  padding: 12px;
+  text-align: left;
+}
+
+th {
+  background-color: #4AC4D9;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+tr:nth-child(odd) {
+  background-color: #bff3f9;
+}
+
+tr:hover {
+  background-color: #ddd;
 }
 
 #outputWindow:hover{
   border: 5px dashed #ffaa00; /* Unique dashed border with a distinctive color */
+}
+
+
+.output-button {
+  background: #f6faf6; 
+  cursor: pointer;
+  position: fixed;
+  top: 12px;
+  left: 180px; 
+  transform: translateX(50%);
+  z-index: 2; 
+  color: #F3FDE8;
+  padding: 10px 20px; 
+  border-radius: 50px; 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); 
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.output-button:hover {
+  background: #858985; 
+  transform: translateX(50%) scale(1.05); 
+  animation: tilt-shaking 0.5s infinite;
+  left: 230px; 
 }

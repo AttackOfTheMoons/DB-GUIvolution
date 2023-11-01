@@ -52,6 +52,7 @@ const App = () => {
 	const [reactFlowInstance, setReactFlowInstance] = useState(null);
 	const [resultKeys, setResultKeys] = useState([]);
 	const [resultData, setResultData] = useState([]);
+	const [resultSQL, setSQL] = useState("");
 
 	const idRef = useRef(0);
 
@@ -87,12 +88,6 @@ const App = () => {
 		// Check if the nodes are connected using dfs
 		const allNodesConnected = checkAllNodesConnected(adjacencyList, nodeValues);
 
-		if (!allNodesConnected) {
-			// TODO: Display an error or take appropriate action.
-			console.log("All nodes are not connected.");
-			return;
-		}
-
 		// Iterate over the "Select" and "Where" nodes and find the closest "From" node for each
 		const selectWhereNodes = nodeValues.filter(
 			(node) => node.type === "select" || node.type === "where",
@@ -103,8 +98,14 @@ const App = () => {
 			return;
 		}
 
-		sendQueryToServer(nodeValues, setResultKeys, setResultData);
-	}, [nodeValues, edges, setNodes]);
+		if (!allNodesConnected) {
+			// TODO: Display an error or take appropriate action.
+			console.log("All nodes are not connected.");
+			return;
+		}
+
+		sendQueryToServer(nodeValues, setResultKeys, setResultData, setSQL);
+	}, [nodeValues, edges, setNodes, setResultKeys, setResultData, setSQL]);
 
 	const onEdgesChange = useCallback(
 		(changes) => {
@@ -222,12 +223,12 @@ const App = () => {
 						fitView
 						style={reactFlowStyle}
 					>
-						<Controls position="bottom-right" />
+						<Controls position="bottom-center" />
 						<Background color="#48BFE3" variant={variant} gap={20} />
 						<NodePanel setVariant={setVariant} />
 					</ReactFlow>
 				</div>
-				<ResultTable keys={resultKeys} data={resultData} />
+				<ResultTable keys={resultKeys} data={resultData} sql={resultSQL} />
 				<Sidebar />
 			</ReactFlowProvider>
 		</div>

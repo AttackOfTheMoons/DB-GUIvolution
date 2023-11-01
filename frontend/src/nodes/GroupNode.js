@@ -8,10 +8,8 @@ const GroupNode = ({ children }) => {
 		.getState()
 		.getNodes()
 		.filter((node) => node.selected);
-	console.log("fuck: ", selectedNodes);
 
 	const handleMove = (event, delta) => {
-		console.log(store);
 		store.getState().updateNodePositions(
 			selectedNodes.map((node) => {
 				try {

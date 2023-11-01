@@ -77,12 +77,21 @@ function DynamicChatbot() {
 
 	return (
 		<>
-			<button type="button" className="ai-button" onClick={toggleSidebar}>
-				{isSidebarOpen ? "🤖: ✅ " : "🤖: ❌"}
-			</button>
 			<div className={`App ${isSidebarOpen ? "open" : ""}`}>
 				<div style={{ position: "relative", height: "100%", width: "415px" }}>
 					<MainContainer>
+						<button
+							type="button"
+							className="ai-button"
+							onClick={toggleSidebar}
+							onKeyDown={(event) => {
+								if (event.key === "Enter") {
+									toggleSidebar();
+								}
+							}}
+						>
+							{isSidebarOpen ? "❌" : "💬"}
+						</button>
 						<ChatContainer>
 							<MessageList
 								scrollBehavior="smooth"

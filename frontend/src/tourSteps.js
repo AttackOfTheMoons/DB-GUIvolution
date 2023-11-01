@@ -6,30 +6,31 @@ export default [
 		locale: { skip: <strong>SKIP</strong> },
 		placement: "center",
 		target: "body",
+		title: "Welcome",
 	},
 	{
 		content: <h2>Drag and drop a node to the canvas.</h2>,
-		placement: "left",
+		placement: "bottom",
 		target: ".sidebar",
-		title: "SQL Query Toolbox",
+		title: "Drag and Drop Nodes",
 	},
 	{
 		content: <h2>First things first, use a FROM to select the table.</h2>,
 		placement: "left",
 		target: ".sidebar-from",
-		title: "FROM",
+		title: "Using the FROM Clause",
 	},
 	{
 		content: <h2>Then, you might use a SELECT to filter the columns.</h2>,
 		placement: "left",
 		target: ".sidebar-select",
-		title: "SELECT",
+		title: "Working with the SELECT Clause",
 	},
 	{
 		content: <h2>Also, you might use a WHERE to filter the rows.</h2>,
 		placement: "left",
 		target: ".sidebar-where",
-		title: "WHERE",
+		title: "Filtering Rows with the WHERE Clause",
 	},
 	{
 		content: (
@@ -39,27 +40,19 @@ export default [
 		),
 		placement: "center",
 		target: "body",
-		title: "Be Aware",
+		title: "Understanding Query Structure",
 	},
 	{
 		content: <h2>Click a node and press "Backspace" to delete it.</h2>,
 		placement: "center",
 		target: "body",
-		title: "Delete Nodes",
+		title: "Deleting Nodes",
 	},
 	{
-		content: <h2>Your data table is in the output window!</h2>,
-		placement: "left",
+		content: <h2>Click on this window to display the output table.</h2>,
+		placement: "top",
 		target: "#outputWindow",
-		title: "Output",
-	},
-	{
-		content: (
-			<h2>Use this button to open/close the toolbox to see the output.</h2>
-		),
-		placement: "left",
-		target: ".toolbox-button",
-		title: "Open/Close",
+		title: "Viewing Output",
 	},
 	{
 		content: (
@@ -70,7 +63,7 @@ export default [
 		),
 		placement: "right",
 		target: ".cs-chat-container",
-		title: "AI",
+		title: "Interacting with AI",
 	},
 	{
 		content: <h2>You are good to go!</h2>,

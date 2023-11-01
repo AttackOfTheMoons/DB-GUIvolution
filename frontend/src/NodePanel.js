@@ -3,7 +3,7 @@ import { Panel } from "reactflow";
 
 const NodePanel = ({ setVariant }) => {
 	return (
-		<Panel position={"top-left"}>
+		<Panel position={"top-center"}>
 			<button
 				className="panel-button"
 				type="button"

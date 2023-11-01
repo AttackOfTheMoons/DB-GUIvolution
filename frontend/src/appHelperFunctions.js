@@ -9,7 +9,6 @@ export const createAdjacencyList = (edges) => {
 		adjacencyList[target] = adjacencyList[target] || [];
 		adjacencyList[source].push(target);
 		adjacencyList[target].push(source);
-		// }
 	});
 	return adjacencyList;
 };
@@ -106,7 +105,12 @@ const showNotification = (message, theme) => {
 	});
 };
 
-export const sendQueryToServer = (nodeValues, setResultKeys, setResultData) => {
+export const sendQueryToServer = (
+	nodeValues,
+	setResultKeys,
+	setResultData,
+	setSQL,
+) => {
 	axios
 		.post("/queries/", { nodes: nodeValues, flavor: "postgres" })
 		.then((response) => {
@@ -116,6 +120,7 @@ export const sendQueryToServer = (nodeValues, setResultKeys, setResultData) => {
 			}
 			setResultKeys(data.keys);
 			setResultData(data.data);
+			setSQL(data.sql.sql_query);
 		})
 		.catch((error) => {
 			const errorData = error.response.data;
@@ -133,7 +138,8 @@ export const sendQueryToServer = (nodeValues, setResultKeys, setResultData) => {
 					if (err.msg.includes("SELECT list cannot be empty")) {
 						showNotification("Please select a column in SELECT.", "light");
 					} else {
-						showNotification(err.msg, "colored");
+						// showNotification(err.msg, "colored");
+						console.error(err.msg);
 					}
 				});
 			} else {
@@ -141,7 +147,8 @@ export const sendQueryToServer = (nodeValues, setResultKeys, setResultData) => {
 				if (errorData.detail.includes("No FROM node found")) {
 					showNotification("Use 🟦FROM to select a table.", "colored");
 				} else {
-					showNotification(errorData.detail, "light");
+					console.error(errorData.detail);
+					// showNotification(errorData.detail, "light");
 				}
 			}
 		});
