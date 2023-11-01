@@ -7,22 +7,17 @@ from pydantic_core.core_schema import ValidationInfo
 from .response_models import SQLColumn
 from .where_node_model import WhereStmt
 
+
 # NLP Models
-
-
 class QueryRequestModel(BaseModel):
     user_input: str
     conversation_history: Optional[List[Dict[str, str]]] = []
 
 
 # Node-based Models
-
-
 class InsertDataRequest(BaseModel):
     table_name: str
     values: Dict[str, Any]
-
-
 
 
 class NodeType(str, Enum):
