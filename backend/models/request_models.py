@@ -40,9 +40,12 @@ class Node(BaseModel):
         info: ValidationInfo,
     ) -> Union[List[str], str, WhereStmt]:
         node_type = info.data["type"]
+        node_id = info.data["id"]
         if node_type == NodeType.SELECT:
             if not isinstance(value, list):
-                raise ValueError("SELECT should be a list of columns")
+                raise ValueError(
+                    f"SELECT should be a list of columns node id: {node_id}"
+                )
             elif not value:
                 raise ValueError("SELECT list cannot be empty")
             elif any(not isinstance(item, SQLColumn) for item in value):
