@@ -16,7 +16,7 @@ import "./index.css";
 function DynamicChatbot() {
 	const [messages, setMessages] = useState([
 		{
-			message: "Hello, I'm your SQL query assistant!",
+			message: "🤖: Hello, I'm your SQL query assistant!",
 			sentTime: "just now",
 			sender: "assistant",
 		},
@@ -39,7 +39,7 @@ function DynamicChatbot() {
 
 	const handleSend = async (userMessage) => {
 		const newUserMessage = {
-			message: userMessage,
+			message: `🤓: ${userMessage}`,
 			sentTime: "just now",
 			direction: "outgoing",
 			sender: "user",
@@ -50,9 +50,7 @@ function DynamicChatbot() {
 		setIsTyping(true);
 
 		try {
-			// console.log('User Message:', userMessage);
-			// console.log('Engineered History:', engineeredHistory);
-
+			// Make an API request to the backend
 			const response = await axios.post("/api/nlp/PostgreSQL/generate_sql", {
 				user_input: userMessage,
 				conversation_history: engineeredHistory,
@@ -75,7 +73,7 @@ function DynamicChatbot() {
 			setEngineeredHistory(updatedEngineeredHistory);
 
 			const newChatbotMessage = {
-				message: chatbotResponse,
+				message: `🤖: ${chatbotResponse}`,
 				sentTime: "just now",
 				direction: "incoming",
 				sender: "assistant",
@@ -92,12 +90,21 @@ function DynamicChatbot() {
 
 	return (
 		<>
-			<button type="button" className="ai-button" onClick={toggleSidebar}>
-				{isSidebarOpen ? "Close AI" : "Open AI"}
-			</button>
 			<div className={`App ${isSidebarOpen ? "open" : ""}`}>
 				<div style={{ position: "relative", height: "100%", width: "415px" }}>
 					<MainContainer>
+						<button
+							type="button"
+							className="ai-button"
+							onClick={toggleSidebar}
+							onKeyDown={(event) => {
+								if (event.key === "Enter") {
+									toggleSidebar();
+								}
+							}}
+						>
+							{isSidebarOpen ? "❌" : "💬"}
+						</button>
 						<ChatContainer>
 							<MessageList
 								scrollBehavior="smooth"

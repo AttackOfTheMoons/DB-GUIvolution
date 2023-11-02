@@ -1,25 +1,68 @@
+/* Styles for the sidebar */
 .sidebar {
-  width: 250px;
-  height: 100%;
+  width: 300px;
+  height: 280px;
   position: fixed;
   top: 0;
   right: 0;
   transition: transform 0.3s ease;
-  transform: translateX(265px);
+  transform: translateY(-280px);
+  background: #252525; /* Set a background color for the sidebar */
+  color: #fff; /* Set text color for the sidebar */
+  box-shadow: -5px 0 15px rgba(0, 0, 0, 0.3); /* Add a shadow on the left side */
+  border-radius: 15px;
+  cursor: pointer;
 }
+
+.sidebar:hover {
+  transform: translateY(-240px);
+}
+
+@keyframes horizontal-shaking {
+  0% { transform: translateX(0) }
+  25% { transform: translateX(3px) }
+  50% { transform: translateX(-15px) }
+  75% { transform: translateX(3px) }
+  100% { transform: translateX(0) }
+ }
+
+ @keyframes tilt-shaking {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(5deg); }
+  50% { transform: rotate(0eg); }
+  75% { transform: rotate(-5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+span.toolbox-icon{ 
+  display: inline-block;
+  font-size: 30px;
+  animation: tilt-shaking 0.8s infinite;}
 
 .sidebar.open {
-  transform: translateX(0);
+  transform: translateY(0);
 }
 
-.toggle-button {
-  background: none;
+/* Styles for the toggle-button */
+/* .toggle-button {
+  background: #0da010; 
   cursor: pointer;
   position: fixed;
-  bottom: 15px; /* Adjust the top and right values as needed */
-  right: 42%; /* Adjust the top and right values as needed */
-  z-index: 2; /* Ensure the button is above the sidebar content */
-  background-color: #0da010; /* Set a background color for the button */
-  color: #fff; /* Set a text color for the button */
-  padding: 5px 12px; /* Add some padding to the button for better visibility */
+  bottom: 12px;
+  right: 100px; 
+  transform: translateX(50%); 
+  z-index: 2; 
+  color: #F3FDE8;
+  padding: 10px 20px; 
+  border-radius: 50px; 
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); 
+  transition: background-color 0.3s, transform 0.3s;
+  display: none;
 }
+
+.toggle-button:hover {
+  background: #0a800d; 
+  transform: translateX(50%) scale(1.05); 
+  animation: tilt-shaking 0.5s infinite;
+  right: 50px; 
+} */

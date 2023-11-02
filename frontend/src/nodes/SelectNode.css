@@ -1,31 +1,93 @@
-/* .SelectNode {
-  width: 0px;
-  height: 0px;
-  border-style: inset;
-  border-width: 0 70px 140px 70px;
-  border-color: transparent transparent #1FAB89 transparent;
-  float: left;
-  transform: rotate(360deg);
-  -ms-transform: rotate(360deg);
-  -moz-transform: rotate(360deg);
-  -webkit-transform: rotate(360deg);
-  -o-transform: rotate(360deg);
-} */
-
 .SelectNode {
-  height: 50px;
-  border: 1px solid #eee;
-  padding: 5px;
-  border-radius: 5px;
-  background: #5eac24;
+  height: 180px;
+  width: 250px;
+  padding: 10px;
+  border: 2px solid #5eac24;
+  border-radius: 10px;
+  background: #D7FBE8;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s, border-color 0.3s;
+  transform: skew(-30deg);
+  /* width: 0px;
+  height: 0px;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 230px solid #D7FBE8; */
+}
+
+.SelectNode:hover {
+  background: #5eac24;
+  border-color: #5eac24;
+  color: #fff;
+  /* width: 0;
+  height: 0;
+  border-left: 170px solid transparent;
+  border-right: 170px solid transparent;
+  border-bottom: 230px solid #5eac24; */
+}
+
+.notFound {
+  color: #000;
+}
+
+/* .SelectNode .react-flow__handle-top {
+  left: 50%;
+  top: 10px;
+  transform: translate(-50%, 0);
+  border-radius: 0;
+  background: #5eac24;
+}
+
+.SelectNode .react-flow__handle-bottom {
+  left: 50%;
+  bottom: -225px;
+  transform: translate(-50%, 0);
+  border-radius: 0;
+}*/
+
+.select-box{
+  transform: skew(20deg);
+} 
+
+.SelectNode:hover label{
+  color: #fff;
+}
+
+.option{
+  color: black;
 }
 
 .SelectNode label {
-  display: block;
-  color: black;
-  font-size: 12px;
+  color: #5eac24;
+  font-size: 14px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+#search_input {
+  border: 2px solid #5eac24;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  color: #333;
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#search_input:focus {
+  border-color: #ff6b6b;
+  box-shadow: 0 2px 6px rgba(255, 107, 107, 0.4);
+  outline: none;
+}
+#search_input:hover {
+  border-color: #ffaa00;
+}
+
+.search-wrapper{
+  border: 0;
 }

@@ -1,49 +1,60 @@
+/* Modernized styles for .dndflow container */
 .dndflow {
-  flex-direction: column;
   display: flex;
   flex-grow: 1;
   height: 100%;
+  background: #f4f4f4; /* Background color for the container */
+  overflow: hidden; /* Hide overflow content */
 }
 
 .dndflow aside {
   border-right: 1px solid #eee;
-  padding: 15px 10px;
-  font-size: 12px;
-  background: linear-gradient(#80FFDB, #64DFDF, #48BFE3, #5390D9, #5E60CE);
-
+  padding: 15px 20px; /* Increased padding for better spacing */
+  font-size: 14px; /* Larger font size for readability */
+  background: linear-gradient(135deg, #3498db, #27ae60); /* Modern gradient background */
+  color: #fff; /* Text color for better contrast */
 }
 
 .dndflow aside .description {
-  margin-bottom: 10px;
+  margin-bottom: 20px; /* Increased margin for better spacing */
 }
 
 .dndflow .dndnode {
-  height: 20px;
-  padding: 4px;
-  border: 1px solid #1a192b;
-  border-radius: 2px;
-  margin-bottom: 10px;
+  height: 30px; /* Increased height for better visibility */
+  padding: 10px; /* Increased padding for spacing */
+  border: 2px solid #3498db; /* Thicker border */
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 15px; /* Increased margin for spacing */
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: grab;
+  background: #fff; /* White background for nodes */
+  color: #3498db; /* Text color for nodes */
+  transition: border 0.1s, padding 0.1s;
+}
+
+.dndflow .dndnode:hover {
+  border: 5px dashed #ffaa00; /* Thicker border */
+  padding: 7px;
 }
 
 .dndflow .dndnode.input {
-  border-color: #0041d0;
+  border-color: #3498db; 
 }
 
 .dndflow .dndnode.output {
-  border-color: #ff0072;
+  border-color: #27ae60;
 }
 
 .dndflow .reactflow-wrapper {
   flex-grow: 1;
   height: 100%;
+  overflow: hidden; /* Hide overflow content */
 }
 
 .dndflow .selectall {
-  margin-top: 10px;
+  margin-top: 20px; /* Increased margin for better spacing */
 }
 
 @media screen and (min-width: 768px) {
@@ -51,8 +62,88 @@
     flex-direction: row;
   }
 
-  .dndflow aside {
+  /* .dndflow aside {
     width: 20%;
     max-width: 250px;
-  }
+  } */
+}
+
+/* Apply styles to the panel container */
+.Panel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px; /* Adjust the gap between buttons as needed */
+}
+
+/* Apply common styles to the buttons */
+.panel-button {
+  color: #3498db; /* Change to your desired text color */
+  background: #f0f8f1;
+  border: 2px solid #3498db;
+  border-radius: 50%; /* Makes the buttons round */
+  width: 40px; /* Adjust the width as needed */
+  height: 40px; /* Adjust the height as needed */
+  font-size: 24px; /* Adjust the font size as needed */
+  font-weight: 1000;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: color 0.5s, border-color 0.5s, background 0.5s;
+}
+
+.panel-button:hover {
+  background: #3498db;
+  border-color: #3498db;
+  color: #fff;
+}
+
+.react-flow__controls{
+  display: flex;
+  gap: 10px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.react-flow__controls-button{
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.info-button {
+  background: #C147E9;
+  cursor: pointer;
+  position: fixed;
+  top: 120px;
+  right: 390px; /* Center the button horizontally */
+  transform: translateX(50%); /* Center the button horizontally */
+  z-index: 2;
+  color: #EEF1FF;
+  padding: 10px 20px; /* Increased padding for better visibility and touch-friendly */
+  border-radius: 50px; /* Round the button shape */
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); /* Add a subtle shadow for depth */
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.info-button:hover {
+  background: #810CA8; /* Darker background on hover */
+  transform: translateX(50%) scale(1.05); /* Slight scale-up effect on hover */
+}
+
+.react-flow__handle {
+  background: #FF2E63;
+  width: 10px;
+  height: 10px;
+  border-radius: 15px;
+}
+
+path.react-flow__edge-path{
+  stroke-width: 5;
 }

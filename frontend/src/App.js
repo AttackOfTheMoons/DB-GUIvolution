@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import Joyride from "react-joyride";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import ReactFlow, {
 	Background,
 	Controls,
-	MiniMap,
-	Panel,
 	ReactFlowProvider,
 	addEdge,
 	applyEdgeChanges,
 	applyNodeChanges,
 } from "reactflow";
 import "reactflow/dist/style.css";
-import styled from "styled-components";
+import ResultTable from "./ResultTable";
 import DynamicChatbot from "./chatbot";
+import "./index.css";
 import FromNode from "./nodes/FromNode";
 import "./nodes/FromNode.css";
 import SelectNode from "./nodes/SelectNode";
@@ -20,32 +22,48 @@ import WhereNode from "./nodes/WhereNode";
 import "./nodes/WhereNode.css";
 import Sidebar from "./sidebar";
 
-import axios, { post } from "axios";
-import ResultTable from "./ResultTable";
-import "./index.css";
+import NodePanel from "./NodePanel";
+import {
+	checkAllNodesConnected,
+	createAdjacencyList,
+	createNewDataNode,
+	createNewNode,
+	findFroms,
+	getIntialNodeValueByType,
+	sendQueryToServer,
+} from "./appHelperFunctions";
+import tourSteps from "./tourSteps";
 
-let id = 0;
-const getId = () => `dndnode_${id++}`;
+const reactFlowStyle = {
+	background: "#192655",
+};
 
-const ignoreChangeTypes = ["dimensions", "position", "select"];
+// const ignoreChangeTypes = ["dimensions", "position", "select"];
 
 const App = () => {
 	const reactFlowWrapper = useRef(null);
 	const [nodes, setNodes] = useState([]);
-	// This will be where we store the value that gets sent to the server.
-	const [nodeData, setNodeData] = useState([]);
+	const [nodeValues, setNodeValues] = useState([]);
 	const [edges, setEdges] = useState([]);
 	const [reactFlowInstance, setReactFlowInstance] = useState(null);
 	const [resultKeys, setResultKeys] = useState([]);
 	const [resultData, setResultData] = useState([]);
+	const [resultSQL, setSQL] = useState("");
+
+	const idRef = useRef(0);
 
 	const onNodesChange = useCallback(
 		(changes) => {
 			const updatedNodes = applyNodeChanges(changes, nodes);
 			for (const { type, id } of changes) {
 				if (type === "remove") {
-					setNodeData((prevNodes) =>
+					setNodeValues((prevNodes) =>
 						prevNodes.filter((node) => node.id !== id),
+					);
+					setEdges((prevEdges) =>
+						prevEdges.filter(
+							(edge) => edge.source !== id && edge.target !== id,
+						),
 					);
 				}
 			}
@@ -56,31 +74,34 @@ const App = () => {
 
 	useEffect(() => {
 		// TODO: All nodes are treated as connected, this should be fixed.
-		axios
-			.post("/queries/", { nodes: nodeData })
-			.then((response) => {
-				const data = response.data;
-				if (!data) {
-					console.error("Unexpected response from server?");
-				}
-				setResultKeys(data.keys);
-				setResultData(data.data);
-			})
-			.catch((error) => {
-				const errorData = error.response.data;
-				// These errors shouldn't happen tm
-				if (!errorData || !errorData.detail) {
-					console.error("Unhandled server error.");
-					return;
-				}
-				// TODO: These errors we should display to the user.
-				if (Array.isArray(errorData.detail)) {
-					errorData.detail.forEach((err) => console.log(err.msg));
-				} else {
-					console.log(errorData.detail);
-				}
-			});
-	}, [nodeData]);
+		if (nodeValues.length === 0) {
+			return;
+		}
+
+		// Create the adjacency list
+		const adjacencyList = createAdjacencyList(edges);
+
+		// Check if the nodes are connected using dfs
+		const allNodesConnected = checkAllNodesConnected(adjacencyList, nodeValues);
+
+		// Iterate over the "Select" and "Where" nodes and find the closest "From" node for each
+		const selectWhereNodes = nodeValues.filter(
+			(node) => node.type === "select" || node.type === "where",
+		);
+
+		if (findFroms(selectWhereNodes, nodeValues, adjacencyList, setNodes)) {
+			// Error
+			return;
+		}
+
+		if (!allNodesConnected) {
+			// TODO: Display an error or take appropriate action.
+			console.log("All nodes are not connected.");
+			return;
+		}
+
+		sendQueryToServer(nodeValues, setResultKeys, setResultData, setSQL);
+	}, [nodeValues, edges, setNodes, setResultKeys, setResultData, setSQL]);
 
 	const onEdgesChange = useCallback(
 		(changes) => {
@@ -91,7 +112,10 @@ const App = () => {
 	);
 
 	const onConnect = useCallback(
-		(params) => setEdges((prevEdges) => addEdge(params, prevEdges)),
+		(params) =>
+			setEdges((prevEdges) =>
+				addEdge({ ...params, type: "smoothstep" }, prevEdges),
+			),
 		[],
 	);
 
@@ -109,13 +133,13 @@ const App = () => {
 						: node,
 				),
 			);
-			setNodeData((prevDataNodes) =>
+			setNodeValues((prevDataNodes) =>
 				prevDataNodes.map((node) =>
 					node.id === nodeId ? { ...node, value: newValue } : node,
 				),
 			);
 		},
-		[setNodes, setNodeData],
+		[setNodes, setNodeValues],
 	);
 
 	const onDrop = useCallback(
@@ -135,52 +159,44 @@ const App = () => {
 				y: event.clientY - reactFlowBounds.top,
 			});
 
-			let initialValue;
-
-			switch (type) {
-				case "from":
-				case "where":
-					initialValue = "";
-					break;
-				case "select":
-					initialValue = [];
-					break;
-				default:
-					initialValue = "";
-			}
-			const nodeId = getId();
+			const initialValue = getIntialNodeValueByType(type);
+			const nodeId = `dndnode_${idRef.current++}`;
 
 			const nodeChange = (newValue) => {
 				handleSubNodeValueChange(nodeId, newValue);
 			};
 
-			const newNode = {
-				id: nodeId,
+			const newNode = createNewNode(
+				nodeId,
 				type,
 				position,
-				data: {
-					label: `${type}`,
-					nodeValue: initialValue,
-					handleNodeValueChange: nodeChange,
-				},
-			};
+				initialValue,
+				nodeChange,
+			);
 
-			const newDataNode = {
-				id: nodeId,
-				type,
-				value: initialValue,
-			};
+			const newDataNode = createNewDataNode(nodeId, type, initialValue);
 
-			setNodes((prevNodes) => prevNodes.concat(newNode));
-			setNodeData((prevNodeData) => prevNodeData.concat(newDataNode));
+			setNodes((prevNodes) => [...prevNodes, newNode]);
+			setNodeValues((prevNodeData) => [...prevNodeData, newDataNode]);
 		},
-		[reactFlowInstance],
+		[reactFlowInstance, handleSubNodeValueChange],
 	);
 
 	const [variant, setVariant] = useState("lines");
 
 	return (
 		<div className="dndflow">
+			<Joyride
+				continuous
+				callback={() => {}}
+				run={true}
+				steps={tourSteps}
+				hideCloseButton
+				scrollToFirstStep
+				showSkipButton
+				showProgress
+			/>
+			<ToastContainer limit={1} />
 			<DynamicChatbot />
 			<ReactFlowProvider>
 				<div className="reactflow-wrapper" ref={reactFlowWrapper}>
@@ -191,28 +207,19 @@ const App = () => {
 						onNodesChange={onNodesChange}
 						onEdgesChange={onEdgesChange}
 						onConnect={onConnect}
+						connectionLineType="smoothstep"
 						onInit={setReactFlowInstance}
 						onDrop={onDrop}
 						onDragOver={onDragOver}
 						fitView
+						style={reactFlowStyle}
 					>
-						<Controls />
-						<Background color="#1e1ec9" variant={variant} gap={20} />
-						<MiniMap />
-						<Panel>
-							<button type="button" onClick={() => setVariant("dots")}>
-								DOT
-							</button>
-							<button type="button" onClick={() => setVariant("lines")}>
-								LINE
-							</button>
-							<button type="button" onClick={() => setVariant("cross")}>
-								CROSS
-							</button>
-						</Panel>
+						<Controls position="bottom-center" />
+						<Background color="#48BFE3" variant={variant} gap={20} />
+						<NodePanel setVariant={setVariant} />
 					</ReactFlow>
 				</div>
-				<ResultTable keys={resultKeys} data={resultData} />
+				<ResultTable keys={resultKeys} data={resultData} sql={resultSQL} />
 				<Sidebar />
 			</ReactFlowProvider>
 		</div>

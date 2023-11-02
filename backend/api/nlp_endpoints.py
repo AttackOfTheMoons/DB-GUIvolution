@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.dialects.postgresql.base import PGInspector
+from sqlalchemy import Inspector
 
 from database import get_inspector
 from gpt import generate_sql_query
@@ -12,7 +12,7 @@ router = APIRouter()
 def generate_sql_endpoint(
     flavor: str,
     request: QueryRequestModel,
-    inspector: PGInspector = Depends(get_inspector),
+    inspector: Inspector = Depends(get_inspector),
 ) -> QueryResponseModel:
     return generate_sql_query(
         request.user_input,

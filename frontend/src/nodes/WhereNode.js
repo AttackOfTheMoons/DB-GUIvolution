@@ -1,18 +1,65 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Handle, Position } from "reactflow";
 
-const handleStyle = { left: 10 };
-
 function WhereNode({ data, isConnectable }) {
-	const { nodeValue, handleNodeValueChange } = data;
+	const { nodeValue, handleNodeValueChange, selectedTable } = data;
+	const [operators, setOperators] = useState([]);
+	const [columnData, setColumnData] = useState([]);
 
-	const imgStyle = {
-		position: "absolute",
-		left: "-8px",
-		top: "-100px",
-		width: "250px",
-		objectFit: "cover", // Maintain aspect ratio and cover the container
-		zIndex: -1, // Set a negative z-index to send the image to the back
-		opacity: 1,
+	// Fetch column names when selected table changes
+	// TODO: show error to user
+	useEffect(() => {
+		if (selectedTable) {
+			axios
+				.get(`/tables/${selectedTable}/columns`)
+				.then((response) => {
+					const fetchedColumnData = response.data;
+					setColumnData(fetchedColumnData);
+				})
+				.catch((error) => {
+					console.error(error);
+				});
+		}
+	}, [selectedTable]);
+
+	const handleColumnNameChange = (event) => {
+		const selectedColumnType =
+			event.target.options[event.target.selectedIndex].getAttribute(
+				"data-columntype",
+			);
+		const validOperators = getOperatorsForColumnType(selectedColumnType);
+		setOperators(validOperators);
+		handleNodeValueChange({
+			...nodeValue,
+			column: event.target.value,
+			column_type: selectedColumnType,
+			comparator: validOperators[0].toUpperCase(),
+		});
+	};
+
+	const handleOperatorChange = (event) => {
+		handleNodeValueChange({ ...nodeValue, comparator: event.target.value });
+	};
+
+	const handleValueChange = (event) => {
+		handleNodeValueChange({ ...nodeValue, compared_value: event.target.value });
+	};
+
+	const getOperatorsForColumnType = (type) => {
+		switch (type) {
+			case "INTEGER":
+			case "FLOAT":
+				return ["=", "<", ">", "<=", ">=", "!="];
+			case "DATE":
+				return ["before", "after"];
+			case "VARCHAR":
+				return ["=", "prefix", "suffix", "regex"];
+			case "BOOL":
+				return ["="];
+			default:
+				return ["N/A"];
+		}
 	};
 
 	return (
@@ -22,28 +69,52 @@ function WhereNode({ data, isConnectable }) {
 				position={Position.Top}
 				isConnectable={isConnectable}
 			/>
-			<img alt="" src="../icons/circle.png" style={imgStyle} />
-			<div>
-				<label htmlFor="text">WHERE:</label>
-				<input
-					id="text"
-					name="text"
-					onChange={(event) => handleNodeValueChange(event.target.value)}
+			{/* <img alt="" src="../icons/circle.png" style={imgStyle} /> */}
+			<div className="inside-div">
+				<label>WHERE:</label>
+				<select
+					onChange={handleColumnNameChange}
+					value={nodeValue.column}
 					className="nodrag"
-					value={nodeValue}
+				>
+					<option value="">Select a column</option>
+					{columnData.map((column) => (
+						<option
+							key={column.name}
+							value={column.name}
+							data-columntype={column.type}
+						>
+							{column.name}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className="inside-div">
+				<label>Operator:</label>
+				<select
+					onChange={handleOperatorChange}
+					value={nodeValue.comparator}
+					className="nodrag"
+				>
+					{operators.map((operator) => (
+						<option key={operator} value={operator.toUpperCase()}>
+							{operator}
+						</option>
+					))}
+				</select>
+			</div>
+			<div className="inside-div">
+				<label>Value:</label>
+				<input
+					name="value"
+					onChange={handleValueChange}
+					className="nodrag"
+					value={nodeValue.compared_value}
 				/>
 			</div>
-			{/* <Handle
-        type="source"
-        position={Position.Bottom}
-        id="a"
-        style={handleStyle}
-        isConnectable={isConnectable}
-      /> */}
 			<Handle
 				type="source"
 				position={Position.Bottom}
-				id="b"
 				isConnectable={isConnectable}
 			/>
 		</div>
