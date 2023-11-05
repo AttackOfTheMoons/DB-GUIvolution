@@ -138,17 +138,19 @@ class WhereStmt(BaseModel):
         column_type = info.data.get("column_type")
         field = info.field_name
         if column_type == ColumnType.INTEGER:
-            if not isinstance(compared_value, int):
-                raise ValueError(f"{field} must be an integer")
+            return int(compared_value)
         elif column_type == ColumnType.FLOAT:
-            if not isinstance(compared_value, (int, float)):
-                raise ValueError(f"{field} must be a number")
+            return float(compared_value)
         elif column_type in (ColumnType.TEXT, ColumnType.VARCHAR):
             if not isinstance(compared_value, str):
                 raise ValueError(f"{field} must be a string")
         elif column_type == ColumnType.BOOL:
-            if not isinstance(compared_value, bool):
-                raise ValueError(f"{field} must be a boolean")
+            if compared_value == "true":
+                return True
+            elif compared_value == "false":
+                return False
+            else:
+                raise ValueError(f"{field} must be a string (true, false)")
         elif column_type == ColumnType.DATE:
             if not isinstance(compared_value, str):
                 raise ValueError(f"{field} must be a string (date)")
