@@ -49,6 +49,7 @@ const App = () => {
 	const [resultKeys, setResultKeys] = useState([]);
 	const [resultData, setResultData] = useState([]);
 	const [resultSQL, setSQL] = useState("");
+	const [resultError, setResultError] = useState(false);
 
 	const idRef = useRef(0);
 
@@ -100,8 +101,22 @@ const App = () => {
 			return;
 		}
 
-		sendQueryToServer(nodeValues, setResultKeys, setResultData, setSQL);
-	}, [nodeValues, edges, setNodes, setResultKeys, setResultData, setSQL]);
+		sendQueryToServer(
+			nodeValues,
+			setResultKeys,
+			setResultData,
+			setSQL,
+			setResultError,
+		);
+	}, [
+		nodeValues,
+		edges,
+		setNodes,
+		setResultKeys,
+		setResultData,
+		setSQL,
+		setResultError,
+	]);
 
 	const onEdgesChange = useCallback(
 		(changes) => {
@@ -219,7 +234,12 @@ const App = () => {
 						<NodePanel setVariant={setVariant} />
 					</ReactFlow>
 				</div>
-				<ResultTable keys={resultKeys} data={resultData} sql={resultSQL} />
+				<ResultTable
+					keys={resultKeys}
+					data={resultData}
+					sql={resultSQL}
+					hadError={resultError}
+				/>
 				<Sidebar />
 			</ReactFlowProvider>
 		</div>

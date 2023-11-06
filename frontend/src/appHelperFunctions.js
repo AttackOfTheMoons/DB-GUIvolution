@@ -85,6 +85,11 @@ export const findFroms = (
 					: node,
 			),
 		);
+		console.log(
+			"table assignment",
+			nodeNeedsFromTable.id,
+			closestFromNode ? closestFromNode.value : "",
+		);
 		if (!closestFromNode) {
 			fromNotFound = true;
 		}
@@ -110,6 +115,7 @@ export const sendQueryToServer = (
 	setResultKeys,
 	setResultData,
 	setSQL,
+	setError,
 ) => {
 	axios
 		.post("/queries/", { nodes: nodeValues, flavor: "postgres" })
@@ -121,9 +127,11 @@ export const sendQueryToServer = (
 			setResultKeys(data.keys);
 			setResultData(data.data);
 			setSQL(data.sql.sql_query);
+			setError(false);
 		})
 		.catch((error) => {
 			const errorData = error.response.data;
+			setError(true);
 			// These errors shouldn't happen tm
 			if (!errorData || !errorData.detail) {
 				console.error("Unhandled server error.");

@@ -41,6 +41,12 @@
   overflow: hidden;
 }
 
+.sql-output-error {
+  color: #FF0000;
+  border: 2px solid #FF0000;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+}
+
 table{
   display:none;
 }

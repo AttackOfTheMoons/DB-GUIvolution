@@ -6,6 +6,7 @@ function WhereNode({ data, isConnectable }) {
 	const { nodeValue, handleNodeValueChange, selectedTable } = data;
 	const [operators, setOperators] = useState([]);
 	const [columnData, setColumnData] = useState([]);
+	const [inputType, setInputType] = useState("text");
 
 	// Fetch column names when selected table changes
 	// TODO: show error to user
@@ -28,7 +29,7 @@ function WhereNode({ data, isConnectable }) {
 			event.target.options[event.target.selectedIndex].getAttribute(
 				"data-columntype",
 			);
-		const validOperators = getOperatorsForColumnType(selectedColumnType);
+		const validOperators = handleColumnTypeChange(selectedColumnType);
 		setOperators(validOperators);
 		handleNodeValueChange({
 			...nodeValue,
@@ -46,18 +47,24 @@ function WhereNode({ data, isConnectable }) {
 		handleNodeValueChange({ ...nodeValue, compared_value: event.target.value });
 	};
 
-	const getOperatorsForColumnType = (type) => {
+	const handleColumnTypeChange = (type) => {
 		switch (type) {
 			case "INTEGER":
 			case "FLOAT":
+				setInputType("number");
+				handleValueChange({ target: { value: 0 } });
 				return ["=", "<", ">", "<=", ">=", "!="];
 			case "DATE":
+				setInputType("date");
 				return ["before", "after"];
 			case "VARCHAR":
+				setInputType("text");
 				return ["=", "prefix", "suffix", "regex"];
 			case "BOOL":
+				setInputType("text");
 				return ["="];
 			default:
+				setInputType("text");
 				return ["N/A"];
 		}
 	};
@@ -110,6 +117,7 @@ function WhereNode({ data, isConnectable }) {
 					onChange={handleValueChange}
 					className="nodrag"
 					value={nodeValue.compared_value}
+					type={inputType}
 				/>
 			</div>
 			<Handle

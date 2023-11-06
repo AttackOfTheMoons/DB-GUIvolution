@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ResultTable.css";
 
-const ResultTable = ({ keys, data, sql }) => {
+const ResultTable = ({ keys, data, sql, hadError }) => {
 	const [isOutputOpen, setIsOutputOpen] = useState(false);
 
 	const toggleSidebar = () => {
@@ -22,8 +22,12 @@ const ResultTable = ({ keys, data, sql }) => {
 					}
 				}}
 			>
-				<div className="sql-output">{sql}</div>
-				<table id="scrollableTable" className={`${isOutputOpen ? "open" : ""}`}>
+				<div
+					className={hadError ? "sql-output sql-output-error" : "sql-output"}
+				>
+					{sql}
+				</div>
+				<table id="scrollableTable" className={isOutputOpen ? "open" : ""}>
 					<thead>
 						<tr>
 							{keys.map((key, index) => (
