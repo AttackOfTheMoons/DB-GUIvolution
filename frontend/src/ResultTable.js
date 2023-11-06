@@ -26,6 +26,11 @@ const ResultTable = ({ keys, data, sql, hadError }) => {
 					className={hadError ? "sql-output sql-output-error" : "sql-output"}
 				>
 					{sql}
+					<span
+						className={hadError ? "error-icon sql-output-error" : "error-icon"}
+					>
+						❗ INVALID DATA TYPE
+					</span>
 				</div>
 				<table id="scrollableTable" className={isOutputOpen ? "open" : ""}>
 					<thead>

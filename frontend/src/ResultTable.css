@@ -47,6 +47,29 @@
   box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
 }
 
+@keyframes vertical-shaking {
+  0% { transform: translateY(0) }
+  25% { transform: translateY(5px) }
+  50% { transform: translateY(-5px) }
+  75% { transform: translateY(5px) }
+  100% { transform: translateY(0) }
+}
+
+span.error-icon{
+  left: 20%;
+  top: 0;
+  position: absolute;
+  visibility: hidden;
+  opacity: 0;
+  animation: vertical-shaking 2s infinite;
+  transition: visibility 0s, opacity 1s linear;
+}
+
+span.error-icon.sql-output-error{
+  visibility: visible;
+  opacity: 1;
+}
+
 table{
   display:none;
 }
