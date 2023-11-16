@@ -132,3 +132,40 @@
   border-bottom-left-radius: 25px;
   margin-left: 5px;
 }
+
+.flavor-dropdown {
+  display: inline-block;
+  position: fixed;
+  bottom: 80px;
+  left: 39%; 
+  width: 90px;
+  height: 30px;
+  padding: 8px;
+  font-weight: bolder;
+  font-size: 12px;
+  border: 1px solid #9254de; /* Use a color that matches your theme */
+  border-radius: 4px;
+  background-color: #fff;
+  color: #9254de; /* Match the border color for a cohesive look */
+  z-index: 100;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+  transition: background-color 0.3s, transform 0.3s, color 0.3s;
+}
+
+.flavor-dropdown:hover {
+  background-color: #9254de; /* Change background color on hover */
+  color: #fff; /* Change text color on hover */
+  transition: background-color 0.3s, transform 0.3s, color 0.3s;
+}
+
+/* Add an arrow indicator */
+.flavor-dropdown:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  margin-top: -3px; /* Adjust to vertically center the arrow */
+  border-width: 6px 6px 0;
+  border-style: solid;
+  border-color: #9254de transparent transparent;
+}

@@ -79,6 +79,16 @@ function WhereNode({ data, isConnectable }) {
 			{/* <img alt="" src="../icons/circle.png" style={imgStyle} /> */}
 
 			<div className="inside-div">
+				<label>Value:</label>
+				<input
+					name="value"
+					onChange={handleValueChange}
+					className="nodrag"
+					value={nodeValue.compared_value}
+					type={inputType}
+				/>
+			</div>
+			<div className="inside-div">
 				<label>Operator:</label>
 				<select
 					onChange={handleOperatorChange}
@@ -91,16 +101,6 @@ function WhereNode({ data, isConnectable }) {
 						</option>
 					))}
 				</select>
-			</div>
-			<div className="inside-div">
-				<label>Value:</label>
-				<input
-					name="value"
-					onChange={handleValueChange}
-					className="nodrag"
-					value={nodeValue.compared_value}
-					type={inputType}
-				/>
 			</div>
 			<div className="inside-div">
 				<label>WHERE:</label>

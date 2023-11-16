@@ -14,6 +14,11 @@ import "./chatbot.css";
 import "./index.css";
 
 function DynamicChatbot() {
+	const [flavor, setFlavor] = useState("MySQL");
+	const handleFlavorChange = (e) => {
+		setFlavor(e.target.value);
+	};
+
 	const [messages, setMessages] = useState([
 		{
 			message: "🤖: Hello, I'm your SQL query assistant!",
@@ -51,7 +56,7 @@ function DynamicChatbot() {
 
 		try {
 			// Make an API request to the backend
-			const response = await axios.post("/api/nlp/PostgreSQL/generate_sql", {
+			const response = await axios.post(`/api/nlp/${flavor}/generate_sql`, {
 				user_input: userMessage,
 				conversation_history: engineeredHistory,
 			});
@@ -92,6 +97,18 @@ function DynamicChatbot() {
 		<>
 			<div className={`App ${isSidebarOpen ? "open" : ""}`}>
 				<div style={{ position: "relative", height: "100%", width: "415px" }}>
+					<select
+						id="flavor"
+						value={flavor}
+						onChange={handleFlavorChange}
+						className="flavor-dropdown"
+					>
+						<option value="MySQL">MySQL</option>
+						<option value="PostgreSQL">PostgreSQL</option>
+						<option value="SQLite">SQLite</option>
+						<option value="MSSQL">MSSQL</option>
+						<option value="Oracle">Oracle</option>
+					</select>
 					<MainContainer>
 						<button
 							type="button"

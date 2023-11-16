@@ -8,3 +8,41 @@ html, body, #root {
     font-family: sans-serif;
   }
   
+
+  .flavor-dropdown-app {
+    display: inline-block;
+    position: fixed;
+    bottom: 80px;
+    left: 48%; 
+    width: 100px;
+    height: 35px;
+    padding: 8px;
+    font-size: 16px;
+    font-weight: bolder;
+    border: 1px solid #1263C1; /* Use a color that matches your theme */
+    border-radius: 4px;
+    background-color: #fff;
+    color: #1263C1; /* Match the border color for a cohesive look */
+    z-index: 100;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+    transition: background-color 0.3s, transform 0.3s, color 0.3s;
+  }
+  
+  .flavor-dropdown-app:hover {
+    background-color: #1263C1; /* Change background color on hover */
+    color: #fff; /* Change text color on hover */
+    transition: background-color 0.3s, transform 0.3s, color 0.3s;
+  }
+  
+  /* Add an arrow indicator */
+  .flavor-dropdown-app:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    margin-top: -3px; /* Adjust to vertically center the arrow */
+    border-width: 6px 6px 0;
+    border-style: solid;
+    border-color: #1263C1 transparent transparent;
+  }
+  
