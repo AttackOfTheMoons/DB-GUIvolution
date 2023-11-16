@@ -19,10 +19,6 @@ const Sidebar = () => {
 	};
 
 	const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-	const [isHovered, setIsHovered] = useState(false);
-	const toggleHover = () => {
-		setIsHovered(!isHovered);
-	};
 
 	const toggleSidebar = () => {
 		setIsSidebarOpen(!isSidebarOpen);
@@ -46,34 +42,25 @@ const Sidebar = () => {
 					className="dndnode sidebar-select"
 					onDragStart={(event) => onDragStart(event, "select")}
 					draggable
-					onMouseEnter={toggleHover}
-					onMouseLeave={toggleHover}
 				>
 					<img alt="" src="./icons/parallelogram.png" width={"20px"} />
 					SELECT
-					<span className={`hand-icon ${isHovered ? "isHovered" : ""}`}>🖐</span>
 				</div>
 				<div
 					className="dndnode sidebar-from"
 					onDragStart={(event) => onDragStart(event, "from")}
 					draggable
-					onMouseEnter={toggleHover}
-					onMouseLeave={toggleHover}
 				>
 					<img alt="" src="./icons/square.png" width={"20px"} />
 					FROM
-					<span className={`hand-icon ${isHovered ? "isHovered" : ""}`}>🖐</span>
 				</div>
 				<div
 					className="dndnode sidebar-where"
 					onDragStart={(event) => onDragStart(event, "where")}
 					draggable
-					onMouseEnter={toggleHover}
-					onMouseLeave={toggleHover}
 				>
 					<img alt="" src="./icons/circle.png" width={"20px"} />
 					WHERE
-					<span className={`hand-icon ${isHovered ? "isHovered" : ""}`}>🖐</span>
 				</div>
 			</aside>
 		</>

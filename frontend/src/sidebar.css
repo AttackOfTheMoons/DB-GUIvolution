@@ -42,17 +42,3 @@ span.toolbox-icon{
 .sidebar.open {
   transform: translateY(0);
 }
-
-span.hand-icon{
-  position: absolute;
-  visibility: hidden;
-  opacity: 0;
-  font-size: 20px;
-  animation: horizontal-shaking 1.8s infinite;
-  transition: visibility 0s, opacity 0.2s linear;
-}
-
-span.hand-icon.isHovered{
-  visibility: visible;
-  opacity: 1;
-}
