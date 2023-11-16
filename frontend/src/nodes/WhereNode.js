@@ -77,25 +77,7 @@ function WhereNode({ data, isConnectable }) {
 				isConnectable={isConnectable}
 			/>
 			{/* <img alt="" src="../icons/circle.png" style={imgStyle} /> */}
-			<div className="inside-div">
-				<label>WHERE:</label>
-				<select
-					onChange={handleColumnNameChange}
-					value={nodeValue.column}
-					className="nodrag"
-				>
-					<option value="">Select a column</option>
-					{columnData.map((column) => (
-						<option
-							key={column.name}
-							value={column.name}
-							data-columntype={column.type}
-						>
-							{column.name}
-						</option>
-					))}
-				</select>
-			</div>
+
 			<div className="inside-div">
 				<label>Operator:</label>
 				<select
@@ -119,6 +101,25 @@ function WhereNode({ data, isConnectable }) {
 					value={nodeValue.compared_value}
 					type={inputType}
 				/>
+			</div>
+			<div className="inside-div">
+				<label>WHERE:</label>
+				<select
+					onChange={handleColumnNameChange}
+					value={nodeValue.column}
+					className="nodrag"
+				>
+					<option value="">Select a column</option>
+					{columnData.map((column) => (
+						<option
+							key={column.name}
+							value={column.name}
+							data-columntype={column.type}
+						>
+							{column.name}
+						</option>
+					))}
+				</select>
 			</div>
 			<Handle
 				type="source"
