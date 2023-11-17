@@ -1,7 +1,14 @@
 import React, { useState } from "react";
 import "./ResultTable.css";
 
-const ResultTable = ({ keys, data, sql, hadError }) => {
+const ResultTable = ({
+	keys,
+	data,
+	sql,
+	hadError,
+	handleFlavorChange,
+	flavor,
+}) => {
 	const [isOutputOpen, setIsOutputOpen] = useState(false);
 
 	const toggleSidebar = () => {
@@ -9,9 +16,6 @@ const ResultTable = ({ keys, data, sql, hadError }) => {
 	};
 	return (
 		<>
-			{/* <button type="button" className="output-button" onClick={toggleSidebar}>
-        {isOutputOpen ? "💻: ✅" : "💻: ❌"}
-      </button> */}
 			<aside
 				id="outputWindow"
 				className={`${isOutputOpen ? "open" : ""}`}
@@ -26,6 +30,11 @@ const ResultTable = ({ keys, data, sql, hadError }) => {
 					className={hadError ? "sql-output sql-output-error" : "sql-output"}
 				>
 					{sql}
+					<span
+						className={hadError ? "error-icon sql-output-error" : "error-icon"}
+					>
+						❗ INVALID DATA TYPE
+					</span>
 				</div>
 				<table id="scrollableTable" className={isOutputOpen ? "open" : ""}>
 					<thead>

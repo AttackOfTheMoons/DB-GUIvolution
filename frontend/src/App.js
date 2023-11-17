@@ -50,7 +50,10 @@ const App = () => {
 	const [resultData, setResultData] = useState([]);
 	const [resultSQL, setSQL] = useState("");
 	const [resultError, setResultError] = useState(false);
-
+	const [flavor, setFlavor] = useState("mysql");
+	const handleFlavorChange = (e) => {
+		setFlavor(e.target.value);
+	};
 	const idRef = useRef(0);
 
 	const onNodesChange = useCallback(
@@ -107,6 +110,7 @@ const App = () => {
 			setResultData,
 			setSQL,
 			setResultError,
+			flavor,
 		);
 	}, [
 		nodeValues,
@@ -116,6 +120,7 @@ const App = () => {
 		setResultData,
 		setSQL,
 		setResultError,
+		flavor,
 	]);
 
 	const onEdgesChange = useCallback(
@@ -241,6 +246,18 @@ const App = () => {
 					hadError={resultError}
 				/>
 				<Sidebar />
+				<select
+					id="flavor"
+					value={flavor}
+					onChange={handleFlavorChange}
+					className="flavor-dropdown-app"
+				>
+					<option value="mysql">MySQL</option>
+					<option value="postgres">PostgreSQL</option>
+					<option value="sqlite">SQLite</option>
+					<option value="tsql">MSSQL</option>
+					<option value="oracle">Oracle</option>
+				</select>
 			</ReactFlowProvider>
 		</div>
 	);

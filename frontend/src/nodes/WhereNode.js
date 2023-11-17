@@ -77,6 +77,31 @@ function WhereNode({ data, isConnectable }) {
 				isConnectable={isConnectable}
 			/>
 			{/* <img alt="" src="../icons/circle.png" style={imgStyle} /> */}
+
+			<div className="inside-div">
+				<label>Value:</label>
+				<input
+					name="value"
+					onChange={handleValueChange}
+					className="nodrag"
+					value={nodeValue.compared_value}
+					type={inputType}
+				/>
+			</div>
+			<div className="inside-div">
+				<label>Operator:</label>
+				<select
+					onChange={handleOperatorChange}
+					value={nodeValue.comparator}
+					className="nodrag"
+				>
+					{operators.map((operator) => (
+						<option key={operator} value={operator.toUpperCase()}>
+							{operator}
+						</option>
+					))}
+				</select>
+			</div>
 			<div className="inside-div">
 				<label>WHERE:</label>
 				<select
@@ -95,30 +120,6 @@ function WhereNode({ data, isConnectable }) {
 						</option>
 					))}
 				</select>
-			</div>
-			<div className="inside-div">
-				<label>Operator:</label>
-				<select
-					onChange={handleOperatorChange}
-					value={nodeValue.comparator}
-					className="nodrag"
-				>
-					{operators.map((operator) => (
-						<option key={operator} value={operator.toUpperCase()}>
-							{operator}
-						</option>
-					))}
-				</select>
-			</div>
-			<div className="inside-div">
-				<label>Value:</label>
-				<input
-					name="value"
-					onChange={handleValueChange}
-					className="nodrag"
-					value={nodeValue.compared_value}
-					type={inputType}
-				/>
 			</div>
 			<Handle
 				type="source"

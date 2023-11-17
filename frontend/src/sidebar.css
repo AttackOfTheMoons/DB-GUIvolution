@@ -20,9 +20,9 @@
 
 @keyframes horizontal-shaking {
   0% { transform: translateX(0) }
-  25% { transform: translateX(3px) }
-  50% { transform: translateX(-15px) }
-  75% { transform: translateX(3px) }
+  25% { transform: translateX(10px) }
+  50% { transform: translateX(-300px) }
+  75% { transform: translateX(1px) }
   100% { transform: translateX(0) }
  }
 
@@ -42,27 +42,3 @@ span.toolbox-icon{
 .sidebar.open {
   transform: translateY(0);
 }
-
-/* Styles for the toggle-button */
-/* .toggle-button {
-  background: #0da010; 
-  cursor: pointer;
-  position: fixed;
-  bottom: 12px;
-  right: 100px; 
-  transform: translateX(50%); 
-  z-index: 2; 
-  color: #F3FDE8;
-  padding: 10px 20px; 
-  border-radius: 50px; 
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2); 
-  transition: background-color 0.3s, transform 0.3s;
-  display: none;
-}
-
-.toggle-button:hover {
-  background: #0a800d; 
-  transform: translateX(50%) scale(1.05); 
-  animation: tilt-shaking 0.5s infinite;
-  right: 50px; 
-} */

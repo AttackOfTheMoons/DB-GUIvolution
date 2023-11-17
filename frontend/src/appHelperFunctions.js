@@ -116,9 +116,10 @@ export const sendQueryToServer = (
 	setResultData,
 	setSQL,
 	setError,
+	flavor,
 ) => {
 	axios
-		.post("/queries/", { nodes: nodeValues, flavor: "postgres" })
+		.post("/queries/", { nodes: nodeValues, flavor: flavor })
 		.then((response) => {
 			const data = response.data;
 			if (!data) {

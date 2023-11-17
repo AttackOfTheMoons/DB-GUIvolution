@@ -26,13 +26,6 @@ const Sidebar = () => {
 
 	return (
 		<>
-			{/* <button
-        type="button"
-        className="toggle-button toolbox-button"
-        onClick={toggleSidebar}
-      >
-        {isSidebarOpen ? "🧰: ✅" : "🧰: ❌"}
-      </button> */}
 			<aside
 				className={`sidebar ${isSidebarOpen ? "open" : ""}`}
 				onClick={toggleSidebar}
